@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     Lumière Spa — team.html
+     ========================================================= */
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+    --c-success-bg:    #e8f5ec;
+    --c-online:        #2fa060;
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 2px 6px rgba(43,29,19,.06);
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+    --shadow-lg: 0 30px 60px rgba(43,29,19,.18);
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --transition: 200ms cubic-bezier(.4,0,.2,1);
+    --sidebar-w: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea, select { font-family: inherit; }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 .3em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+
+  /* layout */
+  .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 26px 18px 18px;
+    background:
+      radial-gradient(90% 40% at 0% 100%, rgba(185,146,106,.22), transparent 60%),
+      linear-gradient(165deg, #2b1d13 0%, #3a281b 60%, #4a3423 100%);
+    color: #f6ede4; overflow-y: auto; z-index: 20;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 8px 22px;
+    font-family: var(--font-display);
+    font-size: 21px; font-weight: 700; letter-spacing: .02em;
+    border-bottom: 1px solid rgba(246,237,228,.1);
+    margin-bottom: 18px;
+  }
+  .brand-mark {
+    display: inline-grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13; font-family: var(--font-display);
+    font-size: 18px; font-weight: 700; flex: none;
+  }
+  .brand-name { color: #f6ede4; }
+  .nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .nav-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(246,237,228,.4);
+    padding: 16px 12px 8px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 500;
+    color: rgba(246,237,228,.75);
+    cursor: pointer; position: relative;
+    transition: background var(--transition), color var(--transition);
+  }
+  .nav-item:hover { background: rgba(246,237,228,.07); color: #f8f1e8; }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(185,146,106,.28), rgba(185,146,106,.14));
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(185,146,106,.35);
+  }
+  .nav-item.active::before {
+    content: ""; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 22px; border-radius: 0 3px 3px 0; background: var(--c-brand);
+  }
+  .nav-item .ico {
+    width: 20px; height: 20px; flex: none;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: var(--radius-pill);
+    background: rgba(185,146,106,.35); color: #f8f1e8;
+  }
+  .user-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; margin-top: 14px;
+    border-radius: var(--radius);
+    background: rgba(246,237,228,.06);
+    border: 1px solid rgba(246,237,228,.08);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .user-card:hover { background: rgba(246,237,228,.11); }
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; background: #4a3423;
+    border: 2px solid rgba(246,237,228,.15); flex: none;
+  }
+  .user-meta { min-width: 0; flex: 1; }
+  .user-name {
+    font-size: 13.5px; font-weight: 600; color: #f8f1e8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .user-role {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--c-brand);
+  }
+  .user-signout {
+    background: transparent; border: 0;
+    color: rgba(246,237,228,.5);
+    cursor: pointer; padding: 4px; border-radius: 6px;
+    display: grid; place-items: center;
+    transition: background var(--transition), color var(--transition);
+  }
+  .user-signout:hover { background: rgba(192,57,43,.25); color: #ffd9d4; }
+
+  /* ============ MAIN ============ */
+  .main { min-width: 0; display: flex; flex-direction: column; }
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 34px;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .menu-toggle {
+    display: none;
+    background: transparent; border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm); padding: 8px;
+    cursor: pointer; color: var(--c-ink);
+  }
+  .page-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; margin: 0; }
+  .page-sub   { font-size: 12.5px; color: var(--c-ink-muted); margin: 0; }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    display: grid; place-items: center;
+    width: 38px; height: 38px;
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-ink-soft);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+  .icon-btn:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); color: var(--c-brand-dark); }
+  .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.75; fill: none;
+                  stroke-linecap: round; stroke-linejoin: round; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    font-size: 13.5px; font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+  }
+  .btn svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2; fill: none;
+             stroke-linecap: round; stroke-linejoin: round; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff; box-shadow: 0 8px 18px rgba(185,146,106,.28);
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(185,146,106,.38); }
+  .btn-primary:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+  .btn-ghost { background: var(--c-surface); color: var(--c-ink-soft); border-color: var(--c-border); }
+  .btn-ghost:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); color: var(--c-brand-dark); }
+  .btn-danger { background: var(--c-surface); color: var(--c-error); border-color: #f3c3bd; }
+  .btn-danger:hover { background: var(--c-error); color: #fff; border-color: var(--c-error); }
+  .btn[hidden] { display: none; }
+
+  .content { padding: 26px 34px 60px; flex: 1; }
+
+  /* -------- hero -------- */
+  .hero {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: 40px 42px;
+    margin-bottom: 26px;
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(185,146,106,.32), transparent 55%),
+      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
+    color: #f8f1e8;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; right: -80px; bottom: -120px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.4), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 640px; }
+  .hero-eyebrow {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--c-brand); margin-bottom: 10px;
+  }
+  .hero h1 { color: #f8f1e8; font-size: 44px; margin: 0 0 8px; line-height: 1.05; }
+  .hero p  { color: rgba(246,237,228,.78); margin: 0 0 22px; max-width: 520px; font-size: 15.5px; }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 22px;
+    font-size: 13px; color: rgba(246,237,228,.72);
+  }
+  .hero-meta strong {
+    display: block; font-family: var(--font-display);
+    font-size: 26px; color: #f8f1e8; font-weight: 700; line-height: 1.1;
+  }
+
+  /* -------- filters -------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; align-items: center; }
+  .chip {
+    padding: 8px 16px;
+    font-size: 13px; font-weight: 600;
+    border-radius: var(--radius-pill);
+    background: var(--c-surface);
+    color: var(--c-ink-soft);
+    border: 1px solid var(--c-border);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+  }
+  .chip:hover { border-color: var(--c-border-strong); }
+  .chip.active {
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 6px 14px rgba(185,146,106,.3);
+  }
+  .chip .count {
+    margin-left: 6px; font-size: 11.5px; font-weight: 700;
+    padding: 1px 7px; border-radius: var(--radius-pill);
+    background: rgba(43,29,19,.06); color: inherit;
+  }
+  .chip.active .count { background: rgba(255,255,255,.25); }
+
+  .search-wrap { margin-left: auto; position: relative; }
+  .search-wrap svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px;
+    stroke: var(--c-ink-muted); stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+    pointer-events: none;
+  }
+  .search-wrap input {
+    padding: 9px 14px 9px 36px;
+    font-size: 13.5px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-pill);
+    background: var(--c-surface);
+    outline: none; width: 220px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .search-wrap input:focus { border-color: var(--c-brand); box-shadow: 0 0 0 4px rgba(185,146,106,.15); }
+
+  /* -------- grid -------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .member {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .member:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--c-brand);
+  }
+  .member.inactive { opacity: .72; }
+  .member.inactive .member-avatar img { filter: grayscale(85%); }
+
+  .member-head {
+    position: relative;
+    padding: 28px 20px 22px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    background:
+      radial-gradient(120% 100% at 50% 0%, rgba(185,146,106,.18), transparent 65%),
+      linear-gradient(180deg, #f9f2e9 0%, #f4ede4 100%);
+  }
+  .member-avatar {
+    position: relative;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    overflow: visible;
+    margin-bottom: 14px;
+  }
+  .member-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 8px 22px rgba(43,29,19,.15);
+    background: var(--c-bg-alt);
+  }
+  .member-avatar::after {
+    content: "";
+    position: absolute; right: 4px; bottom: 4px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    background: var(--c-online);
+    box-shadow: 0 0 0 0 rgba(47,160,96,.5);
+    animation: pulse 2.4s infinite;
+  }
+  .member.inactive .member-avatar::after { background: #c7bdb1; animation: none; }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(47,160,96,.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(47,160,96,0); }
+    100% { box-shadow: 0 0 0 0 rgba(47,160,96,0); }
+  }
+
+  .member-name {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 700;
+    color: var(--c-ink);
+    margin: 0 0 2px;
+    line-height: 1.15;
+    word-break: break-word;
+  }
+  .member-position {
+    font-size: 12.5px;
+    color: var(--c-ink-muted);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .member-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: center;
+    margin-top: 10px;
+    min-height: 22px;
+  }
+  .tag {
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    background: var(--c-brand-soft);
+    color: var(--c-brand-dark);
+  }
+  .tag.role-dev  { background: #2b1d13; color: #f2d8a8; }
+  .tag.role-admin{ background: #4a3423; color: #f8f1e8; }
+  .tag.you      { background: #e8f5ec; color: var(--c-success); }
+
+  .member-body {
+    padding: 16px 18px 18px;
+    display: flex; flex-direction: column; gap: 8px;
+    font-size: 13px;
+  }
+  .member-line {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--c-ink-soft);
+    min-width: 0;
+  }
+  .member-line svg {
+    width: 14px; height: 14px; flex: none;
+    stroke: var(--c-brand); stroke-width: 1.9; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .member-line span {
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    min-width: 0; flex: 1;
+  }
+  .member-line a:hover { color: var(--c-brand-dark); text-decoration: underline; }
+
+  .member-foot {
+    padding: 12px 18px 16px;
+    border-top: 1px dashed var(--c-border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--c-ink-muted);
+    gap: 10px;
+  }
+  .status-dot {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 600;
+  }
+  .status-dot::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--c-online);
+  }
+  .status-dot.off::before { background: #c7bdb1; }
+
+  /* admin quick actions */
+  .card-admin {
+    position: absolute; top: 12px; right: 12px;
+    display: flex; gap: 6px;
+    z-index: 3;
+    opacity: 0; transform: translateY(-4px);
+    transition: opacity var(--transition), transform var(--transition);
+  }
+  .member:hover .card-admin { opacity: 1; transform: translateY(0); }
+  .icon-mini {
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.94);
+    border: 0; color: var(--c-ink);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+    transition: background var(--transition), color var(--transition), transform var(--transition);
+  }
+  .icon-mini:hover { transform: scale(1.06); }
+  .icon-mini.danger:hover { background: var(--c-error); color: #fff; }
+  .icon-mini svg {
+    width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.9; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center; padding: 60px 20px;
+    background: var(--c-surface);
+    border: 1px dashed var(--c-border-strong);
+    border-radius: var(--radius-lg);
+    color: var(--c-ink-muted);
+  }
+  .empty svg { width: 44px; height: 44px; margin: 0 auto 12px;
+               stroke: var(--c-brand); stroke-width: 1.5; fill: none;
+               stroke-linecap: round; stroke-linejoin: round; }
+  .empty h3 { font-size: 22px; color: var(--c-ink); margin: 0 0 6px; }
+
+  /* -------- alerts -------- */
+  .alert {
+    display: block;
+    padding: 12px 16px; border-radius: var(--radius);
+    font-size: 13.5px; font-weight: 500; line-height: 1.45;
+    background: var(--c-error-bg); color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 0 0 20px;
+  }
+  .alert[hidden] { display: none; }
+  .alert[data-type="success"] {
+    background: var(--c-success-bg); color: var(--c-success); border-color: #b7e2c2;
+  }
+
+  /* ============ MODALS ============ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(20,13,8,.7);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    display: grid; place-items: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--transition);
+  }
+  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: min(720px, 100%);
+    max-height: calc(100vh - 48px);
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 40px 80px rgba(0,0,0,.4);
+    overflow: hidden; display: flex; flex-direction: column;
+    transform: translateY(16px) scale(.98);
+    transition: transform 260ms cubic-bezier(.4,0,.2,1);
+  }
+  .modal-backdrop.show .modal { transform: translateY(0) scale(1); }
+  .modal-scroll { overflow-y: auto; flex: 1; }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; z-index: 4;
+    display: grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.94);
+    border: 0; cursor: pointer; color: var(--c-ink);
+    box-shadow: 0 6px 16px rgba(0,0,0,.25);
+    transition: background var(--transition), transform var(--transition);
+  }
+  .modal-close:hover { background: #fff; transform: rotate(90deg); }
+  .modal-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none;
+                     stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---- member profile modal ---- */
+  .profile-hero {
+    position: relative;
+    padding: 40px 32px 30px;
+    background:
+      radial-gradient(120% 100% at 50% 0%, rgba(185,146,106,.35), transparent 60%),
+      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
+    color: #f8f1e8;
+    text-align: center;
+  }
+  .profile-hero::after {
+    content: ""; position: absolute; right: -60px; bottom: -80px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.4), transparent 65%);
+    pointer-events: none;
+  }
+  .profile-hero .member-avatar {
+    width: 108px; height: 108px;
+    margin: 0 auto 14px;
+    position: relative;
+  }
+  .profile-hero .member-name { color: #f8f1e8; font-size: 32px; }
+  .profile-hero .member-position { color: rgba(246,237,228,.75); font-size: 13.5px; }
+  .profile-hero .member-tags { justify-content: center; margin-top: 12px; }
+
+  .profile-body { padding: 26px 32px 12px; }
+  .profile-bio {
+    font-size: 15px; color: var(--c-ink-soft); line-height: 1.7;
+    white-space: pre-wrap; margin: 0 0 22px;
+  }
+  .profile-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px 22px;
+    margin-bottom: 22px;
+  }
+  .profile-field .label {
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--c-ink-muted);
+    margin-bottom: 4px;
+  }
+  .profile-field .value {
+    font-size: 14.5px; color: var(--c-ink); font-weight: 500;
+    word-break: break-word;
+  }
+  .profile-field .value.muted { color: var(--c-ink-muted); font-style: italic; font-weight: 400; }
+
+  .specialties-wrap {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 22px;
+  }
+  .specialty {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--c-brand-soft);
+    color: var(--c-brand-dark);
+    font-size: 12.5px; font-weight: 600;
+  }
+
+  .profile-actions {
+    display: flex; justify-content: space-between; gap: 10px;
+    padding: 18px 32px 22px;
+    border-top: 1px solid var(--c-border);
+    flex-wrap: wrap;
+  }
+  .profile-actions .right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* ---- edit form ---- */
+  .edit-head {
+    padding: 24px 32px 16px;
+    border-bottom: 1px solid var(--c-border);
+  }
+  .edit-head h2 { margin: 0 0 2px; font-size: 24px; }
+  .edit-head p { font-size: 12.5px; color: var(--c-ink-muted); margin: 0; }
+  .edit-body { padding: 22px 32px 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label {
+    font-size: 12.5px; font-weight: 600;
+    color: var(--c-ink-soft); letter-spacing: .02em;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%; padding: 11px 14px;
+    font-size: 14.5px; color: var(--c-ink);
+    background: #fff; border: 1.5px solid var(--c-border);
+    border-radius: var(--radius); outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    resize: vertical;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
+  }
+  .field textarea { min-height: 96px; line-height: 1.55; }
+  .field .hint { font-size: 12px; color: var(--c-ink-muted); margin: 2px 0 0; }
+
+  .check-row {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; color: var(--c-ink-soft);
+    cursor: pointer; user-select: none;
+    padding: 10px 14px;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius);
+    background: #fff;
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .check-row:hover { border-color: var(--c-border-strong); }
+  .check-row input { accent-color: var(--c-brand); }
+  .check-row.on { border-color: var(--c-brand); background: var(--c-brand-soft); }
+
+  .warn-note {
+    padding: 12px 14px;
+    background: #fff7ea;
+    border: 1px solid #f1dfb5;
+    border-radius: var(--radius);
+    color: #8a6a1c;
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: flex; gap: 10px;
+  }
+  .warn-note svg {
+    width: 16px; height: 16px; flex: none; margin-top: 1px;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .edit-actions {
+    display: flex; justify-content: space-between; gap: 10px;
+    padding: 18px 32px 22px;
+    border-top: 1px solid var(--c-border);
+    flex-wrap: wrap;
+  }
+  .edit-actions .right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .spinner {
+    width: 15px; height: 15px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============ MOBILE ============ */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(43,29,19,.5);
+    z-index: 15; opacity: 0;
+    transition: opacity var(--transition);
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: var(--sidebar-w);
+      transform: translateX(-100%);
+      transition: transform 240ms cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .overlay.show { display: block; opacity: 1; }
+    .menu-toggle { display: grid; place-items: center; }
+    .topbar { padding: 14px 18px; }
+    .content { padding: 22px 18px 50px; }
+    .hero { padding: 28px 24px; }
+    .hero h1 { font-size: 32px; }
+    .hero-meta { gap: 14px; }
+    .hero-meta strong { font-size: 22px; }
+    .search-wrap { margin-left: 0; width: 100%; }
+    .search-wrap input { width: 100%; }
+    .grid-2, .profile-grid { grid-template-columns: 1fr; }
+    .profile-hero { padding: 32px 22px 22px; }
+    .profile-hero .member-name { font-size: 26px; }
+    .profile-body { padding: 22px 22px 10px; }
+    .edit-head { padding: 20px 22px 14px; }
+    .edit-body { padding: 18px 22px 10px; }
+    .edit-actions, .profile-actions { padding: 14px 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+
+    <!-- ═════════ SIDEBAR ═════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-label">Workspace</div>
+        <a class="nav-item" href="bookings.html">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <span>Bookings</span>
+        </a>
+        <a class="nav-item" href="messages.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+          <span>Messages</span><span class="badge">3</span>
+        </a>
+        <a class="nav-item" href="reviews.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+          <span>Reviews</span>
+        </a>
+
+        <div class="nav-label">Manage</div>
+        <a class="nav-item" href="services.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/></svg>
+          <span>Services</span>
+        </a>
+        <a class="nav-item active" href="team.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+          <span>Team</span>
+        </a>
+        <a class="nav-item" href="finances.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+          <span>Finances</span>
+        </a>
+
+        <div class="nav-label">Account</div>
+        <a class="nav-item" href="my_profile.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>My profile</span>
+        </a>
+        <a class="nav-item" href="about_us.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          <span>About us</span>
+        </a>
+      </nav>
+
+      <div class="user-card" id="user-card" title="My profile">
+        <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+        <div class="user-meta">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role">—</div>
+        </div>
+        <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═════════ MAIN ═════════ -->
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+
+        <div>
+          <h1 class="page-title">Team</h1>
+          <p class="page-sub" id="today"></p>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="bell-btn" title="Notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+          </button>
+          <button class="btn btn-primary" id="invite-btn" hidden>
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+            Invite
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="alert" class="alert" hidden></div>
+
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-eyebrow">Our people</div>
+            <h1>The hands behind the calm</h1>
+            <p>Every therapist, receptionist and manager who makes Lumière feel like home.</p>
+
+            <div class="hero-meta">
+              <div><strong id="stat-total">—</strong>members</div>
+              <div><strong id="stat-active">—</strong>active</div>
+              <div><strong id="stat-therapists">—</strong>therapists</div>
+              <div><strong id="stat-admins">—</strong>admins</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters" id="filters">
+          <button class="chip active" data-filter="__all__">
+            All <span class="count" id="count-all">0</span>
+          </button>
+
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="search" type="search" placeholder="Search name, position…" />
+          </div>
+        </div>
+
+        <!-- GRID -->
+        <div class="grid" id="grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ═════════ PROFILE MODAL ═════════ -->
+  <div class="modal-backdrop" id="profile-backdrop">
+    <div class="modal" style="position:relative;">
+      <button class="modal-close" id="profile-close" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="profile-hero">
+          <div class="member-avatar" id="p-avatar-wrap">
+            <img id="p-avatar" alt="Avatar" />
+          </div>
+          <h2 class="member-name" id="p-name">—</h2>
+          <p class="member-position" id="p-position">—</p>
+          <div class="member-tags" id="p-tags"></div>
+        </div>
+
+        <div class="profile-body">
+          <p class="profile-bio" id="p-bio">—</p>
+
+          <div class="profile-grid">
+            <div class="profile-field">
+              <div class="label">Email</div>
+              <div class="value" id="p-email">—</div>
+            </div>
+            <div class="profile-field">
+              <div class="label">Cell</div>
+              <div class="value" id="p-cell">—</div>
+            </div>
+            <div class="profile-field">
+              <div class="label">Hire date</div>
+              <div class="value" id="p-hire">—</div>
+            </div>
+            <div class="profile-field">
+              <div class="label">Status</div>
+              <div class="value" id="p-status">—</div>
+            </div>
+          </div>
+
+          <div class="label" style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:8px;">
+            Specialties
+          </div>
+          <div class="specialties-wrap" id="p-specialties"></div>
+        </div>
+
+        <div class="profile-actions" id="profile-admin-bar" hidden>
+          <div>
+            <button class="btn btn-danger" id="p-delete">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+              Delete
+            </button>
+          </div>
+          <div class="right">
+            <button class="btn btn-ghost" id="p-toggle-active">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14"/><circle cx="12" cy="12" r="10"/></svg>
+              <span id="p-toggle-label">Deactivate</span>
+            </button>
+            <button class="btn btn-primary" id="p-edit">
+              <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════ EDIT MODAL ═════════ -->
+  <div class="modal-backdrop" id="edit-backdrop">
+    <div class="modal" style="position:relative;">
+      <button class="modal-close" id="edit-close" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="edit-head">
+          <h2 id="edit-title">Edit member</h2>
+          <p id="edit-sub">Update role, position and details</p>
+        </div>
+
+        <div class="edit-body">
+          <div id="self-warning" class="warn-note" hidden>
+            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+            <span>You're editing your own account. You can't change your own role, and you can't delete or deactivate yourself.</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="e-full-name">Full name</label>
+              <input id="e-full-name" type="text" placeholder="Jane Doe" />
+            </div>
+            <div class="field">
+              <label for="e-position">Position</label>
+              <input id="e-position" type="text" list="position-list" placeholder="Senior Therapist" />
+              <datalist id="position-list"></datalist>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="e-role">Role</label>
+              <select id="e-role">
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+                <option value="developer">Developer</option>
+              </select>
+              <p class="hint">Controls access to admin-only features.</p>
+            </div>
+            <div class="field">
+              <label for="e-hire-date">Hire date</label>
+              <input id="e-hire-date" type="date" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="e-cell">Cell number</label>
+              <input id="e-cell" type="tel" placeholder="+27 82 123 4567" />
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input id="e-email" type="email" disabled />
+              <p class="hint">Tied to auth account.</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="e-address">Address</label>
+            <input id="e-address" type="text" placeholder="Street, suburb, city" />
+          </div>
+
+          <div class="field">
+            <label for="e-bio">Bio</label>
+            <textarea id="e-bio" placeholder="A short introduction…"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="e-specialties">Specialties</label>
+            <input id="e-specialties" type="text" placeholder="Deep tissue, Hot stone, Reflexology" />
+            <p class="hint">Comma-separated list.</p>
+          </div>
+
+          <label class="check-row on" id="active-row">
+            <input type="checkbox" id="e-active" checked />
+            Active (visible to clients)
+          </label>
+        </div>
+
+        <div class="edit-actions">
+          <div>
+            <button class="btn btn-danger" id="e-delete" hidden>
+              <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+              Delete
+            </button>
+          </div>
+          <div class="right">
+            <button class="btn btn-ghost" id="e-cancel">Cancel</button>
+            <button class="btn btn-primary" id="e-save">
+              <span class="btn-label">Save changes</span>
+              <span class="spinner" id="e-spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════ INVITE MODAL ═════════ -->
+  <div class="modal-backdrop" id="invite-backdrop">
+    <div class="modal" style="position:relative;max-width:560px;">
+      <button class="modal-close" id="invite-close" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="edit-head">
+          <h2>Invite a team member</h2>
+          <p>We'll email them a secure link to create their account.</p>
+        </div>
+
+        <div class="edit-body">
+          <div class="field">
+            <label for="i-email">Email address *</label>
+            <input id="i-email" type="email" placeholder="newstaff@spa.com" />
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="i-role">Role</label>
+              <select id="i-role">
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+              <p class="hint">Developers must be promoted manually.</p>
+            </div>
+            <div class="field">
+              <label for="i-position">Position</label>
+              <input id="i-position" type="text" list="position-list" placeholder="Therapist" />
+            </div>
+          </div>
+
+          <div class="warn-note" id="invite-warning">
+            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+            <span>Invites are sent by the <code>invite-staff</code> Edge Function. Make sure it's deployed before using this form.</span>
+          </div>
+        </div>
+
+        <div class="edit-actions">
+          <div></div>
+          <div class="right">
+            <button class="btn btn-ghost" id="i-cancel">Cancel</button>
+            <button class="btn btn-primary" id="i-send">
+              <span class="btn-label">Send invite</span>
+              <span class="spinner" id="i-spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    /* ═════════════════════════════════════════════
+       Supabase — inline
+       ═════════════════════════════════════════════ */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ═════════════════════════════════════════════
+       Logging
+       ═════════════════════════════════════════════ */
+    const LOG = {
+      info : (...a) => console.log  ('%c[TEAM]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[TEAM ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[TEAM !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[TEAM ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[TEAM → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('team.html loaded');
+
+    /* ═════════════════════════════════════════════
+       Constants
+       ═════════════════════════════════════════════ */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+      "</linearGradient></defs>" +
+      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+    const ROLE_WEIGHT = { developer: 0, admin: 1, staff: 2 };
+    const ROLE_LABEL  = { developer: 'Developer', admin: 'Admin', staff: 'Staff' };
+
+    /* ═════════════════════════════════════════════
+       State
+       ═════════════════════════════════════════════ */
+    const state = {
+      user: null,
+      profile: null,
+      isAdmin: false,
+      members: [],
+      filter: '__all__',
+      search: '',
+      current: null,
+      editing: null,
+    };
+
+    /* ═════════════════════════════════════════════
+       DOM
+       ═════════════════════════════════════════════ */
+    const $ = (id) => document.getElementById(id);
+
+    const todayEl    = $('today');
+    const alertEl    = $('alert');
+    const gridEl     = $('grid');
+    const filtersEl  = $('filters');
+    const searchEl   = $('search');
+    const inviteBtn  = $('invite-btn');
+
+    const sidebar    = $('sidebar');
+    const overlay    = $('overlay');
+    const menuToggle = $('menu-toggle');
+    const userNameEl = $('user-name');
+    const userRoleEl = $('user-role');
+    const userAvatarEl = $('user-avatar');
+    const userCard   = $('user-card');
+    const signoutBtn = $('signout-btn');
+    const bellBtn    = $('bell-btn');
+
+    const statTotal      = $('stat-total');
+    const statActive     = $('stat-active');
+    const statTherapists = $('stat-therapists');
+    const statAdmins     = $('stat-admins');
+
+    // profile modal
+    const profileBackdrop = $('profile-backdrop');
+    const profileClose    = $('profile-close');
+    const pAvatarWrap     = $('p-avatar-wrap');
+    const pAvatar         = $('p-avatar');
+    const pName           = $('p-name');
+    const pPosition       = $('p-position');
+    const pTags           = $('p-tags');
+    const pBio            = $('p-bio');
+    const pEmail          = $('p-email');
+    const pCell           = $('p-cell');
+    const pHire           = $('p-hire');
+    const pStatus         = $('p-status');
+    const pSpecialties    = $('p-specialties');
+    const profileAdminBar = $('profile-admin-bar');
+    const pDelete         = $('p-delete');
+    const pToggleActive   = $('p-toggle-active');
+    const pToggleLabel    = $('p-toggle-label');
+    const pEdit           = $('p-edit');
+
+    // edit modal
+    const editBackdrop = $('edit-backdrop');
+    const editClose    = $('edit-close');
+    const editTitle    = $('edit-title');
+    const editSub      = $('edit-sub');
+    const selfWarning  = $('self-warning');
+
+    const eFullName   = $('e-full-name');
+    const ePosition   = $('e-position');
+    const eRole       = $('e-role');
+    const eHireDate   = $('e-hire-date');
+    const eCell       = $('e-cell');
+    const eEmail      = $('e-email');
+    const eAddress    = $('e-address');
+    const eBio        = $('e-bio');
+    const eSpecialties= $('e-specialties');
+    const eActive     = $('e-active');
+    const activeRow   = $('active-row');
+    const positionList= $('position-list');
+
+    const eSave       = $('e-save');
+    const eSaveLabel  = eSave.querySelector('.btn-label');
+    const eSpinner    = $('e-spinner');
+    const eDelete     = $('e-delete');
+    const eCancel     = $('e-cancel');
+
+    // invite modal
+    const inviteBackdrop = $('invite-backdrop');
+    const inviteClose    = $('invite-close');
+    const iEmail   = $('i-email');
+    const iRole    = $('i-role');
+    const iPosition= $('i-position');
+    const iSend    = $('i-send');
+    const iSendLabel = iSend.querySelector('.btn-label');
+    const iSpinner = $('i-spinner');
+    const iCancel  = $('i-cancel');
+
+    /* ═════════════════════════════════════════════
+       Boot date
+       ═════════════════════════════════════════════ */
+    todayEl.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    /* ═════════════════════════════════════════════
+       Helpers
+       ═════════════════════════════════════════════ */
+    function showAlert(msg, type = 'error') {
+      LOG.warn('Alert:', type, '→', msg);
+      alertEl.textContent = msg;
+      alertEl.dataset.type = type;
+      alertEl.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const hideAlert = () => { alertEl.hidden = true; };
+
+    const esc = (s) => (s ?? '').toString()
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+    const fmtDate = (iso) => {
+      if (!iso) return '—';
+      try {
+        return new Date(iso).toLocaleDateString(undefined, {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch { return '—'; }
+    };
+
+    const initials = (name) =>
+      (name || '?').trim().split(/\s+/).slice(0, 2)
+        .map(w => w.charAt(0).toUpperCase()).join('');
+
+    const isTherapist = (m) => /therapist|massage|beautician|esthetician|aesthetician|stylist/i
+      .test((m.position || '') + ' ' + (m.specialties || []).join(' '));
+
+    /* ═════════════════════════════════════════════
+       Mobile sidebar
+       ═════════════════════════════════════════════ */
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    /* ═════════════════════════════════════════════
+       Auth
+       ═════════════════════════════════════════════ */
+    async function doSignout() {
+      await supabase.auth.signOut();
+      location.replace('login.html');
+    }
+    signoutBtn.addEventListener('click', (e) => { e.stopPropagation(); doSignout(); });
+    userCard.addEventListener('click', (e) => {
+      if (e.target.closest('#signout-btn')) return;
+      location.href = 'my_profile.html';
+    });
+    bellBtn.addEventListener('click', () => location.href = 'messages.html');
+
+    /* ═════════════════════════════════════════════
+       Filters + search
+       ═════════════════════════════════════════════ */
+    function buildFilters() {
+      // base chips
+      const defs = [
+        { key: '__all__',       label: 'All' },
+        { key: 'developer',     label: 'Developers' },
+        { key: 'admin',         label: 'Admins' },
+        { key: 'staff',         label: 'Staff' },
+        { key: 'therapists',    label: 'Therapists' },
+        { key: 'inactive',      label: 'Inactive' },
+      ];
+
+      // counts
+      const counts = {
+        __all__:    state.members.length,
+        developer:  state.members.filter(m => m.role === 'developer').length,
+        admin:      state.members.filter(m => m.role === 'admin').length,
+        staff:      state.members.filter(m => m.role === 'staff').length,
+        therapists: state.members.filter(isTherapist).length,
+        inactive:   state.members.filter(m => m.is_active === false).length,
+      };
+
+      // wipe chips
+      filtersEl.querySelectorAll('.chip').forEach(c => c.remove());
+
+      defs.forEach(d => {
+        const c = document.createElement('button');
+        c.className = 'chip' + (state.filter === d.key ? ' active' : '');
+        c.dataset.filter = d.key;
+        c.innerHTML = `${esc(d.label)} <span class="count">${counts[d.key]}</span>`;
+        filtersEl.insertBefore(c, filtersEl.querySelector('.search-wrap'));
+      });
+
+      // hide chips with 0 count except All
+      filtersEl.querySelectorAll('.chip:not([data-filter="__all__"])').forEach(c => {
+        const n = parseInt(c.querySelector('.count')?.textContent || '0', 10);
+        c.style.display = n > 0 ? '' : 'none';
+      });
+
+      // position datalist
+      const positions = new Set();
+      state.members.forEach(m => { if (m.position) positions.add(m.position); });
+      positionList.innerHTML = '';
+      [...positions].sort().forEach(p => {
+        const o = document.createElement('option');
+        o.value = p;
+        positionList.appendChild(o);
+      });
+    }
+
+    filtersEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      state.filter = chip.dataset.filter;
+      filtersEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === chip));
+      LOG.info('FILTER', '→', state.filter);
+      renderGrid();
+    });
+
+    searchEl.addEventListener('input', () => {
+      state.search = searchEl.value.trim().toLowerCase();
+      renderGrid();
+    });
+
+    /* ═════════════════════════════════════════════
+       Grid render
+       ═════════════════════════════════════════════ */
+    function applyFilter(list) {
+      const f = state.filter;
+      let out = list;
+
+      if (f === 'inactive') out = out.filter(m => m.is_active === false);
+      else if (f !== '__all__') out = out.filter(m => m.is_active !== false);
+
+      if (f === 'developer' || f === 'admin' || f === 'staff') {
+        out = out.filter(m => (m.role || 'staff') === f);
+      } else if (f === 'therapists') {
+        out = out.filter(isTherapist);
+      }
+
+      if (state.search) {
+        const q = state.search;
+        out = out.filter(m => {
+          const hay = `${m.full_name || ''} ${m.position || ''} ${m.email || ''} ${(m.specialties || []).join(' ')}`.toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      // sort: active first, then role weight, then name
+      out.sort((a, b) => {
+        const ai = a.is_active === false ? 1 : 0;
+        const bi = b.is_active === false ? 1 : 0;
+        if (ai !== bi) return ai - bi;
+        const aw = ROLE_WEIGHT[a.role] ?? 9;
+        const bw = ROLE_WEIGHT[b.role] ?? 9;
+        if (aw !== bw) return aw - bw;
+        return (a.full_name || '').localeCompare(b.full_name || '');
+      });
+
+      return out;
+    }
+
+    function renderGrid() {
+      const list = applyFilter(state.members);
+      LOG.step('GRID', 'Rendering', list.length, 'member(s).');
+
+      gridEl.innerHTML = '';
+
+      if (!list.length) {
+        gridEl.innerHTML = `
+          <div class="empty">
+            <svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87"/></svg>
+            <h3>No team members</h3>
+            <p>Try another filter, or invite someone new.</p>
+          </div>`;
+        return;
+      }
+
+      list.forEach(m => {
+        const card = document.createElement('article');
+        card.className = 'member' + (m.is_active === false ? ' inactive' : '');
+        card.dataset.id = m.id;
+
+        const isMe = m.id === state.user?.id;
+
+        // head
+        const head = document.createElement('div');
+        head.className = 'member-head';
+
+        // admin actions
+        if (state.isAdmin && !isMe) {
+          const admin = document.createElement('div');
+          admin.className = 'card-admin';
+          admin.innerHTML = `
+            <button class="icon-mini" data-act="edit" title="Edit">
+              <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+            <button class="icon-mini danger" data-act="delete" title="Delete">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            </button>`;
+          head.appendChild(admin);
+        }
+
+        // avatar
+        const av = document.createElement('div');
+        av.className = 'member-avatar';
+        const img = document.createElement('img');
+        img.src = m.avatar_url || DEFAULT_AVATAR;
+        img.alt = m.full_name || 'Team member';
+        img.loading = 'lazy';
+        img.onerror = () => { img.src = DEFAULT_AVATAR; };
+        av.appendChild(img);
+        head.appendChild(av);
+
+        // name + position
+        const nameEl = document.createElement('h3');
+        nameEl.className = 'member-name';
+        nameEl.textContent = m.full_name || m.email?.split('@')[0] || 'Unnamed';
+        head.appendChild(nameEl);
+
+        const posEl = document.createElement('p');
+        posEl.className = 'member-position';
+        posEl.textContent = m.position || ROLE_LABEL[m.role] || 'Staff';
+        head.appendChild(posEl);
+
+        // tags
+        const tags = document.createElement('div');
+        tags.className = 'member-tags';
+        const roleTag = document.createElement('span');
+        roleTag.className = 'tag role-' + (m.role === 'developer' ? 'dev' : m.role === 'admin' ? 'admin' : '');
+        roleTag.textContent = ROLE_LABEL[m.role] || 'Staff';
+        tags.appendChild(roleTag);
+
+        if (isMe) {
+          const youTag = document.createElement('span');
+          youTag.className = 'tag you';
+          youTag.textContent = 'You';
+          tags.appendChild(youTag);
+        }
+        head.appendChild(tags);
+
+        card.appendChild(head);
+
+        // body
+        const body = document.createElement('div');
+        body.className = 'member-body';
+        body.innerHTML = `
+          <div class="member-line">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>
+            <span>${esc(m.email || '—')}</span>
+          </div>
+          ${m.cell_number ? `
+          <div class="member-line">
+            <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></svg>
+            <span>${esc(m.cell_number)}</span>
+          </div>` : ''}
+        `;
+        card.appendChild(body);
+
+        // footer
+        const foot = document.createElement('div');
+        foot.className = 'member-foot';
+        const statusDot = document.createElement('span');
+        statusDot.className = 'status-dot' + (m.is_active === false ? ' off' : '');
+        statusDot.textContent = m.is_active === false ? 'Inactive' : 'Active';
+        foot.appendChild(statusDot);
+
+        const since = document.createElement('span');
+        since.textContent = m.hire_date ? 'Since ' + fmtDate(m.hire_date) : '';
+        foot.appendChild(since);
+
+        card.appendChild(foot);
+
+        // click
+        card.addEventListener('click', (e) => {
+          const act = e.target.closest('[data-act]');
+          if (act) {
+            e.stopPropagation();
+            if (act.dataset.act === 'edit')   openEdit(m);
+            if (act.dataset.act === 'delete') confirmDelete(m);
+            return;
+          }
+          openProfile(m);
+        });
+
+        gridEl.appendChild(card);
+      });
+
+      LOG.ok('GRID', 'Rendered', list.length, 'card(s).');
+    }
+
+    /* ═════════════════════════════════════════════
+       Stats
+       ═════════════════════════════════════════════ */
+    function renderStats() {
+      statTotal.textContent      = state.members.length;
+      statActive.textContent     = state.members.filter(m => m.is_active !== false).length;
+      statTherapists.textContent = state.members.filter(m => m.is_active !== false && isTherapist(m)).length;
+      statAdmins.textContent     = state.members.filter(m =>
+        m.is_active !== false && (m.role === 'admin' || m.role === 'developer')
+      ).length;
+    }
+
+    /* ═════════════════════════════════════════════
+       PROFILE MODAL
+       ═════════════════════════════════════════════ */
+    function openProfile(m) {
+      LOG.step('PROFILE', 'Opening:', m.full_name, '| id:', m.id);
+      state.current = m;
+
+      pAvatar.src = m.avatar_url || DEFAULT_AVATAR;
+      pAvatar.onerror = () => { pAvatar.src = DEFAULT_AVATAR; };
+      pName.textContent = m.full_name || m.email?.split('@')[0] || 'Unnamed';
+      pPosition.textContent = m.position || ROLE_LABEL[m.role] || 'Team member';
+
+      // tags
+      pTags.innerHTML = '';
+      const roleTag = document.createElement('span');
+      roleTag.className = 'tag role-' + (m.role === 'developer' ? 'dev' : m.role === 'admin' ? 'admin' : '');
+      roleTag.textContent = ROLE_LABEL[m.role] || 'Staff';
+      pTags.appendChild(roleTag);
+
+      if (m.id === state.user?.id) {
+        const youTag = document.createElement('span');
+        youTag.className = 'tag you';
+        youTag.textContent = 'You';
+        pTags.appendChild(youTag);
+      }
+
+      pBio.textContent = m.bio || 'No bio added yet.';
+      pBio.style.fontStyle = m.bio ? '' : 'italic';
+      pBio.style.color     = m.bio ? '' : 'var(--c-ink-muted)';
+
+      pEmail.textContent = m.email || '—';
+      pCell.textContent  = m.cell_number || '—';
+      pCell.classList.toggle('muted', !m.cell_number);
+      pHire.textContent  = m.hire_date ? fmtDate(m.hire_date) : '—';
+      pHire.classList.toggle('muted', !m.hire_date);
+
+      pStatus.textContent = m.is_active === false ? 'Inactive' : 'Active';
+      pStatus.style.color = m.is_active === false ? 'var(--c-ink-muted)' : 'var(--c-success)';
+
+      // specialties
+      pSpecialties.innerHTML = '';
+      const specs = Array.isArray(m.specialties) ? m.specialties : [];
+      if (specs.length) {
+        specs.forEach(s => {
+          const el = document.createElement('span');
+          el.className = 'specialty';
+          el.textContent = s;
+          pSpecialties.appendChild(el);
+        });
+      } else {
+        const el = document.createElement('span');
+        el.style.fontSize = '13px';
+        el.style.color = 'var(--c-ink-muted)';
+        el.style.fontStyle = 'italic';
+        el.textContent = 'No specialties listed.';
+        pSpecialties.appendChild(el);
+      }
+
+      const isMe = m.id === state.user?.id;
+      profileAdminBar.hidden = !state.isAdmin || isMe;
+      pToggleLabel.textContent = m.is_active === false ? 'Reactivate' : 'Deactivate';
+
+      profileBackdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfile() {
+      profileBackdrop.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    profileClose.addEventListener('click', closeProfile);
+    profileBackdrop.addEventListener('click', (e) => {
+      if (e.target === profileBackdrop) closeProfile();
+    });
+
+    pEdit.addEventListener('click', () => {
+      const m = state.current;
+      closeProfile();
+      if (m) openEdit(m);
+    });
+
+    pDelete.addEventListener('click', () => {
+      const m = state.current;
+      closeProfile();
+      if (m) confirmDelete(m);
+    });
+
+    pToggleActive.addEventListener('click', async () => {
+      const m = state.current;
+      if (!m) return;
+      const next = m.is_active === false;
+      LOG.step('TOGGLE', m.is_active === false ? 'Reactivating' : 'Deactivating', m.id);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_active: next })
+        .eq('id', m.id);
+      if (error) {
+        LOG.err('TOGGLE', 'FAILED:', error);
+        showAlert(error.message || 'Could not update status.');
+        return;
+      }
+      LOG.ok('TOGGLE', 'Status →', next ? 'active' : 'inactive');
+      closeProfile();
+      await loadMembers();
+      showAlert(next ? 'Member reactivated.' : 'Member deactivated.', 'success');
+    });
+
+    /* ═════════════════════════════════════════════
+       EDIT MODAL
+       ═════════════════════════════════════════════ */
+    function openEdit(m) {
+      state.editing = { ...m };
+      const isMe = m.id === state.user?.id;
+
+      editTitle.textContent = 'Edit member';
+      editSub.textContent   = `Updating ${m.full_name || m.email}`;
+
+      eFullName.value   = m.full_name || '';
+      ePosition.value   = m.position || '';
+      eRole.value       = m.role || 'staff';
+      eHireDate.value   = m.hire_date || '';
+      eCell.value       = m.cell_number || '';
+      eEmail.value      = m.email || '';
+      eAddress.value    = m.address || '';
+      eBio.value        = m.bio || '';
+      eSpecialties.value = (Array.isArray(m.specialties) ? m.specialties : []).join(', ');
+      eActive.checked   = m.is_active !== false;
+      activeRow.classList.toggle('on', eActive.checked);
+
+      // protect self
+      eRole.disabled    = isMe;
+      eActive.disabled  = isMe;
+      selfWarning.hidden = !isMe;
+      eDelete.hidden = isMe || !state.isAdmin;
+
+      editBackdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      LOG.step('EDIT', 'Opened for', m.id);
+    }
+
+    function closeEdit() {
+      editBackdrop.classList.remove('show');
+      document.body.style.overflow = '';
+      state.editing = null;
+    }
+    editClose.addEventListener('click', closeEdit);
+    eCancel.addEventListener('click', closeEdit);
+    editBackdrop.addEventListener('click', (e) => {
+      if (e.target === editBackdrop) closeEdit();
+    });
+
+    eActive.addEventListener('change', () => {
+      activeRow.classList.toggle('on', eActive.checked);
+    });
+
+    eSave.addEventListener('click', async () => {
+      hideAlert();
+
+      if (!state.isAdmin) {
+        showAlert('Only admins can edit team members.');
+        return;
+      }
+
+      const m = state.editing;
+      if (!m) return;
+
+      const isMe = m.id === state.user?.id;
+
+      const payload = {
+        full_name:   eFullName.value.trim() || null,
+        position:    ePosition.value.trim() || null,
+        hire_date:   eHireDate.value || null,
+        cell_number: eCell.value.trim() || null,
+        address:     eAddress.value.trim() || null,
+        bio:         eBio.value.trim() || null,
+        specialties: eSpecialties.value
+          .split(',').map(s => s.trim()).filter(Boolean),
+      };
+
+      // Role and is_active only for other members
+      if (!isMe) {
+        payload.role      = eRole.value;
+        payload.is_active = !!eActive.checked;
+      }
+
+      LOG.step('SAVE', 'Payload for', m.id, payload);
+
+      eSave.disabled = true;
+      eSpinner.hidden = false;
+      eSaveLabel.textContent = 'Saving…';
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(payload)
+        .eq('id', m.id);
+
+      eSave.disabled = false;
+      eSpinner.hidden = true;
+      eSaveLabel.textContent = 'Save changes';
+
+      if (error) {
+        LOG.err('SAVE', 'FAILED');
+        LOG.err('SAVE', '  code   :', error.code);
+        LOG.err('SAVE', '  message:', error.message);
+        LOG.err('SAVE', '  details:', error.details);
+        LOG.err('SAVE', '  hint   :', error.hint);
+        showAlert(error.message || 'Could not save changes.');
+        return;
+      }
+
+      LOG.ok('SAVE', 'Member updated.');
+      closeEdit();
+      await loadMembers();
+      showAlert('Member updated.', 'success');
+    });
+
+    eDelete.addEventListener('click', () => {
+      const m = state.editing;
+      if (!m) return;
+      closeEdit();
+      const srv = state.members.find(x => x.id === m.id);
+      if (srv) confirmDelete(srv);
+    });
+
+    /* ═════════════════════════════════════════════
+       DELETE
+       ═════════════════════════════════════════════ */
+    async function confirmDelete(m) {
+      if (!state.isAdmin) return;
+      if (m.id === state.user?.id) {
+        showAlert('You cannot delete your own account.');
+        return;
+      }
+
+      const label = m.full_name || m.email || 'this member';
+      const ok = confirm(
+        `Delete ${label}?\n\n` +
+        `This marks the account as inactive and removes it from the team list. ` +
+        `To fully remove the auth account, delete them from Supabase → Authentication → Users.\n\n` +
+        `Continue?`
+      );
+      if (!ok) return;
+
+      LOG.step('DELETE', 'Soft-deleting', m.id);
+
+      // Soft-delete by flagging inactive — deleting auth.users requires service role.
+      // This sets is_active=false so RLS hides the member and prevents login.
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_active: false })
+        .eq('id', m.id);
+
+      if (error) {
+        LOG.err('DELETE', 'FAILED:', error);
+        showAlert(error.message || 'Could not delete member.');
+        return;
+      }
+
+      LOG.ok('DELETE', 'Deactivated.');
+      await loadMembers();
+      showAlert('Member deactivated. Remove them from Auth if you need a full delete.', 'success');
+    }
+
+    /* ═════════════════════════════════════════════
+       INVITE MODAL
+       ═════════════════════════════════════════════ */
+    inviteBtn.addEventListener('click', () => {
+      if (!state.isAdmin) return;
+      iEmail.value = '';
+      iRole.value = 'staff';
+      iPosition.value = '';
+      inviteBackdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeInvite() {
+      inviteBackdrop.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    inviteClose.addEventListener('click', closeInvite);
+    iCancel.addEventListener('click', closeInvite);
+    inviteBackdrop.addEventListener('click', (e) => {
+      if (e.target === inviteBackdrop) closeInvite();
+    });
+
+    iSend.addEventListener('click', async () => {
+      hideAlert();
+      if (!state.isAdmin) return;
+
+      const email = iEmail.value.trim();
+      if (!email) { showAlert('Enter an email address.'); return; }
+
+      iSend.disabled = true;
+      iSpinner.hidden = false;
+      iSendLabel.textContent = 'Sending…';
+
+      LOG.step('INVITE', 'Calling invite-staff Edge Function for', email);
+
+      const { data, error } = await supabase.functions.invoke('invite-staff', {
+        body: {
+          email,
+          role: iRole.value,
+          position: iPosition.value.trim() || null,
+          redirectTo: `${location.origin}/set-password.html`
+        }
+      });
+
+      iSend.disabled = false;
+      iSpinner.hidden = true;
+      iSendLabel.textContent = 'Send invite';
+
+      if (error) {
+        LOG.err('INVITE', 'FAILED:', error);
+        LOG.err('INVITE', '  message:', error.message);
+        LOG.err('INVITE', '  context:', error.context);
+        showAlert(
+          'Invite failed: ' + (error.message || 'unknown') +
+          ' — make sure the invite-staff Edge Function is deployed and has the service role key.'
+        );
+        return;
+      }
+
+      LOG.ok('INVITE', 'Sent. Response:', data);
+      closeInvite();
+      await loadMembers();
+      showAlert(`Invite sent to ${email}.`, 'success');
+    });
+
+    /* ═════════════════════════════════════════════
+       LOAD MEMBERS
+       ═════════════════════════════════════════════ */
+    async function loadMembers() {
+      LOG.step('LOAD', 'Fetching profiles…');
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, cell_number, address, avatar_url, role, position, bio, specialties, hire_date, is_active, created_at')
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        LOG.err('LOAD', 'SELECT FAILED');
+        LOG.err('LOAD', '  code   :', error.code);
+        LOG.err('LOAD', '  message:', error.message);
+        LOG.err('LOAD', '  details:', error.details);
+        LOG.err('LOAD', '  hint   :', error.hint);
+        showAlert('Could not load team: ' + (error.message || 'unknown'));
+        state.members = [];
+      } else {
+        LOG.ok('LOAD', 'Got', data.length, 'profile(s).');
+        state.members = data;
+      }
+
+      renderStats();
+      buildFilters();
+      renderGrid();
+    }
+
+    /* ═════════════════════════════════════════════
+       BOOT
+       ═════════════════════════════════════════════ */
+    async function boot() {
+      LOG.step('BOOT', 'getSession()…');
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session?.user) {
+        LOG.warn('BOOT', 'No session → login.html');
+        location.replace('login.html');
+        return;
+      }
+
+      state.user = session.user;
+      LOG.ok('BOOT', 'Signed in as:', session.user.email);
+
+      const { data: profile, error: pErr } = await supabase
+        .from('profiles')
+        .select('full_name, role, avatar_url')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (pErr) LOG.err('BOOT', 'Profile lookup FAILED:', pErr);
+      else     LOG.ok('BOOT', 'Profile:', profile);
+
+      state.profile = profile;
+      const role = (profile?.role || 'staff').toLowerCase();
+      state.isAdmin = role === 'admin' || role === 'developer';
+      LOG.info('BOOT', 'isAdmin?', state.isAdmin, '(role:', role + ')');
+
+      const displayName =
+        profile?.full_name?.trim() ||
+        session.user.email?.split('@')[0] ||
+        'You';
+      userNameEl.textContent = displayName;
+      userRoleEl.textContent = role;
+      userAvatarEl.src = profile?.avatar_url || DEFAULT_AVATAR;
+      userAvatarEl.onerror = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+
+      inviteBtn.hidden = !state.isAdmin;
+
+      await loadMembers();
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    boot();
+    LOG.info('team.html ready.');
+  </script>
+</body>
+</html>

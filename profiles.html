@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Complete your profile · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     Lumière Spa — profiles.html (self-contained + inline Supabase)
+     ========================================================= */
+
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+    --c-success-bg:    #e8f5ec;
+
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+
+    --transition: 180ms ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { color: var(--c-brand-dark); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button { font-family: inherit; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--c-ink);
+    margin: 0 0 .4em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+  h1 { font-size: 30px; }
+  h2 { font-size: 30px; }
+  p { margin: 0 0 1em; color: var(--c-ink-soft); }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .profile-shell {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) 1fr;
+    min-height: 100vh;
+  }
+
+  .profile-aside {
+    position: relative;
+    padding: 48px 36px;
+    background:
+      radial-gradient(100% 60% at 0% 100%, rgba(185,146,106,.28), transparent 60%),
+      linear-gradient(160deg, #2b1d13 0%, #3d2a1c 60%, #4a3423 100%);
+    color: #f6ede4;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-aside .brand-name { color: #f6ede4; }
+  .profile-aside .brand-mark {
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13;
+  }
+
+  .profile-aside h1 {
+    color: #f8f1e8;
+    font-size: 30px;
+    margin: 42px 0 14px;
+    line-height: 1.15;
+  }
+  .profile-aside p {
+    color: rgba(246,237,228,.78);
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .aside-points {
+    list-style: none;
+    padding: 0;
+    margin: 26px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 13.5px;
+    color: rgba(246,237,228,.82);
+  }
+  .aside-points li { display: flex; align-items: center; gap: 12px; }
+  .aside-points li::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.18);
+    flex: none;
+  }
+
+  .profile-main {
+    display: flex;
+    justify-content: center;
+    padding: 56px 40px;
+    background: var(--c-bg);
+  }
+
+  .profile-card {
+    width: min(680px, 100%);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 40px 40px 36px;
+    align-self: flex-start;
+  }
+
+  .card-head { margin-bottom: 26px; }
+  .card-head h2 { font-size: 30px; margin-bottom: 6px; }
+  .card-head p  { color: var(--c-ink-muted); font-size: 13.5px; margin: 0; }
+
+  .avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 4px 0 22px;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed var(--c-border);
+  }
+
+  .avatar-wrap {
+    position: relative;
+    flex: none;
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-bg-alt);
+    box-shadow: 0 8px 22px rgba(43,29,19,.12);
+    border: 3px solid #fff;
+  }
+  .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+  .avatar-clear {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 0;
+    cursor: pointer;
+    background: rgba(0,0,0,.6);
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .avatar-clear:hover { background: rgba(0,0,0,.8); transform: scale(1.05); }
+  .avatar-clear[hidden] { display: none; }
+
+  .avatar-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .avatar-meta .hint { margin: 0; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    letter-spacing: .02em;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--c-ink);
+    background: #fff;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    outline: none;
+    resize: vertical;
+  }
+  .field textarea { min-height: 88px; line-height: 1.5; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #b8a894; }
+
+  .field input:hover:not(:disabled),
+  .field textarea:hover:not(:disabled) { border-color: var(--c-border-strong); }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
+    background: #fffdfa;
+  }
+
+  .field input:disabled {
+    background: var(--c-bg-alt);
+    color: var(--c-ink-muted);
+    cursor: not-allowed;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .hint {
+    font-size: 12.5px;
+    color: var(--c-ink-muted);
+    margin: 2px 0 0;
+  }
+
+  .req { color: var(--c-error); font-weight: 700; }
+
+  .role-pill {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 7px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--c-brand-soft);
+    color: var(--c-brand-dark);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    color: #fff;
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    border: 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(185,146,106,.3);
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(185,146,106,.4);
+  }
+  .btn-primary:active:not(:disabled) { transform: translateY(0); }
+  .btn-primary:disabled { opacity: .65; cursor: not-allowed; box-shadow: none; }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-ink);
+    background: var(--c-brand-soft);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .btn-secondary:hover {
+    background: #e6d4c2;
+    border-color: var(--c-border-strong);
+  }
+
+  .link-muted {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-brand-dark);
+    cursor: pointer;
+  }
+  .link-muted:hover { text-decoration: underline; }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert {
+    display: block;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    background: var(--c-error-bg);
+    color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 4px 0 16px;
+  }
+  .alert[hidden] { display: none; }
+  .alert[data-type="success"] {
+    background: var(--c-success-bg);
+    color: var(--c-success);
+    border-color: #b7e2c2;
+  }
+
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--c-border);
+  }
+  .card-actions .btn-primary { min-width: 180px; }
+
+  @media (max-width: 980px) {
+    .profile-shell { grid-template-columns: 1fr; }
+    .profile-aside { padding: 36px 28px 30px; }
+    .profile-aside h1 { margin: 24px 0 10px; font-size: 26px; }
+    .aside-points { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .profile-main { padding: 28px 18px; }
+    .profile-card { padding: 28px 22px 24px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .avatar-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .card-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+    .card-actions .btn-primary { width: 100%; min-width: 0; }
+    .card-actions .link-muted { align-self: center; }
+  }
+</style>
+</head>
+<body class="profile-page">
+
+  <div class="profile-shell">
+
+    <!-- ───────── Sidebar / brand ───────── -->
+    <aside class="profile-aside">
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+      <h1>Set up your profile</h1>
+      <p>This information is used across the dashboard — bookings, staff records and reports.</p>
+      <ul class="aside-points">
+        <li>Keep your contact details current</li>
+        <li>Add a photo so clients can put a face to a name</li>
+        <li>You can change these later in Settings</li>
+      </ul>
+    </aside>
+
+    <!-- ───────── Main form ───────── -->
+    <main class="profile-main">
+      <form id="profile-form" class="profile-card" novalidate>
+
+        <header class="card-head">
+          <h2>Your details</h2>
+          <p>Fields marked with <span class="req">*</span> are required.</p>
+        </header>
+
+        <!-- Avatar -->
+        <div class="avatar-row">
+          <div class="avatar-wrap">
+            <img id="avatar-preview"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/></linearGradient></defs><rect width='200' height='200' rx='100' fill='url(%23g)'/><circle cx='100' cy='80' r='34' fill='%23b9926a'/><path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>"
+                 alt="Profile picture preview" />
+            <button type="button"
+                    id="avatar-clear"
+                    class="avatar-clear"
+                    title="Remove photo"
+                    hidden>×</button>
+          </div>
+          <div class="avatar-meta">
+            <label for="avatar-input" class="btn-secondary">
+              Upload photo
+            </label>
+            <input id="avatar-input"
+                   type="file"
+                   accept="image/png,image/jpeg,image/webp,image/gif"
+                   hidden />
+            <p class="hint">Optional · PNG, JPG, WEBP or GIF · max 2 MB.</p>
+          </div>
+        </div>
+
+        <!-- Fields -->
+        <div class="grid-2">
+          <div class="field">
+            <label for="full_name">Full name <span class="req">*</span></label>
+            <input id="full_name" name="full_name" type="text"
+                   autocomplete="name" placeholder="Jane Doe" required />
+          </div>
+
+          <div class="field">
+            <label for="cell_number">Cell number <span class="req">*</span></label>
+            <input id="cell_number" name="cell_number" type="tel"
+                   autocomplete="tel" placeholder="+27 82 123 4567" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="address">Address</label>
+          <textarea id="address" name="address" rows="3"
+                    placeholder="Street, suburb, city, postal code"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input id="email" type="email" disabled />
+          <p class="hint">Email is tied to your account and cannot be changed here.</p>
+        </div>
+
+        <div class="field">
+          <label>Role</label>
+          <div class="role-pill" id="role-pill">—</div>
+          <p class="hint">Role is assigned by the system. Contact a developer for upgrades.</p>
+        </div>
+
+        <div id="alert" class="alert" hidden></div>
+
+        <div class="card-actions">
+          <button type="button" class="link-muted" id="signout-btn">Sign out</button>
+          <button class="btn-primary" type="submit" id="submit-btn">
+            <span class="btn-label">Save &amp; continue</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </div>
+
+      </form>
+    </main>
+  </div>
+
+  <script type="module">
+    /* ─────────────────────────────────────────────
+       Supabase — inline
+       ───────────────────────────────────────────── */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ─────────────────────────────────────────────
+       Logging helper
+       ───────────────────────────────────────────── */
+    const LOG = {
+      info : (...a) => console.log  ('%c[PROFILE]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[PROFILE ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[PROFILE !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[PROFILE ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[PROFILE → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('profiles.html loaded');
+    LOG.info('Supabase URL :', SUPABASE_URL);
+
+    /* ─────────────────────────────────────────────
+       Inline default avatar (SVG data URI)
+       ───────────────────────────────────────────── */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+      "</linearGradient></defs>" +
+      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+    /* ─────────────────────────────────────────────
+       DOM refs
+       ───────────────────────────────────────────── */
+    const form       = document.getElementById('profile-form');
+    const nameEl     = document.getElementById('full_name');
+    const cellEl     = document.getElementById('cell_number');
+    const addrEl     = document.getElementById('address');
+    const emailEl    = document.getElementById('email');
+    const rolePill   = document.getElementById('role-pill');
+
+    const avatarInput   = document.getElementById('avatar-input');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const avatarClear   = document.getElementById('avatar-clear');
+
+    const alertEl    = document.getElementById('alert');
+    const submitBtn  = document.getElementById('submit-btn');
+    const btnLabel   = submitBtn.querySelector('.btn-label');
+    const spinner    = submitBtn.querySelector('.spinner');
+    const signoutBtn = document.getElementById('signout-btn');
+
+    let currentUser    = null;
+    let currentProfile = null;
+    let pendingFile    = null;
+    let removeAvatar   = false;
+
+    LOG.step('DOM', 'Refs resolved:', {
+      form: !!form, name: !!nameEl, cell: !!cellEl, addr: !!addrEl,
+      email: !!emailEl, rolePill: !!rolePill, avatarInput: !!avatarInput,
+      avatarPreview: !!avatarPreview, avatarClear: !!avatarClear,
+      alert: !!alertEl, submit: !!submitBtn, signout: !!signoutBtn
+    });
+
+    /* ─────────────────────────────────────────────
+       UI helpers
+       ───────────────────────────────────────────── */
+    const showAlert = (msg, type = 'error') => {
+      LOG.warn('Showing alert:', type, '→', msg);
+      alertEl.textContent = msg;
+      alertEl.dataset.type = type;
+      alertEl.hidden = false;
+      alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+    const hideAlert = () => { alertEl.hidden = true; };
+
+    const setLoading = (on, label = 'Save & continue') => {
+      submitBtn.disabled = on;
+      spinner.hidden = !on;
+      btnLabel.textContent = on ? 'Saving…' : label;
+      LOG.step('UI', 'Loading =', on);
+    };
+
+    const friendly = (m = '') => {
+      const s = m.toLowerCase();
+      if (s.includes('duplicate'))          return 'That record already exists.';
+      if (s.includes('row-level security')) return 'You do not have permission to do that.';
+      if (s.includes('payload too large'))  return 'That image is too large. Please pick one under 2 MB.';
+      if (s.includes('mime'))               return 'Unsupported image type. Use PNG, JPG, WEBP or GIF.';
+      if (s.includes('jwt'))                return 'Your session expired. Please sign in again.';
+      return m || 'Something went wrong. Please try again.';
+    };
+
+    /* ─────────────────────────────────────────────
+       Avatar handling
+       ───────────────────────────────────────────── */
+    function renderAvatar(url) {
+      avatarPreview.src = url || DEFAULT_AVATAR;
+      avatarClear.hidden = !url;
+      LOG.step('AVATAR', 'Rendered avatar:', url ? 'custom URL' : 'default SVG');
+    }
+
+    avatarInput.addEventListener('change', () => {
+      const file = avatarInput.files?.[0];
+      if (!file) return;
+      LOG.step('AVATAR', 'File chosen:', file.name, '| type:', file.type, '| size:', file.size, 'bytes');
+
+      if (!file.type.startsWith('image/')) {
+        LOG.warn('AVATAR', 'Rejected — not an image.');
+        showAlert('Please choose an image file.');
+        avatarInput.value = '';
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        LOG.warn('AVATAR', 'Rejected — too large.');
+        showAlert('Image is larger than 2 MB.');
+        avatarInput.value = '';
+        return;
+      }
+
+      hideAlert();
+      pendingFile  = file;
+      removeAvatar = false;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarPreview.src = e.target.result;
+        avatarClear.hidden = false;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    avatarClear.addEventListener('click', () => {
+      LOG.step('AVATAR', 'User cleared avatar.');
+      pendingFile  = null;
+      removeAvatar = true;
+      avatarInput.value = '';
+      renderAvatar(null);
+    });
+
+    /* ─────────────────────────────────────────────
+       Storage helpers
+       ───────────────────────────────────────────── */
+    async function uploadAvatar(userId, file) {
+      const ext  = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `${userId}/avatar-${Date.now()}.${ext}`;
+      LOG.step('STORAGE', 'Uploading →', path);
+
+      const { error: upErr } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { cacheControl: '3600', upsert: true });
+
+      if (upErr) {
+        LOG.err('STORAGE', 'Upload FAILED');
+        LOG.err('STORAGE', '  message:', upErr.message);
+        LOG.err('STORAGE', '  full   :', upErr);
+        throw upErr;
+      }
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+      LOG.ok('STORAGE', 'Upload OK, public URL:', data.publicUrl);
+      return data.publicUrl;
+    }
+
+    async function deleteAvatarFolder(userId) {
+      LOG.step('STORAGE', 'Listing files under', userId);
+      const { data: files, error } = await supabase.storage
+        .from('avatars')
+        .list(userId);
+
+      if (error) { LOG.warn('STORAGE', 'List failed:', error); return; }
+      if (!files?.length) { LOG.info('STORAGE', 'No existing files to delete.'); return; }
+
+      LOG.step('STORAGE', 'Deleting', files.length, 'file(s).');
+      const { error: delErr } = await supabase.storage
+        .from('avatars')
+        .remove(files.map(f => `${userId}/${f.name}`));
+      if (delErr) LOG.warn('STORAGE', 'Delete failed:', delErr);
+      else        LOG.ok('STORAGE', 'Old avatar(s) deleted.');
+    }
+
+    /* ─────────────────────────────────────────────
+       Load session + existing profile
+       ───────────────────────────────────────────── */
+    async function load() {
+      LOG.step('BOOT', 'getSession()…');
+      const { data: { session }, error: sessErr } = await supabase.auth.getSession();
+
+      if (sessErr) {
+        LOG.err('BOOT', 'getSession failed:', sessErr);
+        showAlert('Could not read session. Please sign in again.');
+        return;
+      }
+      if (!session) {
+        LOG.warn('BOOT', 'No session → redirecting to login.html');
+        location.replace('login.html');
+        return;
+      }
+
+      currentUser = session.user;
+      LOG.ok('BOOT', 'Signed in as:', currentUser.email, '/ id:', currentUser.id);
+
+      emailEl.value = currentUser.email || '';
+
+      LOG.step('BOOT', 'Fetching profile row…');
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      if (error) {
+        LOG.err('BOOT', 'profiles SELECT FAILED');
+        LOG.err('BOOT', '  code   :', error.code);
+        LOG.err('BOOT', '  message:', error.message);
+        LOG.err('BOOT', '  details:', error.details);
+        LOG.err('BOOT', '  hint   :', error.hint);
+        LOG.err('BOOT', '  full   :', error);
+      } else {
+        LOG.ok('BOOT', 'Profile row:', profile);
+      }
+
+      currentProfile = profile || null;
+
+      if (profile) {
+        nameEl.value = profile.full_name || '';
+        cellEl.value = profile.cell_number || '';
+        addrEl.value = profile.address || '';
+        rolePill.textContent = profile.role || 'admin';
+        renderAvatar(profile.avatar_url);
+      } else {
+        LOG.warn('BOOT', 'No profile row found — trigger may not have fired.');
+        rolePill.textContent = 'admin';
+        renderAvatar(null);
+      }
+    }
+
+    /* ─────────────────────────────────────────────
+       Submit
+       ───────────────────────────────────────────── */
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const full_name   = nameEl.value.trim();
+      const cell_number = cellEl.value.trim();
+      const address     = addrEl.value.trim();
+
+      LOG.step('SUBMIT', 'Values:', {
+        full_name, cell_number, address: address || '(blank)',
+        pendingFile: pendingFile?.name ?? 'none',
+        removeAvatar
+      });
+
+      if (!full_name)   { LOG.warn('SUBMIT', 'Missing full_name'); return showAlert('Please enter your full name.'); }
+      if (!cell_number) { LOG.warn('SUBMIT', 'Missing cell_number'); return showAlert('Please enter your cell number.'); }
+
+      setLoading(true);
+
+      try {
+        let avatar_url = currentProfile?.avatar_url || null;
+
+        if (pendingFile) {
+          LOG.step('SUBMIT', 'Handling avatar: new file chosen.');
+          await deleteAvatarFolder(currentUser.id).catch(err => LOG.warn('SUBMIT', 'Cleanup failed (ignored):', err));
+          avatar_url = await uploadAvatar(currentUser.id, pendingFile);
+        } else if (removeAvatar) {
+          LOG.step('SUBMIT', 'Handling avatar: user removed.');
+          await deleteAvatarFolder(currentUser.id).catch(err => LOG.warn('SUBMIT', 'Cleanup failed (ignored):', err));
+          avatar_url = null;
+        }
+
+        /* NOTE: `role` is intentionally NOT sent.
+           - New users get role='admin' automatically from the DB trigger.
+           - Developers are promoted manually in Supabase.
+           - Sending role here would violate RLS anyway. */
+
+        const payload = {
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name,
+          cell_number,
+          address: address || null,
+          avatar_url,
+          onboarded: true,
+        };
+
+        LOG.step('SUBMIT', 'Upserting profiles payload:', payload);
+
+        const { data: upserted, error: upErr } = await supabase
+          .from('profiles')
+          .upsert(payload, { onConflict: 'id' })
+          .select()
+          .maybeSingle();
+
+        if (upErr) {
+          LOG.err('SUBMIT', 'Upsert FAILED');
+          LOG.err('SUBMIT', '  code   :', upErr.code);
+          LOG.err('SUBMIT', '  message:', upErr.message);
+          LOG.err('SUBMIT', '  details:', upErr.details);
+          LOG.err('SUBMIT', '  hint   :', upErr.hint);
+          LOG.err('SUBMIT', '  full   :', upErr);
+          throw upErr;
+        }
+
+        LOG.ok('SUBMIT', 'Profile saved:', upserted);
+        LOG.ok('SUBMIT', '→ redirecting to dashboard.html');
+
+        location.replace('dashboard.html');
+      } catch (err) {
+        LOG.err('SUBMIT', 'Caught error:', err);
+        setLoading(false);
+        showAlert(friendly(err.message));
+      }
+    });
+
+    /* ─────────────────────────────────────────────
+       Sign out
+       ───────────────────────────────────────────── */
+    signoutBtn.addEventListener('click', async () => {
+      LOG.step('SIGNOUT', 'Signing out…');
+      const { error } = await supabase.auth.signOut();
+      if (error) LOG.err('SIGNOUT', 'signOut FAILED:', error);
+      else       LOG.ok('SIGNOUT', 'Signed out.');
+      location.replace('login.html');
+    });
+
+    /* ─────────────────────────────────────────────
+       Auth state listener
+       ───────────────────────────────────────────── */
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    load();
+    LOG.info('profiles.html ready.');
+  </script>
+</body>
+</html>

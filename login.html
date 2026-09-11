@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign in · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     Lumière Spa — login.html (self-contained + inline Supabase)
+     ========================================================= */
+
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+    --c-success-bg:    #e8f5ec;
+
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+
+    --transition: 180ms ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { color: var(--c-brand-dark); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button { font-family: inherit; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--c-ink);
+    margin: 0 0 .4em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+  h1 { font-size: 38px; }
+  h2 { font-size: 28px; }
+  p { margin: 0 0 1em; color: var(--c-ink-soft); }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .auth-shell {
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.1fr);
+    min-height: 100vh;
+  }
+
+  .auth-aside {
+    position: relative;
+    padding: 56px 56px 48px;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(185,146,106,.28), transparent 60%),
+      linear-gradient(160deg, #2b1d13 0%, #3d2a1c 55%, #4a3423 100%);
+    color: #f6ede4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .auth-aside::after {
+    content: "";
+    position: absolute;
+    inset: auto -80px -120px auto;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.35), transparent 65%);
+    pointer-events: none;
+  }
+  .auth-aside .brand-name { color: #f6ede4; }
+  .auth-aside .brand-mark {
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13;
+  }
+
+  .aside-copy { margin: 60px 0 40px; max-width: 420px; }
+  .aside-copy h1 {
+    color: #f8f1e8;
+    font-size: 42px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .aside-copy p {
+    color: rgba(246,237,228,.78);
+    font-size: 15.5px;
+    line-height: 1.65;
+  }
+
+  .aside-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 14px;
+    color: rgba(246,237,228,.85);
+  }
+  .aside-points li { display: flex; align-items: center; gap: 12px; }
+  .aside-points li::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.18);
+    flex: none;
+  }
+
+  .auth-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 40px;
+  }
+
+  .card {
+    width: min(420px, 100%);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 40px 36px 36px;
+  }
+
+  .card-head { margin-bottom: 26px; }
+  .card-head h2 { font-size: 30px; margin-bottom: 6px; }
+  .card-head p  { color: var(--c-ink-muted); font-size: 14px; margin: 0; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    letter-spacing: .02em;
+  }
+  .field input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--c-ink);
+    background: #fff;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    outline: none;
+  }
+  .field input::placeholder { color: #b8a894; }
+  .field input:hover { border-color: var(--c-border-strong); }
+  .field input:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
+    background: #fffdfa;
+  }
+
+  .input-group { position: relative; display: flex; align-items: stretch; }
+  .input-group input { padding-right: 70px; }
+  .ghost-toggle {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    padding: 6px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--c-brand-dark);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition);
+  }
+  .ghost-toggle:hover { background: var(--c-brand-soft); }
+
+  .row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0 18px;
+    font-size: 13px;
+  }
+
+  .hint { font-size: 12.5px; color: var(--c-ink-muted); margin: 2px 0 0; }
+
+  .link-muted {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-brand-dark);
+    cursor: pointer;
+  }
+  .link-muted:hover { text-decoration: underline; }
+
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    color: #fff;
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    border: 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(185,146,106,.3);
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(185,146,106,.4);
+  }
+  .btn-primary:active:not(:disabled) { transform: translateY(0); }
+  .btn-primary:disabled { opacity: .65; cursor: not-allowed; box-shadow: none; }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert {
+    display: block;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    background: var(--c-error-bg);
+    color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 4px 0 16px;
+  }
+  .alert[hidden] { display: none; }
+  .alert[data-type="success"] {
+    background: var(--c-success-bg);
+    color: var(--c-success);
+    border-color: #b7e2c2;
+  }
+
+  @media (max-width: 980px) {
+    .auth-shell { grid-template-columns: 1fr; }
+    .auth-aside { padding: 40px 32px; min-height: 260px; }
+    .aside-copy { margin: 24px 0 16px; }
+    .aside-copy h1 { font-size: 32px; }
+    .aside-points { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .auth-main { padding: 28px 18px; }
+    .card { padding: 28px 22px 24px; }
+  }
+</style>
+</head>
+<body class="auth-page">
+
+  <div class="auth-shell">
+
+    <!-- ─────────── Left / brand panel ─────────── -->
+    <aside class="auth-aside">
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+
+      <div class="aside-copy">
+        <h1>Beauty &amp; massage,<br />beautifully managed.</h1>
+        <p>Sign in to manage bookings, staff, rooms and clients — all in one calm place.</p>
+      </div>
+
+      <ul class="aside-points">
+        <li>Staff scheduling &amp; roles</li>
+        <li>Client &amp; treatment records</li>
+        <li>Rooms, services &amp; reporting</li>
+      </ul>
+    </aside>
+
+    <!-- ─────────── Right / form panel ─────────── -->
+    <main class="auth-main">
+      <form id="login-form" class="card" novalidate>
+
+        <header class="card-head">
+          <h2>Welcome back</h2>
+          <p>Sign in with your work email address.</p>
+        </header>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email"
+                 placeholder="you@spa.com" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <input id="password" name="password" type="password"
+                   autocomplete="current-password" placeholder="••••••••" required />
+            <button type="button" class="ghost-toggle" id="toggle-password"
+                    aria-label="Show password">Show</button>
+          </div>
+        </div>
+
+        <div class="row-between">
+          <span class="hint">Staff accounts are invitation-only.</span>
+          <button type="button" class="link-muted" id="forgot">Forgot password?</button>
+        </div>
+
+        <div id="alert" class="alert" hidden></div>
+
+        <button class="btn-primary" type="submit" id="submit-btn">
+          <span class="btn-label">Sign in</span>
+          <span class="spinner" hidden></span>
+        </button>
+
+      </form>
+    </main>
+
+  </div>
+
+  <script type="module">
+    /* ─────────────────────────────────────────────
+       Supabase — loaded inline from CDN
+       ───────────────────────────────────────────── */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ─────────────────────────────────────────────
+       Logging helper
+       ───────────────────────────────────────────── */
+    const LOG = {
+      info : (...a) => console.log  ('%c[LOGIN]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[LOGIN ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[LOGIN !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[LOGIN ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[LOGIN → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('login.html loaded');
+    LOG.info('Supabase URL :', SUPABASE_URL);
+    LOG.info('Anon key ends:', SUPABASE_ANON_KEY.slice(-12));
+
+    /* ─────────────────────────────────────────────
+       DOM refs
+       ───────────────────────────────────────────── */
+    const form       = document.getElementById('login-form');
+    const emailEl    = document.getElementById('email');
+    const passEl     = document.getElementById('password');
+    const alertEl    = document.getElementById('alert');
+    const submitBtn  = document.getElementById('submit-btn');
+    const btnLabel   = submitBtn.querySelector('.btn-label');
+    const spinner    = submitBtn.querySelector('.spinner');
+    const togglePw   = document.getElementById('toggle-password');
+    const forgotLink = document.getElementById('forgot');
+
+    LOG.step('DOM', 'Refs resolved:', {
+      form: !!form, email: !!emailEl, password: !!passEl,
+      alert: !!alertEl, submit: !!submitBtn, toggle: !!togglePw, forgot: !!forgotLink
+    });
+
+    /* ─────────────────────────────────────────────
+       UI helpers
+       ───────────────────────────────────────────── */
+    function showAlert(msg, type = 'error') {
+      LOG.warn('Showing alert:', type, '→', msg);
+      alertEl.textContent = msg;
+      alertEl.dataset.type = type;
+      alertEl.hidden = false;
+    }
+    function hideAlert() { alertEl.hidden = true; }
+
+    function setLoading(on) {
+      submitBtn.disabled = on;
+      spinner.hidden = !on;
+      btnLabel.textContent = on ? 'Signing in…' : 'Sign in';
+      LOG.step('UI', 'Loading state =', on);
+    }
+
+    function friendly(message) {
+      const m = (message || '').toLowerCase();
+      if (m.includes('invalid login credentials')) return 'That email or password is incorrect.';
+      if (m.includes('email not confirmed'))       return 'Please confirm your email address first.';
+      if (m.includes('too many requests'))         return 'Too many attempts. Please wait a minute and try again.';
+      if (m.includes('failed to fetch'))           return 'Cannot reach the server. Check your connection.';
+      return message || 'Something went wrong. Please try again.';
+    }
+
+    /* ─────────────────────────────────────────────
+       Routing after auth
+       ───────────────────────────────────────────── */
+    async function route(session) {
+      LOG.step('ROUTE', 'Deciding destination for user:', session?.user?.id);
+
+      if (!session?.user) {
+        LOG.err('ROUTE', 'route() called with no session:', session);
+        throw new Error('No session available.');
+      }
+
+      LOG.step('ROUTE', 'Querying profiles table…');
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role, onboarded, is_active')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        LOG.err('ROUTE', 'profiles lookup FAILED');
+        LOG.err('ROUTE', '  code   :', error.code);
+        LOG.err('ROUTE', '  message:', error.message);
+        LOG.err('ROUTE', '  details:', error.details);
+        LOG.err('ROUTE', '  hint   :', error.hint);
+        LOG.err('ROUTE', '  full   :', error);
+      } else {
+        LOG.ok('ROUTE', 'profiles row:', profile);
+      }
+
+      if (profile && profile.is_active === false) {
+        LOG.warn('ROUTE', 'Account deactivated → signing out.');
+        await supabase.auth.signOut();
+        throw new Error('Your account has been deactivated. Please contact an administrator.');
+      }
+
+      if (!profile || !profile.onboarded) {
+        LOG.ok('ROUTE', '→ profiles.html (onboarded =', profile?.onboarded ?? 'no row', ')');
+        location.replace('profiles.html');
+        return;
+      }
+
+      LOG.ok('ROUTE', '→ dashboard.html (role =', profile.role, ')');
+      location.replace('dashboard.html');
+    }
+
+    /* ─────────────────────────────────────────────
+       Boot: existing session?
+       ───────────────────────────────────────────── */
+    (async () => {
+      LOG.step('BOOT', 'Checking for existing session…');
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error) {
+        LOG.err('BOOT', 'getSession() failed');
+        LOG.err('BOOT', '  code   :', error.code);
+        LOG.err('BOOT', '  message:', error.message);
+        LOG.err('BOOT', '  full   :', error);
+        return;
+      }
+
+      LOG.ok('BOOT', 'getSession() →', data.session ? 'SESSION EXISTS' : 'no session');
+      if (data.session) {
+        LOG.info('BOOT', 'Signed in as:', data.session.user.email, '/ id:', data.session.user.id);
+        try {
+          await route(data.session);
+        } catch (err) {
+          LOG.err('BOOT', 'Auto-route threw, staying on login:', err);
+        }
+      } else {
+        LOG.info('BOOT', 'No active session — showing login form.');
+      }
+    })();
+
+    /* ─────────────────────────────────────────────
+       Password visibility toggle
+       ───────────────────────────────────────────── */
+    togglePw.addEventListener('click', () => {
+      const show = passEl.type === 'password';
+      passEl.type = show ? 'text' : 'password';
+      togglePw.textContent = show ? 'Hide' : 'Show';
+      togglePw.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      LOG.step('UI', 'Password visibility =', show ? 'shown' : 'hidden');
+    });
+
+    /* ─────────────────────────────────────────────
+       Submit — sign in
+       ───────────────────────────────────────────── */
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const email    = emailEl.value.trim();
+      const password = passEl.value;
+
+      LOG.step('SUBMIT', 'Form submitted with email:', email || '(empty)');
+
+      if (!email || !password) {
+        LOG.warn('SUBMIT', 'Missing field(s). email?', !!email, 'password?', !!password);
+        showAlert('Please enter both your email and password.');
+        return;
+      }
+
+      setLoading(true);
+
+      LOG.step('AUTH', 'Calling signInWithPassword…');
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        LOG.err('AUTH', 'signInWithPassword FAILED');
+        LOG.err('AUTH', '  status  :', error.status);
+        LOG.err('AUTH', '  code    :', error.code);
+        LOG.err('AUTH', '  message :', error.message);
+        LOG.err('AUTH', '  name    :', error.name);
+        LOG.err('AUTH', '  full    :', error);
+
+        setLoading(false);
+        showAlert(friendly(error.message));
+        return;
+      }
+
+      LOG.ok('AUTH', 'signInWithPassword succeeded');
+      LOG.ok('AUTH', '  user   :', data.user?.email, '/ id:', data.user?.id);
+      LOG.ok('AUTH', '  session:', data.session ? 'present' : 'MISSING');
+      LOG.ok('AUTH', '  expires:', data.session?.expires_at);
+
+      if (!data.session) {
+        LOG.err('AUTH', 'Sign-in returned no session. Email may need confirmation.');
+        setLoading(false);
+        showAlert('Your email is not confirmed yet. Check your inbox.');
+        return;
+      }
+
+      try {
+        await route(data.session);
+      } catch (err) {
+        LOG.err('AUTH', 'route() threw:', err);
+        setLoading(false);
+        showAlert(err.message || 'Could not route you after login.');
+      }
+    });
+
+    /* ─────────────────────────────────────────────
+       Forgot password
+       ───────────────────────────────────────────── */
+    forgotLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const email = emailEl.value.trim();
+      LOG.step('FORGOT', 'Reset requested for:', email || '(empty)');
+
+      if (!email) {
+        LOG.warn('FORGOT', 'No email typed.');
+        showAlert('Type your email address above first, then click “Forgot password?”.');
+        emailEl.focus();
+        return;
+      }
+
+      const redirectTo = `${location.origin}/set-password.html`;
+      LOG.step('FORGOT', 'resetPasswordForEmail → redirect:', redirectTo);
+
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+      if (error) {
+        LOG.err('FORGOT', 'resetPasswordForEmail FAILED');
+        LOG.err('FORGOT', '  status :', error.status);
+        LOG.err('FORGOT', '  code   :', error.code);
+        LOG.err('FORGOT', '  message:', error.message);
+        LOG.err('FORGOT', '  full   :', error);
+        return showAlert(friendly(error.message));
+      }
+
+      LOG.ok('FORGOT', 'Reset email dispatched:', data);
+      showAlert('If that email exists, a reset link is on its way. Check your inbox.', 'success');
+    });
+
+    /* ─────────────────────────────────────────────
+       Auth state listener
+       ───────────────────────────────────────────── */
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    LOG.info('login.html ready.');
+  </script>
+</body>
+</html>

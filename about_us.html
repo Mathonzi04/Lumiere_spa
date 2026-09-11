@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About us · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     Lumière Spa — about_us.html
+     ========================================================= */
+
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+    --c-success-bg:    #e8f5ec;
+
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 2px 6px rgba(43,29,19,.06);
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+
+    --transition: 180ms ease;
+    --sidebar-w: 260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font-family: inherit; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 .3em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+  h1 { font-size: 34px; }
+  h2 { font-size: 22px; }
+  p  { margin: 0 0 1em; color: var(--c-ink-soft); }
+
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+  .app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: 100vh;
+  }
+
+  /* =========================================================
+     SIDEBAR
+     ========================================================= */
+  .sidebar {
+    position: sticky; top: 0;
+    height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 26px 18px 18px;
+    background:
+      radial-gradient(90% 40% at 0% 100%, rgba(185,146,106,.22), transparent 60%),
+      linear-gradient(165deg, #2b1d13 0%, #3a281b 60%, #4a3423 100%);
+    color: #f6ede4;
+    overflow-y: auto;
+    z-index: 20;
+  }
+
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 8px 22px;
+    font-family: var(--font-display);
+    font-size: 21px; font-weight: 700; letter-spacing: .02em;
+    border-bottom: 1px solid rgba(246,237,228,.1);
+    margin-bottom: 18px;
+  }
+  .brand-mark {
+    display: inline-grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13;
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 700;
+    flex: none;
+  }
+  .brand-name { color: #f6ede4; }
+
+  .nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .nav-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(246,237,228,.4);
+    padding: 16px 12px 8px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 500;
+    color: rgba(246,237,228,.75);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+  }
+  .nav-item:hover { background: rgba(246,237,228,.07); color: #f8f1e8; }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(185,146,106,.28), rgba(185,146,106,.14));
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(185,146,106,.35);
+  }
+  .nav-item.active::before {
+    content: "";
+    position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 22px; border-radius: 0 3px 3px 0;
+    background: var(--c-brand);
+  }
+  .nav-item .ico {
+    width: 20px; height: 20px; flex: none;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: rgba(185,146,106,.35);
+    color: #f8f1e8;
+  }
+
+  .user-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; margin-top: 14px;
+    border-radius: var(--radius);
+    background: rgba(246,237,228,.06);
+    border: 1px solid rgba(246,237,228,.08);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .user-card:hover { background: rgba(246,237,228,.11); }
+
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; background: #4a3423;
+    border: 2px solid rgba(246,237,228,.15);
+    flex: none;
+  }
+  .user-meta { min-width: 0; flex: 1; }
+  .user-name {
+    font-size: 13.5px; font-weight: 600; color: #f8f1e8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .user-role {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--c-brand);
+  }
+  .user-signout {
+    background: transparent; border: 0;
+    color: rgba(246,237,228,.5);
+    cursor: pointer; padding: 4px; border-radius: 6px;
+    transition: background var(--transition), color var(--transition);
+    display: grid; place-items: center;
+  }
+  .user-signout:hover { background: rgba(192,57,43,.25); color: #ffd9d4; }
+
+  /* =========================================================
+     MAIN
+     ========================================================= */
+  .main { min-width: 0; display: flex; flex-direction: column; }
+
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 34px;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    padding: 8px; cursor: pointer;
+    color: var(--c-ink);
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 24px; font-weight: 600; margin: 0;
+  }
+  .page-sub {
+    font-size: 12.5px; color: var(--c-ink-muted); margin: 0;
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .icon-btn {
+    display: grid; place-items: center;
+    width: 38px; height: 38px;
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-ink-soft);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+  .icon-btn:hover {
+    background: var(--c-brand-soft);
+    border-color: var(--c-border-strong);
+    color: var(--c-brand-dark);
+  }
+  .icon-btn svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .icon-btn[hidden] { display: none; }
+
+  /* action buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    font-size: 13.5px; font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+  }
+  .btn svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(185,146,106,.28);
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(185,146,106,.38); }
+  .btn-primary:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+
+  .btn-ghost {
+    background: var(--c-surface);
+    color: var(--c-ink-soft);
+    border-color: var(--c-border);
+  }
+  .btn-ghost:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); color: var(--c-brand-dark); }
+
+  /* =========================================================
+     CONTENT
+     ========================================================= */
+  .content {
+    padding: 30px 34px 60px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+  }
+  .wrap { width: min(920px, 100%); }
+
+  /* alert */
+  .alert {
+    display: block;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    background: var(--c-error-bg);
+    color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 0 0 20px;
+  }
+  .alert[hidden] { display: none; }
+  .alert[data-type="success"] {
+    background: var(--c-success-bg);
+    color: var(--c-success);
+    border-color: #b7e2c2;
+  }
+
+  /* hero */
+  .hero {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(185,146,106,.3), transparent 55%),
+      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
+    color: #f8f1e8;
+    padding: 44px 40px 40px;
+    margin-bottom: 22px;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; right: -80px; bottom: -100px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.35), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-brand {
+    display: inline-grid; place-items: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13;
+    font-family: var(--font-display);
+    font-size: 26px; font-weight: 700;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .hero-title {
+    position: relative;
+    color: #f8f1e8;
+    font-size: 42px;
+    margin: 0 0 8px;
+    line-height: 1.05;
+  }
+  .hero-tagline {
+    position: relative;
+    color: rgba(246,237,228,.8);
+    font-size: 16px;
+    margin: 0 0 16px;
+    max-width: 540px;
+  }
+  .hero-pills { position: relative; display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    background: rgba(185,146,106,.28);
+    color: #f8f1e8;
+    border: 1px solid rgba(185,146,106,.4);
+  }
+
+  /* generic card */
+  .card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 26px 28px;
+    margin-bottom: 18px;
+  }
+  .card-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .card-head h2 { margin: 0; font-size: 19px; }
+  .card-head .ico-badge {
+    display: grid; place-items: center;
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: var(--c-brand-soft);
+    color: var(--c-brand-dark);
+    flex: none;
+  }
+  .card-head .ico-badge svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  /* contact list */
+  .contact-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+  }
+  .contact-item { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+  .contact-item .ci {
+    display: grid; place-items: center;
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-brand-dark);
+    flex: none;
+  }
+  .contact-item .ci svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .contact-item .label {
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--c-ink-muted);
+    margin-bottom: 2px;
+  }
+  .contact-item .value {
+    font-size: 14.5px;
+    color: var(--c-ink);
+    font-weight: 500;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+  .contact-item .value.muted {
+    color: var(--c-ink-muted);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .contact-item a.value:hover { color: var(--c-brand-dark); text-decoration: underline; }
+
+  /* hours */
+  .hours {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  .hours tr { border-bottom: 1px dashed var(--c-border); }
+  .hours tr:last-child { border-bottom: 0; }
+  .hours td { padding: 11px 0; vertical-align: middle; }
+  .hours td:first-child {
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    width: 44%;
+  }
+  .hours td:last-child {
+    text-align: right;
+    color: var(--c-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .hours .closed {
+    color: var(--c-ink-muted);
+    font-style: italic;
+  }
+  .hours tr.today td {
+    color: var(--c-brand-dark);
+    font-weight: 600;
+  }
+  .hours tr.today td:last-child { color: var(--c-brand-dark); }
+
+  /* social */
+  .socials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .social {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  }
+  .social:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); transform: translateY(-1px); }
+  .social .ci {
+    display: grid; place-items: center;
+    width: 36px; height: 36px; border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-brand-dark);
+    flex: none;
+  }
+  .social .ci svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .social .label {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--c-ink-muted);
+    margin-bottom: 1px;
+  }
+  .social .value {
+    font-size: 14px; color: var(--c-ink); font-weight: 500;
+    word-break: break-all;
+  }
+  .social .value.muted { color: var(--c-ink-muted); font-style: italic; font-weight: 400; }
+
+  /* =========================================================
+     EDIT MODE FORM
+     ========================================================= */
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    font-size: 12.5px; font-weight: 600;
+    color: var(--c-ink-soft);
+    letter-spacing: .02em;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 14.5px;
+    color: var(--c-ink);
+    background: #fff;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    resize: vertical;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
+  }
+  .field textarea { min-height: 120px; line-height: 1.55; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  .field .hint {
+    font-size: 12px; color: var(--c-ink-muted); margin: 2px 0 0;
+  }
+
+  /* hours editor */
+  .hours-edit {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .hours-edit-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .hours-edit-row .day {
+    font-size: 13.5px; font-weight: 600;
+    color: var(--c-ink-soft);
+  }
+  .hours-edit-row input[type="time"] {
+    padding: 9px 12px;
+    font-size: 14px;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    background: #fff;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .hours-edit-row input[type="time"]:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 3px rgba(185,146,106,.15);
+  }
+  .hours-edit-row input[type="time"]:disabled {
+    background: var(--c-bg-alt);
+    color: var(--c-ink-muted);
+  }
+  .hours-edit-row .sep { color: var(--c-ink-muted); font-size: 13px; text-align: center; }
+  .hours-edit-row .closed-wrap {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; color: var(--c-ink-soft);
+    cursor: pointer;
+    user-select: none;
+  }
+  .hours-edit-row .closed-wrap input { accent-color: var(--c-brand); }
+
+  @media (max-width: 640px) {
+    .hours-edit-row { grid-template-columns: 90px 1fr auto; }
+    .hours-edit-row .closed-wrap { grid-column: 1 / -1; justify-self: end; }
+  }
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(43,29,19,.5);
+    z-index: 15; opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: var(--sidebar-w);
+      transform: translateX(-100%);
+      transition: transform 240ms cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .overlay.show { display: block; opacity: 1; }
+    .menu-toggle { display: grid; place-items: center; }
+    .topbar { padding: 14px 18px; }
+    .content { padding: 22px 18px 50px; }
+    .hero { padding: 30px 24px; }
+    .hero-title { font-size: 32px; }
+    .contact-list { grid-template-columns: 1fr; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .card { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+
+    <!-- ══════════════ SIDEBAR ══════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-label">Workspace</div>
+
+        <a class="nav-item" href="bookings.html">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <span>Bookings</span>
+        </a>
+
+        <a class="nav-item" href="messages.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+          <span>Messages</span>
+          <span class="badge">3</span>
+        </a>
+
+        <a class="nav-item" href="reviews.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+          <span>Reviews</span>
+        </a>
+
+        <div class="nav-label">Manage</div>
+
+        <a class="nav-item" href="team.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+          <span>Team</span>
+        </a>
+
+        <a class="nav-item" href="finances.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+          <span>Finances</span>
+        </a>
+
+        <div class="nav-label">Account</div>
+
+        <a class="nav-item" href="my_profile.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>My profile</span>
+        </a>
+
+        <a class="nav-item active" href="about_us.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          <span>About us</span>
+        </a>
+      </nav>
+
+      <div class="user-card" id="user-card" title="My profile">
+        <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+        <div class="user-meta">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role">—</div>
+        </div>
+        <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════ MAIN ══════════════ -->
+    <main class="main">
+
+      <header class="topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+
+        <div>
+          <h1 class="page-title">About us</h1>
+          <p class="page-sub" id="today"></p>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="bell-btn" title="Notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+          </button>
+
+          <!-- Admin/Developer only: enter edit mode -->
+          <button class="btn btn-ghost" id="edit-btn" hidden>
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            Edit
+          </button>
+
+          <!-- Edit mode: cancel + save -->
+          <button class="btn btn-ghost" id="cancel-btn" hidden>Cancel</button>
+          <button class="btn btn-primary" id="save-btn" hidden>
+            <span class="btn-label">Save changes</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="wrap">
+
+          <div id="alert" class="alert" hidden></div>
+
+          <!-- ═════════════════════════════════════════
+               VIEW MODE
+               ═════════════════════════════════════════ -->
+          <div id="view-mode">
+
+            <div class="hero">
+              <div class="hero-brand" id="hero-brand">L</div>
+              <h1 class="hero-title" id="v-spa-name">Lumière Spa</h1>
+              <p class="hero-tagline" id="v-tagline">Beauty &amp; massage, beautifully managed.</p>
+              <div class="hero-pills">
+                <span class="pill" id="v-founded">Est. —</span>
+                <span class="pill" id="v-updated">—</span>
+              </div>
+            </div>
+
+            <!-- story -->
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-2.5"/></svg>
+                </span>
+                <h2>Our story</h2>
+              </div>
+              <div class="card-body">
+                <p id="v-story">—</p>
+              </div>
+            </div>
+
+            <!-- contact -->
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <h2>Visit us</h2>
+              </div>
+              <div class="card-body">
+                <div class="contact-list">
+
+                  <div class="contact-item">
+                    <span class="ci">
+                      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </span>
+                    <div>
+                      <div class="label">Address</div>
+                      <div class="value" id="v-address">—</div>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <span class="ci">
+                      <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></svg>
+                    </span>
+                    <div>
+                      <div class="label">Phone</div>
+                      <a class="value" id="v-phone" href="#">—</a>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <span class="ci">
+                      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>
+                    </span>
+                    <div>
+                      <div class="label">Email</div>
+                      <a class="value" id="v-email" href="#">—</a>
+                    </div>
+                  </div>
+
+                  <div class="contact-item">
+                    <span class="ci">
+                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+                    </span>
+                    <div>
+                      <div class="label">Website</div>
+                      <a class="value" id="v-website" href="#">—</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- hours -->
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <h2>Opening hours</h2>
+              </div>
+              <div class="card-body">
+                <table class="hours"><tbody id="v-hours"></tbody></table>
+              </div>
+            </div>
+
+            <!-- socials -->
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M21 3 10 14"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+                </span>
+                <h2>Follow us</h2>
+              </div>
+              <div class="card-body">
+                <div class="socials" id="v-socials"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ═════════════════════════════════════════
+               EDIT MODE
+               ═════════════════════════════════════════ -->
+          <div id="edit-mode" hidden>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                </span>
+                <h2>Edit content</h2>
+              </div>
+
+              <div class="grid-2">
+                <div class="field">
+                  <label for="e-spa-name">Spa name</label>
+                  <input id="e-spa-name" type="text" placeholder="Lumière Spa" />
+                </div>
+                <div class="field">
+                  <label for="e-founded">Founded year</label>
+                  <input id="e-founded" type="number" min="1900" max="2100" placeholder="2018" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="e-tagline">Tagline</label>
+                <input id="e-tagline" type="text" placeholder="Beauty & massage, beautifully managed." />
+              </div>
+
+              <div class="field">
+                <label for="e-story">Our story</label>
+                <textarea id="e-story" placeholder="Tell visitors who you are…"></textarea>
+                <p class="hint">Plain text. Line breaks are preserved.</p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <h2>Contact</h2>
+              </div>
+
+              <div class="field">
+                <label for="e-address">Address</label>
+                <input id="e-address" type="text" placeholder="12 Rosewood Lane, Zeerust, 2865" />
+              </div>
+
+              <div class="grid-2">
+                <div class="field">
+                  <label for="e-phone">Phone</label>
+                  <input id="e-phone" type="tel" placeholder="+27 82 123 4567" />
+                </div>
+                <div class="field">
+                  <label for="e-email">Email</label>
+                  <input id="e-email" type="email" placeholder="hello@lumiere.co.za" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="e-website">Website</label>
+                <input id="e-website" type="url" placeholder="https://lumiere.co.za" />
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <h2>Opening hours</h2>
+              </div>
+
+              <div class="hours-edit" id="e-hours"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <span class="ico-badge">
+                  <svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M21 3 10 14"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+                </span>
+                <h2>Socials</h2>
+              </div>
+
+              <div class="grid-3">
+                <div class="field">
+                  <label for="e-instagram">Instagram</label>
+                  <input id="e-instagram" type="text" placeholder="@lumiere.spa" />
+                </div>
+                <div class="field">
+                  <label for="e-facebook">Facebook</label>
+                  <input id="e-facebook" type="text" placeholder="Lumière Spa" />
+                </div>
+                <div class="field">
+                  <label for="e-tiktok">TikTok</label>
+                  <input id="e-tiktok" type="text" placeholder="@lumiere.spa" />
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-ghost" id="cancel-btn-2">Cancel</button>
+              <button class="btn btn-primary" id="save-btn-2">
+                <span class="btn-label">Save changes</span>
+                <span class="spinner-2" hidden></span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    /* ─────────────────────────────────────────────
+       Supabase — inline
+       ───────────────────────────────────────────── */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ─────────────────────────────────────────────
+       Logging
+       ───────────────────────────────────────────── */
+    const LOG = {
+      info : (...a) => console.log  ('%c[ABOUT]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[ABOUT ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[ABOUT !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[ABOUT ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[ABOUT → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('about_us.html loaded');
+
+    /* ─────────────────────────────────────────────
+       Constants
+       ───────────────────────────────────────────── */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+      "</linearGradient></defs>" +
+      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+    const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+    const DAY_LABELS = {
+      monday:   'Monday',
+      tuesday:  'Tuesday',
+      wednesday:'Wednesday',
+      thursday: 'Thursday',
+      friday:   'Friday',
+      saturday: 'Saturday',
+      sunday:   'Sunday',
+    };
+
+    /* ─────────────────────────────────────────────
+       State
+       ───────────────────────────────────────────── */
+    const state = {
+      user: null,
+      profile: null,
+      isAdmin: false,
+      mode: 'view',        // 'view' | 'edit'
+      about: null,
+      loading: false,
+    };
+
+    /* ─────────────────────────────────────────────
+       DOM
+       ───────────────────────────────────────────── */
+    const $ = (id) => document.getElementById(id);
+
+    const todayEl     = $('today');
+    const alertEl     = $('alert');
+    const viewMode    = $('view-mode');
+    const editMode    = $('edit-mode');
+
+    const editBtn     = $('edit-btn');
+    const cancelBtn   = $('cancel-btn');
+    const saveBtn     = $('save-btn');
+    const cancelBtn2  = $('cancel-btn-2');
+    const saveBtn2    = $('save-btn-2');
+
+    const sidebar     = $('sidebar');
+    const overlay     = $('overlay');
+    const menuToggle  = $('menu-toggle');
+
+    const userNameEl  = $('user-name');
+    const userRoleEl  = $('user-role');
+    const userAvatarEl= $('user-avatar');
+    const userCard    = $('user-card');
+    const signoutBtn  = $('signout-btn');
+    const bellBtn     = $('bell-btn');
+
+    /* ─────────────────────────────────────────────
+       Topbar date
+       ───────────────────────────────────────────── */
+    todayEl.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    /* ─────────────────────────────────────────────
+       Helpers
+       ───────────────────────────────────────────── */
+    function showAlert(msg, type = 'error') {
+      LOG.warn('Alert:', type, '→', msg);
+      alertEl.textContent = msg;
+      alertEl.dataset.type = type;
+      alertEl.hidden = false;
+      alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideAlert() { alertEl.hidden = true; }
+
+    function escapeHtml(s) {
+      return (s ?? '').toString()
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function setText(el, value, fallback = '—') {
+      const v = (value ?? '').toString().trim();
+      if (v) { el.textContent = v; el.classList.remove('muted'); }
+      else   { el.textContent = fallback; el.classList.add('muted'); }
+    }
+    function setLink(el, value, prefix = '', fallback = '—') {
+      const v = (value ?? '').toString().trim();
+      if (v) {
+        el.textContent = prefix + v;
+        el.href        = prefix.startsWith('mailto') ? `mailto:${v}`
+                      : prefix.startsWith('http')   ? v
+                      : v;
+        el.classList.remove('muted');
+      } else {
+        el.textContent = fallback;
+        el.removeAttribute('href');
+        el.classList.add('muted');
+      }
+    }
+    function fmtTime(t) {
+      if (!t) return '';
+      // expects HH:MM (24h)
+      return t;
+    }
+    function fmtUpdated(iso) {
+      if (!iso) return '—';
+      try {
+        return 'Updated ' + new Date(iso).toLocaleDateString(undefined, {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch { return '—'; }
+    }
+    function todayKey() {
+      return ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()];
+    }
+
+    /* ─────────────────────────────────────────────
+       Mobile sidebar
+       ───────────────────────────────────────────── */
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    /* ─────────────────────────────────────────────
+       Sign out
+       ───────────────────────────────────────────── */
+    async function doSignout() {
+      LOG.step('SIGNOUT', 'Signing out…');
+      await supabase.auth.signOut();
+      location.replace('login.html');
+    }
+    signoutBtn.addEventListener('click', (e) => { e.stopPropagation(); doSignout(); });
+    userCard.addEventListener('click', (e) => {
+      if (e.target.closest('#signout-btn')) return;
+      location.href = 'my_profile.html';
+    });
+    bellBtn.addEventListener('click', () => location.href = 'messages.html');
+
+    /* ─────────────────────────────────────────────
+       View mode render
+       ───────────────────────────────────────────── */
+    function renderView() {
+      const a = state.about || {};
+      LOG.step('VIEW', 'Rendering read-only about content.');
+
+      const spaName = (a.spa_name || 'Lumière Spa').trim();
+      $('hero-brand').textContent = spaName.charAt(0).toUpperCase() || 'L';
+      $('v-spa-name').textContent = spaName;
+      $('v-tagline').textContent  = a.tagline || '';
+
+      $('v-founded').textContent = a.founded_year ? `Est. ${a.founded_year}` : 'Est. —';
+      $('v-updated').textContent = fmtUpdated(a.updated_at);
+
+      setText($('v-story'),   a.story,   'No story yet.');
+      setText($('v-address'), a.address, 'Not provided');
+
+      setLink($('v-phone'),   a.phone,   'tel:');
+      setLink($('v-email'),   a.email,   'mailto:');
+      setLink($('v-website'), a.website);
+
+      // hours table
+      const tbody = $('v-hours');
+      tbody.innerHTML = '';
+      const hours = (a.opening_hours && typeof a.opening_hours === 'object') ? a.opening_hours : {};
+      const tk = todayKey();
+
+      DAYS.forEach(day => {
+        const h = hours[day] || {};
+        const closed = !!h.closed || !h.open || !h.close;
+        const tr = document.createElement('tr');
+        if (day === tk) tr.classList.add('today');
+
+        const td1 = document.createElement('td');
+        td1.textContent = DAY_LABELS[day] + (day === tk ? ' · Today' : '');
+
+        const td2 = document.createElement('td');
+        if (closed) {
+          td2.textContent = 'Closed';
+          td2.classList.add('closed');
+        } else {
+          td2.textContent = `${fmtTime(h.open)} – ${fmtTime(h.close)}`;
+        }
+
+        tr.appendChild(td1); tr.appendChild(td2);
+        tbody.appendChild(tr);
+      });
+
+      // socials
+      const socialsWrap = $('v-socials');
+      socialsWrap.innerHTML = '';
+
+      const socialDefs = [
+        { key: 'instagram', label: 'Instagram', icon: '<rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>' },
+        { key: 'facebook',  label: 'Facebook',  icon: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>' },
+        { key: 'tiktok',    label: 'TikTok',    icon: '<path d="M16 8.2a6 6 0 0 0 4 1.5V6.5a4 4 0 0 1-4-4h-3v13.5a3 3 0 1 1-3-3"/><path d="M13 2.5v13.8"/>' },
+      ];
+
+      socialDefs.forEach(sd => {
+        const val = (a[sd.key] || '').toString().trim();
+        const el  = document.createElement('div');
+        el.className = 'social';
+        el.innerHTML = `
+          <span class="ci"><svg viewBox="0 0 24 24">${sd.icon}</svg></span>
+          <div>
+            <div class="label">${sd.label}</div>
+            <div class="value ${val ? '' : 'muted'}">${escapeHtml(val || 'Not provided')}</div>
+          </div>
+        `;
+        socialsWrap.appendChild(el);
+      });
+
+      LOG.ok('VIEW', 'View rendered.');
+    }
+
+    /* ─────────────────────────────────────────────
+       Edit mode render — fills inputs from state.about
+       ───────────────────────────────────────────── */
+    function renderEdit() {
+      const a = state.about || {};
+      LOG.step('EDIT', 'Filling edit form.');
+
+      $('e-spa-name').value = a.spa_name || '';
+      $('e-founded').value  = a.founded_year ?? '';
+      $('e-tagline').value  = a.tagline || '';
+      $('e-story').value    = a.story   || '';
+      $('e-address').value  = a.address || '';
+      $('e-phone').value    = a.phone   || '';
+      $('e-email').value    = a.email   || '';
+      $('e-website').value  = a.website || '';
+      $('e-instagram').value= a.instagram || '';
+      $('e-facebook').value = a.facebook  || '';
+      $('e-tiktok').value   = a.tiktok    || '';
+
+      // hours editor
+      const wrap = $('e-hours');
+      wrap.innerHTML = '';
+      const hours = (a.opening_hours && typeof a.opening_hours === 'object') ? a.opening_hours : {};
+
+      DAYS.forEach(day => {
+        const h = hours[day] || { open: '09:00', close: '18:00', closed: false };
+        const row = document.createElement('div');
+        row.className = 'hours-edit-row';
+        row.innerHTML = `
+          <span class="day">${DAY_LABELS[day]}</span>
+          <input type="time" data-day="${day}" data-role="open"  value="${h.open  || ''}" ${h.closed ? 'disabled' : ''}/>
+          <input type="time" data-day="${day}" data-role="close" value="${h.close || ''}" ${h.closed ? 'disabled' : ''}/>
+          <label class="closed-wrap">
+            <input type="checkbox" data-day="${day}" data-role="closed" ${h.closed ? 'checked' : ''}/>
+            Closed
+          </label>
+        `;
+        wrap.appendChild(row);
+      });
+
+      // wire "closed" toggles
+      wrap.querySelectorAll('input[type="checkbox"][data-role="closed"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const day = cb.dataset.day;
+          wrap.querySelectorAll(`input[data-day="${day}"][type="time"]`).forEach(inp => {
+            inp.disabled = cb.checked;
+          });
+        });
+      });
+
+      LOG.ok('EDIT', 'Edit form ready.');
+    }
+
+    /* ─────────────────────────────────────────────
+       Mode switch
+       ───────────────────────────────────────────── */
+    function setMode(mode) {
+      state.mode = mode;
+      hideAlert();
+
+      if (mode === 'edit') {
+        viewMode.hidden = true;
+        editMode.hidden = false;
+        editBtn.hidden  = true;
+        cancelBtn.hidden = false;
+        saveBtn.hidden   = false;
+        renderEdit();
+        editMode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        LOG.ok('MODE', 'Now EDITING.');
+      } else {
+        renderView();
+        viewMode.hidden = false;
+        editMode.hidden = true;
+        editBtn.hidden  = !state.isAdmin;
+        cancelBtn.hidden = true;
+        saveBtn.hidden   = true;
+        LOG.ok('MODE', 'Now VIEWING.');
+      }
+    }
+
+    editBtn.addEventListener('click',   () => setMode('edit'));
+    cancelBtn.addEventListener('click', () => { LOG.info('MODE', 'Cancel (topbar)'); setMode('view'); });
+    cancelBtn2.addEventListener('click',() => { LOG.info('MODE', 'Cancel (bottom)'); setMode('view'); });
+
+    /* ─────────────────────────────────────────────
+       Save
+       ───────────────────────────────────────────── */
+    function readEditForm() {
+      const hours = {};
+      DAYS.forEach(day => {
+        const open  = document.querySelector(`input[data-day="${day}"][data-role="open"]`)?.value  || '';
+        const close = document.querySelector(`input[data-day="${day}"][data-role="close"]`)?.value || '';
+        const closed= !!document.querySelector(`input[data-day="${day}"][data-role="closed"]`)?.checked;
+        hours[day] = { open, close, closed };
+      });
+
+      return {
+        spa_name:     $('e-spa-name').value.trim(),
+        founded_year: $('e-founded').value ? parseInt($('e-founded').value, 10) : null,
+        tagline:      $('e-tagline').value.trim(),
+        story:        $('e-story').value.trim(),
+        address:      $('e-address').value.trim(),
+        phone:        $('e-phone').value.trim(),
+        email:        $('e-email').value.trim(),
+        website:      $('e-website').value.trim(),
+        instagram:    $('e-instagram').value.trim(),
+        facebook:     $('e-facebook').value.trim(),
+        tiktok:       $('e-tiktok').value.trim(),
+        opening_hours: hours,
+      };
+    }
+
+    async function save() {
+      hideAlert();
+
+      if (!state.isAdmin) {
+        showAlert('Only admins and developers can edit this page.');
+        return;
+      }
+
+      const payload = readEditForm();
+      LOG.step('SAVE', 'Payload:', payload);
+
+      // basic validation
+      if (!payload.spa_name) {
+        showAlert('Spa name is required.');
+        return;
+      }
+
+      const full = {
+        ...payload,
+        updated_at: new Date().toISOString(),
+        updated_by: state.user?.id || null,
+      };
+
+      // loading UI
+      [saveBtn, saveBtn2].forEach(b => { b.disabled = true; });
+      const label1 = saveBtn.querySelector('.btn-label');
+      const label2 = saveBtn2.querySelector('.btn-label');
+      if (label1) label1.textContent = 'Saving…';
+      if (label2) label2.textContent = 'Saving…';
+
+      LOG.step('SAVE', 'Updating about_us row id=1…');
+      const { data, error } = await supabase
+        .from('about_us')
+        .update(full)
+        .eq('id', 1)
+        .select()
+        .maybeSingle();
+
+      // restore loading UI
+      [saveBtn, saveBtn2].forEach(b => { b.disabled = false; });
+      if (label1) label1.textContent = 'Save changes';
+      if (label2) label2.textContent = 'Save changes';
+
+      if (error) {
+        LOG.err('SAVE', 'Update FAILED');
+        LOG.err('SAVE', '  code   :', error.code);
+        LOG.err('SAVE', '  message:', error.message);
+        LOG.err('SAVE', '  details:', error.details);
+        LOG.err('SAVE', '  hint   :', error.hint);
+        LOG.err('SAVE', '  full   :', error);
+        showAlert(error.message || 'Could not save changes.');
+        return;
+      }
+
+      LOG.ok('SAVE', 'Row updated:', data);
+      state.about = data || { ...state.about, ...full };
+      setMode('view');
+      showAlert('Changes saved.', 'success');
+    }
+
+    saveBtn.addEventListener('click', save);
+    saveBtn2.addEventListener('click', save);
+
+    /* ─────────────────────────────────────────────
+       Load
+       ───────────────────────────────────────────── */
+    async function load() {
+      LOG.step('BOOT', 'getSession()…');
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        state.user = session.user;
+        LOG.ok('BOOT', 'Signed in as:', session.user.email);
+
+        LOG.step('BOOT', 'Fetching my profile (for role + sidebar card)…');
+        const { data: profile, error: pErr } = await supabase
+          .from('profiles')
+          .select('full_name, role, avatar_url')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (pErr) {
+          LOG.err('BOOT', 'Profile lookup FAILED:', pErr);
+        } else {
+          state.profile = profile;
+          LOG.ok('BOOT', 'Profile row:', profile);
+        }
+
+        const role = (profile?.role || 'staff').toLowerCase();
+        state.isAdmin = role === 'admin' || role === 'developer';
+        LOG.info('BOOT', 'isAdmin?', state.isAdmin, '(role:', role + ')');
+
+        // sidebar user card
+        const displayName =
+          profile?.full_name?.trim() ||
+          session.user.email?.split('@')[0] ||
+          'You';
+        userNameEl.textContent = displayName;
+        userRoleEl.textContent = role;
+        userAvatarEl.src       = profile?.avatar_url || DEFAULT_AVATAR;
+        userAvatarEl.onerror   = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+      } else {
+        LOG.warn('BOOT', 'No session — anonymous visitor.');
+        userNameEl.textContent = 'Guest';
+        userRoleEl.textContent = 'visitor';
+        userAvatarEl.src = DEFAULT_AVATAR;
+      }
+
+      // Show edit button only for admins
+      editBtn.hidden = !state.isAdmin;
+
+      // Load about_us
+      LOG.step('BOOT', 'Fetching about_us row id=1…');
+      const { data: about, error: aErr } = await supabase
+        .from('about_us')
+        .select('*')
+        .eq('id', 1)
+        .maybeSingle();
+
+      if (aErr) {
+        LOG.err('BOOT', 'about_us SELECT FAILED');
+        LOG.err('BOOT', '  code   :', aErr.code);
+        LOG.err('BOOT', '  message:', aErr.message);
+        LOG.err('BOOT', '  details:', aErr.details);
+        LOG.err('BOOT', '  hint   :', aErr.hint);
+        showAlert('Could not load About content: ' + (aErr.message || 'unknown error'));
+        state.about = {};
+      } else {
+        LOG.ok('BOOT', 'about_us row:', about);
+        state.about = about || {};
+      }
+
+      renderView();
+    }
+
+    /* ─────────────────────────────────────────────
+       Auth state listener
+       ───────────────────────────────────────────── */
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    load();
+    LOG.info('about_us.html ready.');
+  </script>
+</body>
+</html>

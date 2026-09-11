@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reviews · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ═════════════════════════════════════════════
+     Lumière Spa — reviews.html
+     ═════════════════════════════════════════════ */
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+    --c-success-bg:    #e8f5ec;
+    --c-warn:          #b8860b;
+    --c-warn-bg:       #fdf6e3;
+    --c-star:          #e8b75f;
+    --radius-sm: 8px; --radius: 12px; --radius-lg: 20px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 2px 6px rgba(43,29,19,.06);
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+    --shadow-lg: 0 30px 60px rgba(43,29,19,.18);
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --transition: 200ms cubic-bezier(.4,0,.2,1);
+    --sidebar-w: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea, select { font-family: inherit; }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 .3em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+
+  /* layout */
+  .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+  /* ============ SIDEBAR (shared) ============ */
+  .sidebar {
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 26px 18px 18px;
+    background:
+      radial-gradient(90% 40% at 0% 100%, rgba(185,146,106,.22), transparent 60%),
+      linear-gradient(165deg, #2b1d13 0%, #3a281b 60%, #4a3423 100%);
+    color: #f6ede4; overflow-y: auto; z-index: 20;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 8px 22px;
+    font-family: var(--font-display);
+    font-size: 21px; font-weight: 700; letter-spacing: .02em;
+    border-bottom: 1px solid rgba(246,237,228,.1);
+    margin-bottom: 18px;
+  }
+  .brand-mark {
+    display: inline-grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13; font-family: var(--font-display);
+    font-size: 18px; font-weight: 700; flex: none;
+  }
+  .brand-name { color: #f6ede4; }
+  .nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .nav-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(246,237,228,.4);
+    padding: 16px 12px 8px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px; font-weight: 500;
+    color: rgba(246,237,228,.75);
+    cursor: pointer; position: relative;
+    transition: background var(--transition), color var(--transition);
+  }
+  .nav-item:hover { background: rgba(246,237,228,.07); color: #f8f1e8; }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(185,146,106,.28), rgba(185,146,106,.14));
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(185,146,106,.35);
+  }
+  .nav-item.active::before {
+    content: ""; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 22px; border-radius: 0 3px 3px 0; background: var(--c-brand);
+  }
+  .nav-item .ico {
+    width: 20px; height: 20px; flex: none;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: var(--radius-pill);
+    background: rgba(185,146,106,.35); color: #f8f1e8;
+  }
+  .user-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; margin-top: 14px;
+    border-radius: var(--radius);
+    background: rgba(246,237,228,.06);
+    border: 1px solid rgba(246,237,228,.08);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .user-card:hover { background: rgba(246,237,228,.11); }
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; background: #4a3423;
+    border: 2px solid rgba(246,237,228,.15); flex: none;
+  }
+  .user-meta { min-width: 0; flex: 1; }
+  .user-name {
+    font-size: 13.5px; font-weight: 600; color: #f8f1e8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .user-role {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--c-brand);
+  }
+  .user-signout {
+    background: transparent; border: 0;
+    color: rgba(246,237,228,.5);
+    cursor: pointer; padding: 4px; border-radius: 6px;
+    display: grid; place-items: center;
+    transition: background var(--transition), color var(--transition);
+  }
+  .user-signout:hover { background: rgba(192,57,43,.25); color: #ffd9d4; }
+
+  /* ============ MAIN ============ */
+  .main { min-width: 0; display: flex; flex-direction: column; }
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 34px;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .menu-toggle {
+    display: none;
+    background: transparent; border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm); padding: 8px;
+    cursor: pointer; color: var(--c-ink);
+  }
+  .page-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; margin: 0; }
+  .page-sub   { font-size: 12.5px; color: var(--c-ink-muted); margin: 0; }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    display: grid; place-items: center;
+    width: 38px; height: 38px;
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-ink-soft);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+  .icon-btn:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); color: var(--c-brand-dark); }
+  .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.75; fill: none;
+                  stroke-linecap: round; stroke-linejoin: round; }
+
+  .content { padding: 26px 34px 60px; flex: 1; }
+
+  /* -------- hero -------- */
+  .hero {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: 34px 38px;
+    margin-bottom: 24px;
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(185,146,106,.32), transparent 55%),
+      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
+    color: #f8f1e8;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; right: -80px; bottom: -120px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.4), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; }
+  .hero-eyebrow {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--c-brand); margin-bottom: 10px;
+  }
+  .hero h1 { color: #f8f1e8; font-size: 36px; margin: 0 0 6px; line-height: 1.1; }
+  .hero p  { color: rgba(246,237,228,.75); margin: 0 0 22px; max-width: 560px; font-size: 14.5px; }
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 26px;
+    font-size: 12.5px;
+    color: rgba(246,237,228,.7);
+  }
+  .hero-stats strong {
+    display: block; font-family: var(--font-display);
+    font-size: 28px; color: #f8f1e8; font-weight: 700; line-height: 1.05;
+  }
+  .hero-stats .stat-pending strong { color: #f4cd88; }
+  .hero-stats .stat-removed strong { color: #f2a89e; }
+  .hero-stats .stat-published strong { color: #a9dcba; }
+
+  /* -------- filters -------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; align-items: center; }
+  .chip {
+    padding: 8px 16px;
+    font-size: 13px; font-weight: 600;
+    border-radius: var(--radius-pill);
+    background: var(--c-surface);
+    color: var(--c-ink-soft);
+    border: 1px solid var(--c-border);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+  }
+  .chip:hover { border-color: var(--c-border-strong); }
+  .chip.active {
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 6px 14px rgba(185,146,106,.3);
+  }
+  .chip .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor; opacity: .55;
+  }
+  .chip.active .dot { opacity: 1; background: #fff; }
+  .chip .count {
+    margin-left: 4px; font-size: 11.5px; font-weight: 700;
+    padding: 1px 7px; border-radius: var(--radius-pill);
+    background: rgba(43,29,19,.06); color: inherit;
+  }
+  .chip.active .count { background: rgba(255,255,255,.25); }
+
+  .search-wrap { margin-left: auto; position: relative; }
+  .search-wrap svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px;
+    stroke: var(--c-ink-muted); stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
+  }
+  .search-wrap input {
+    padding: 9px 14px 9px 36px;
+    font-size: 13.5px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-pill);
+    background: var(--c-surface);
+    outline: none; width: 240px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .search-wrap input:focus { border-color: var(--c-brand); box-shadow: 0 0 0 4px rgba(185,146,106,.15); }
+
+  /* -------- grid -------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .review {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    padding: 22px 22px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    overflow: hidden;
+  }
+  .review:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+  /* top stripe indicating status */
+  .review::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .review[data-status="published"]::before { background: linear-gradient(90deg, #2fa060, #67c08b); }
+  .review[data-status="pending"]::before   { background: linear-gradient(90deg, #e8b75f, #f4cd88); }
+  .review[data-status="removed"]::before   { background: linear-gradient(90deg, #c0392b, #e07a6e); }
+
+  .review-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .review-stars {
+    color: var(--c-star);
+    font-size: 15px;
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 5px;
+    white-space: nowrap;
+  }
+  .status-badge::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+  }
+  .status-badge.published { background: var(--c-success-bg); color: var(--c-success); }
+  .status-badge.pending   { background: var(--c-warn-bg);    color: var(--c-warn); }
+  .status-badge.removed   { background: var(--c-error-bg);   color: var(--c-error); }
+
+  .review-title {
+    font-family: var(--font-display);
+    font-size: 21px; font-weight: 700;
+    color: var(--c-ink);
+    margin: 0 0 6px;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+  .review-body {
+    font-size: 14px;
+    color: var(--c-ink-soft);
+    line-height: 1.6;
+    margin: 0 0 16px;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .review-body.clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .review-more {
+    display: inline-block;
+    font-size: 12.5px; font-weight: 600;
+    color: var(--c-brand-dark);
+    background: none; border: 0; padding: 0;
+    cursor: pointer;
+    margin: -8px 0 14px;
+  }
+  .review-more:hover { text-decoration: underline; }
+
+  .review-meta {
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--c-border);
+    margin-top: auto;
+  }
+  .review-avatar {
+    display: grid; place-items: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff;
+    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 15px;
+    flex: none;
+  }
+  .review-who { min-width: 0; flex: 1; }
+  .review-who strong {
+    display: block;
+    font-size: 13.5px; font-weight: 600;
+    color: var(--c-ink);
+    line-height: 1.2;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .review-who small {
+    font-size: 12px;
+    color: var(--c-ink-muted);
+    display: block;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* removal block shown to admin */
+  .removal-info {
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--c-error-bg);
+    border: 1px solid #f3c3bd;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #7a2a20;
+  }
+  .removal-info .ri-head {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: 10.5px;
+    color: var(--c-error);
+    margin-bottom: 6px;
+  }
+  .removal-info .ri-head svg {
+    width: 13px; height: 13px; flex: none;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .removal-info .ri-line { margin: 2px 0; }
+  .removal-info .ri-line strong { color: #5c1c15; }
+
+  /* actions */
+  .review-actions {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding-top: 14px;
+    margin-top: 14px;
+    border-top: 1px solid var(--c-border);
+  }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    font-size: 12.5px; font-weight: 600;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    border: 1px solid var(--c-border-strong);
+    background: var(--c-surface);
+    color: var(--c-ink-soft);
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+  }
+  .btn-sm svg {
+    width: 13px; height: 13px;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .btn-sm:hover { transform: translateY(-1px); }
+  .btn-sm.publish { color: var(--c-success); border-color: #b7e2c2; background: var(--c-success-bg); }
+  .btn-sm.publish:hover { background: var(--c-success); color: #fff; border-color: var(--c-success); }
+  .btn-sm.remove  { color: var(--c-warn);    border-color: #f1dfb5; background: var(--c-warn-bg); }
+  .btn-sm.remove:hover  { background: var(--c-warn); color: #fff; border-color: var(--c-warn); }
+  .btn-sm.restore { color: var(--c-brand-dark); border-color: var(--c-border-strong); }
+  .btn-sm.restore:hover { background: var(--c-brand-soft); }
+  .btn-sm.delete  { color: var(--c-error); border-color: #f3c3bd; background: var(--c-error-bg); }
+  .btn-sm.delete:hover  { background: var(--c-error); color: #fff; border-color: var(--c-error); }
+
+  /* empty state */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center; padding: 60px 20px;
+    background: var(--c-surface);
+    border: 1px dashed var(--c-border-strong);
+    border-radius: var(--radius-lg);
+    color: var(--c-ink-muted);
+  }
+  .empty svg { width: 44px; height: 44px; margin: 0 auto 12px;
+               stroke: var(--c-brand); stroke-width: 1.5; fill: none;
+               stroke-linecap: round; stroke-linejoin: round; }
+  .empty h3 { font-size: 22px; color: var(--c-ink); margin: 0 0 6px; }
+
+  /* alert */
+  .alert {
+    display: block;
+    padding: 12px 16px; border-radius: var(--radius);
+    font-size: 13.5px; font-weight: 500; line-height: 1.45;
+    background: var(--c-error-bg); color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 0 0 20px;
+  }
+  .alert[hidden] { display: none; }
+  .alert[data-type="success"] {
+    background: var(--c-success-bg); color: var(--c-success); border-color: #b7e2c2;
+  }
+  .alert[data-type="warn"] {
+    background: var(--c-warn-bg); color: var(--c-warn); border-color: #f1dfb5;
+  }
+
+  /* role notice */
+  .role-notice {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    background: var(--c-brand-soft);
+    color: var(--c-brand-dark);
+    border: 1px solid var(--c-border-strong);
+  }
+  .role-notice svg {
+    width: 16px; height: 16px; flex: none; margin-top: 2px;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .role-notice strong { color: var(--c-ink); }
+
+  /* ═════════ MODALS ═════════ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(20,13,8,.7);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    display: grid; place-items: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--transition);
+  }
+  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: min(560px, 100%);
+    max-height: calc(100vh - 48px);
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 40px 80px rgba(0,0,0,.4);
+    overflow: hidden; display: flex; flex-direction: column;
+    transform: translateY(16px) scale(.98);
+    transition: transform 260ms cubic-bezier(.4,0,.2,1);
+    position: relative;
+  }
+  .modal-backdrop.show .modal { transform: translateY(0) scale(1); }
+  .modal-scroll { overflow-y: auto; flex: 1; }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; z-index: 4;
+    display: grid; place-items: center;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,.94);
+    border: 0; cursor: pointer; color: var(--c-ink);
+    box-shadow: 0 6px 16px rgba(0,0,0,.2);
+    transition: background var(--transition), transform var(--transition);
+  }
+  .modal-close:hover { background: #fff; transform: rotate(90deg); }
+  .modal-close svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2;
+                     fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .modal-head {
+    padding: 26px 30px 16px;
+    border-bottom: 1px solid var(--c-border);
+    background:
+      radial-gradient(120% 100% at 100% 0%, rgba(185,146,106,.25), transparent 55%),
+      linear-gradient(135deg, #f9f2e9 0%, #f4ede4 100%);
+  }
+  .modal-head h3 { font-size: 24px; margin: 0 0 4px; }
+  .modal-head p  { font-size: 13.5px; color: var(--c-ink-muted); margin: 0; }
+
+  .modal-body { padding: 22px 30px 10px; }
+  .modal-foot {
+    padding: 16px 30px 22px;
+    display: flex; justify-content: flex-end; gap: 10px;
+    border-top: 1px solid var(--c-border);
+    background: var(--c-bg);
+    flex-wrap: wrap;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label {
+    font-size: 12.5px; font-weight: 600;
+    color: var(--c-ink-soft);
+    letter-spacing: .02em;
+  }
+  .field .req { color: var(--c-error); }
+  .field textarea,
+  .field input {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 14.5px;
+    color: var(--c-ink);
+    background: #fff;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    resize: vertical;
+  }
+  .field textarea { min-height: 110px; line-height: 1.55; }
+  .field textarea:focus,
+  .field input:focus {
+    border-color: var(--c-brand);
+    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
+  }
+  .field .hint { font-size: 12px; color: var(--c-ink-muted); margin: 2px 0 0; }
+
+  /* preview review */
+  .preview-review {
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--c-ink-soft);
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+  .preview-review strong { color: var(--c-ink); display: block; margin-bottom: 2px; }
+  .preview-review .stars { color: var(--c-star); letter-spacing: 2px; font-size: 13px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    font-size: 14px; font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+  }
+  .btn svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2; fill: none;
+             stroke-linecap: round; stroke-linejoin: round; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--c-brand), var(--c-brand-dark));
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(185,146,106,.28);
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(185,146,106,.38); }
+  .btn-primary:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+
+  .btn-ghost { background: var(--c-surface); color: var(--c-ink-soft); border-color: var(--c-border); }
+  .btn-ghost:hover { background: var(--c-brand-soft); border-color: var(--c-border-strong); color: var(--c-brand-dark); }
+
+  .btn-danger { background: var(--c-error); color: #fff; border-color: var(--c-error); }
+  .btn-danger:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(192,57,43,.35); }
+  .btn-danger:disabled { opacity: .6; cursor: not-allowed; }
+
+  .btn-warn { background: var(--c-warn); color: #fff; border-color: var(--c-warn); }
+  .btn-warn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(184,134,11,.35); }
+
+  .spinner {
+    width: 15px; height: 15px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* mobile */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(43,29,19,.5);
+    z-index: 15; opacity: 0;
+    transition: opacity var(--transition);
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: var(--sidebar-w);
+      transform: translateX(-100%);
+      transition: transform 240ms cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .overlay.show { display: block; opacity: 1; }
+    .menu-toggle { display: grid; place-items: center; }
+    .topbar { padding: 14px 18px; }
+    .content { padding: 22px 18px 50px; }
+    .hero { padding: 26px 22px; }
+    .hero h1 { font-size: 28px; }
+    .hero-stats { gap: 18px; }
+    .hero-stats strong { font-size: 22px; }
+    .search-wrap { margin-left: 0; width: 100%; }
+    .search-wrap input { width: 100%; }
+    .modal-head { padding: 22px 22px 14px; }
+    .modal-body { padding: 18px 22px 8px; }
+    .modal-foot { padding: 14px 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+
+    <!-- ═════════ SIDEBAR ═════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-label">Workspace</div>
+        <a class="nav-item" href="bookings.html">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <span>Bookings</span>
+        </a>
+        <a class="nav-item" href="messages.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+          <span>Messages</span>
+        </a>
+        <a class="nav-item active" href="reviews.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+          <span>Reviews</span>
+        </a>
+
+        <div class="nav-label">Manage</div>
+        <a class="nav-item" href="services.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/></svg>
+          <span>Services</span>
+        </a>
+        <a class="nav-item" href="team.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+          <span>Team</span>
+        </a>
+        <a class="nav-item" href="finances.html">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+          <span>Finances</span>
+        </a>
+
+        <div class="nav-label">Account</div>
+        <a class="nav-item" href="my_profile.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>My profile</span>
+        </a>
+        <a class="nav-item" href="about_us.html">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          <span>About us</span>
+        </a>
+      </nav>
+
+      <div class="user-card" id="user-card" title="My profile">
+        <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+        <div class="user-meta">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role">—</div>
+        </div>
+        <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═════════ MAIN ═════════ -->
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+
+        <div>
+          <h1 class="page-title">Reviews</h1>
+          <p class="page-sub" id="today"></p>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="refresh-btn" title="Refresh" aria-label="Refresh">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="alert" class="alert" hidden></div>
+
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-eyebrow">Voices of our guests</div>
+            <h1>Moderate with care</h1>
+            <p>Approve new reviews, remove anything inappropriate from the public site, and keep a clear record of every decision.</p>
+
+            <div class="hero-stats">
+              <div class="stat-published"><strong id="stat-published">—</strong>Published</div>
+              <div class="stat-pending"><strong id="stat-pending">—</strong>Pending</div>
+              <div class="stat-removed"><strong id="stat-removed">—</strong>Removed</div>
+              <div><strong id="stat-total">—</strong>Total</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role notice -->
+        <div class="role-notice" id="role-notice" hidden>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg>
+          <span id="role-notice-text"></span>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters" id="filters">
+          <button class="chip active" data-filter="all">
+            <span class="dot"></span> All <span class="count" id="c-all">0</span>
+          </button>
+          <button class="chip" data-filter="pending">
+            <span class="dot"></span> Pending <span class="count" id="c-pending">0</span>
+          </button>
+          <button class="chip" data-filter="published">
+            <span class="dot"></span> Published <span class="count" id="c-published">0</span>
+          </button>
+          <button class="chip" data-filter="removed">
+            <span class="dot"></span> Removed <span class="count" id="c-removed">0</span>
+          </button>
+
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="search" type="search" placeholder="Search reviews…" />
+          </div>
+        </div>
+
+        <!-- GRID -->
+        <div class="grid" id="grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ═════════ REMOVE MODAL ═════════ -->
+  <div class="modal-backdrop" id="remove-backdrop">
+    <div class="modal">
+      <button class="modal-close" id="remove-close" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="modal-head">
+          <h3>Remove from public</h3>
+          <p>This review will be hidden from your public site. Admins will see who removed it and why.</p>
+        </div>
+
+        <div class="modal-body">
+          <div class="preview-review" id="remove-preview"></div>
+
+          <div class="field">
+            <label for="remove-reason">Reason for removal <span class="req">*</span></label>
+            <textarea id="remove-reason" placeholder="e.g. Contains abusive language, spam, personal attack, off-topic…"></textarea>
+            <p class="hint">Admins and developers will be able to see this.</p>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <button class="btn btn-ghost" id="remove-cancel">Cancel</button>
+          <button class="btn btn-warn" id="remove-confirm">
+            <span class="btn-label">Remove from public</span>
+            <span class="spinner" id="remove-spinner" hidden></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════ DELETE MODAL (admin only) ═════════ -->
+  <div class="modal-backdrop" id="delete-backdrop">
+    <div class="modal">
+      <button class="modal-close" id="delete-close" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-scroll">
+        <div class="modal-head">
+          <h3 style="color:var(--c-error);">Delete permanently</h3>
+          <p>This removes the review completely. It cannot be undone.</p>
+        </div>
+
+        <div class="modal-body">
+          <div class="preview-review" id="delete-preview"></div>
+
+          <p style="font-size:13px;color:var(--c-ink-soft);margin:0 0 4px;">
+            If you just want to hide it from the public site, use <strong>Remove from public</strong> instead — that keeps a record.
+          </p>
+        </div>
+
+        <div class="modal-foot">
+          <button class="btn btn-ghost" id="delete-cancel">Cancel</button>
+          <button class="btn btn-danger" id="delete-confirm">
+            <span class="btn-label">Delete forever</span>
+            <span class="spinner" id="delete-spinner" hidden></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    /* ═════════════════════════════════════════════
+       Supabase — inline
+       ═════════════════════════════════════════════ */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ═════════════════════════════════════════════
+       Logging
+       ═════════════════════════════════════════════ */
+    const LOG = {
+      info : (...a) => console.log  ('%c[REV]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[REV ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[REV !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[REV ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[REV → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('reviews.html loaded');
+
+    /* ═════════════════════════════════════════════
+       Constants
+       ═════════════════════════════════════════════ */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+      "</linearGradient></defs>" +
+      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+    /* ═════════════════════════════════════════════
+       State
+       ═════════════════════════════════════════════ */
+    const state = {
+      user: null,
+      profile: null,
+      role: 'staff',              // 'staff' | 'admin' | 'developer'
+      isAdmin: false,
+      isStaff: false,
+      reviews: [],
+      filter: 'all',
+      search: '',
+      pendingAction: null,        // review currently being removed
+      pendingDelete: null,        // review currently being deleted
+    };
+
+    /* ═════════════════════════════════════════════
+       DOM
+       ═════════════════════════════════════════════ */
+    const $ = (id) => document.getElementById(id);
+
+    const todayEl      = $('today');
+    const alertEl      = $('alert');
+    const gridEl       = $('grid');
+    const filtersEl    = $('filters');
+    const searchEl     = $('search');
+    const refreshBtn   = $('refresh-btn');
+    const roleNotice   = $('role-notice');
+    const roleNoticeText = $('role-notice-text');
+
+    const sidebar      = $('sidebar');
+    const overlay      = $('overlay');
+    const menuToggle   = $('menu-toggle');
+    const userNameEl   = $('user-name');
+    const userRoleEl   = $('user-role');
+    const userAvatarEl = $('user-avatar');
+    const userCard     = $('user-card');
+    const signoutBtn   = $('signout-btn');
+
+    const statPublished = $('stat-published');
+    const statPending   = $('stat-pending');
+    const statRemoved   = $('stat-removed');
+    const statTotal     = $('stat-total');
+
+    const cAll       = $('c-all');
+    const cPending   = $('c-pending');
+    const cPublished = $('c-published');
+    const cRemoved   = $('c-removed');
+
+    // remove modal
+    const removeBackdrop = $('remove-backdrop');
+    const removeClose    = $('remove-close');
+    const removeCancel   = $('remove-cancel');
+    const removeConfirm  = $('remove-confirm');
+    const removeSpinner  = $('remove-spinner');
+    const removeLabel    = removeConfirm.querySelector('.btn-label');
+    const removeReason   = $('remove-reason');
+    const removePreview  = $('remove-preview');
+
+    // delete modal
+    const deleteBackdrop = $('delete-backdrop');
+    const deleteClose    = $('delete-close');
+    const deleteCancel   = $('delete-cancel');
+    const deleteConfirm  = $('delete-confirm');
+    const deleteSpinner  = $('delete-spinner');
+    const deleteLabel    = deleteConfirm.querySelector('.btn-label');
+    const deletePreview  = $('delete-preview');
+
+    /* ═════════════════════════════════════════════
+       Today
+       ═════════════════════════════════════════════ */
+    todayEl.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    /* ═════════════════════════════════════════════
+       Helpers
+       ═════════════════════════════════════════════ */
+    function showAlert(msg, type = 'error') {
+      LOG.warn('Alert:', type, '→', msg);
+      alertEl.textContent = msg;
+      alertEl.dataset.type = type;
+      alertEl.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const hideAlert = () => { alertEl.hidden = true; };
+
+    const esc = (s) => (s ?? '').toString()
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+    const fmtDate = (iso) => {
+      if (!iso) return '—';
+      try {
+        return new Date(iso).toLocaleDateString(undefined, {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch { return '—'; }
+    };
+    const fmtDateTime = (iso) => {
+      if (!iso) return '—';
+      try {
+        return new Date(iso).toLocaleString(undefined, {
+          day: 'numeric', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+      } catch { return '—'; }
+    };
+
+    const starsFor = (n) => {
+      const v = Math.max(1, Math.min(5, Number(n) || 5));
+      return '★'.repeat(v) + '☆'.repeat(5 - v);
+    };
+
+    const initialsFor = (name) => (name || '?').trim().split(/\s+/).slice(0, 2)
+      .map(w => w.charAt(0).toUpperCase()).join('');
+
+    // Determine status of a review
+    // published: is_published = true, removed_at is null
+    // pending:   is_published = false, removed_at is null
+    // removed:   removed_at is not null
+    const statusOf = (r) => {
+      if (r.removed_at) return 'removed';
+      return r.is_published ? 'published' : 'pending';
+    };
+
+    /* ═════════════════════════════════════════════
+       Mobile sidebar
+       ═════════════════════════════════════════════ */
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    /* ═════════════════════════════════════════════
+       Signout + user card
+       ═════════════════════════════════════════════ */
+    async function doSignout() {
+      await supabase.auth.signOut();
+      location.replace('login.html');
+    }
+    signoutBtn.addEventListener('click', (e) => { e.stopPropagation(); doSignout(); });
+    userCard.addEventListener('click', (e) => {
+      if (e.target.closest('#signout-btn')) return;
+      location.href = 'my_profile.html';
+    });
+
+    refreshBtn.addEventListener('click', async () => {
+      LOG.step('REFRESH', 'Reloading reviews…');
+      await loadReviews();
+      showAlert('Reviews refreshed.', 'success');
+      setTimeout(hideAlert, 1800);
+    });
+
+    /* ═════════════════════════════════════════════
+       Filters
+       ═════════════════════════════════════════════ */
+    filtersEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      state.filter = chip.dataset.filter;
+      filtersEl.querySelectorAll('.chip').forEach(c =>
+        c.classList.toggle('active', c === chip)
+      );
+      LOG.info('FILTER', '→', state.filter);
+      renderGrid();
+    });
+
+    searchEl.addEventListener('input', () => {
+      state.search = searchEl.value.trim().toLowerCase();
+      renderGrid();
+    });
+
+    /* ═════════════════════════════════════════════
+       Stats + chip counts
+       ═════════════════════════════════════════════ */
+    function renderStats() {
+      let published = 0, pending = 0, removed = 0;
+      state.reviews.forEach(r => {
+        const s = statusOf(r);
+        if (s === 'published') published++;
+        else if (s === 'pending') pending++;
+        else removed++;
+      });
+      statPublished.textContent = published;
+      statPending.textContent   = pending;
+      statRemoved.textContent   = removed;
+      statTotal.textContent     = state.reviews.length;
+
+      cAll.textContent       = state.reviews.length;
+      cPublished.textContent = published;
+      cPending.textContent   = pending;
+      cRemoved.textContent   = removed;
+    }
+
+    /* ═════════════════════════════════════════════
+       Grid render
+       ═════════════════════════════════════════════ */
+    function applyFilter(list) {
+      let out = list;
+
+      if (state.filter !== 'all') {
+        out = out.filter(r => statusOf(r) === state.filter);
+      }
+
+      if (state.search) {
+        const q = state.search;
+        out = out.filter(r => {
+          const hay = `${r.name || ''} ${r.title || ''} ${r.body || ''} ${r.email || ''}`.toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      // sort: pending first (needs action), then published, then removed; newest first within each
+      const weight = { pending: 0, published: 1, removed: 2 };
+      out.sort((a, b) => {
+        const wa = weight[statusOf(a)] ?? 9;
+        const wb = weight[statusOf(b)] ?? 9;
+        if (wa !== wb) return wa - wb;
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+
+      return out;
+    }
+
+    function renderGrid() {
+      const list = applyFilter(state.reviews);
+      LOG.step('GRID', 'Rendering', list.length, 'review(s).');
+
+      gridEl.innerHTML = '';
+
+      if (!list.length) {
+        gridEl.innerHTML = `
+          <div class="empty">
+            <svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+            <h3>Nothing here</h3>
+            <p>Try a different filter, or wait for new reviews to come in.</p>
+          </div>`;
+        return;
+      }
+
+      list.forEach(r => {
+        const card = document.createElement('article');
+        const status = statusOf(r);
+        card.className = 'review';
+        card.dataset.status = status;
+
+        // Top row: stars + status badge
+        const top = document.createElement('div');
+        top.className = 'review-top';
+        top.innerHTML = `
+          <div class="review-stars">${starsFor(r.rating)}</div>
+          <span class="status-badge ${status}">
+            ${status === 'published' ? 'Published'
+             : status === 'pending'   ? 'Pending'
+             : 'Removed'}
+          </span>`;
+        card.appendChild(top);
+
+        // Title
+        if (r.title) {
+          const h = document.createElement('h3');
+          h.className = 'review-title';
+          h.textContent = r.title;
+          card.appendChild(h);
+        }
+
+        // Body (clamped)
+        const body = document.createElement('p');
+        body.className = 'review-body clamp';
+        body.textContent = r.body || '';
+        card.appendChild(body);
+
+        // "Read more" if long
+        if ((r.body || '').length > 220) {
+          const more = document.createElement('button');
+          more.className = 'review-more';
+          more.textContent = 'Read more';
+          more.addEventListener('click', () => {
+            const isClamped = body.classList.contains('clamp');
+            body.classList.toggle('clamp', !isClamped);
+            more.textContent = isClamped ? 'Show less' : 'Read more';
+          });
+          card.appendChild(more);
+        }
+
+        // Removal info block (only shown to admins, and only if removed)
+        if (status === 'removed' && state.isAdmin) {
+          const info = document.createElement('div');
+          info.className = 'removal-info';
+          info.innerHTML = `
+            <div class="ri-head">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+              Removal record
+            </div>
+            <div class="ri-line"><strong>By:</strong> ${esc(r.removed_by_name || 'Unknown')}</div>
+            <div class="ri-line"><strong>When:</strong> ${esc(fmtDateTime(r.removed_at))}</div>
+            <div class="ri-line"><strong>Reason:</strong> ${esc(r.removal_reason || 'Not specified')}</div>`;
+          card.appendChild(info);
+        }
+
+        // Meta footer
+        const meta = document.createElement('div');
+        meta.className = 'review-meta';
+        meta.innerHTML = `
+          <div class="review-avatar">${esc(initialsFor(r.name))}</div>
+          <div class="review-who">
+            <strong>${esc(r.name || 'Guest')}</strong>
+            <small>${esc(r.email || '—')} · ${esc(fmtDate(r.created_at))}</small>
+          </div>`;
+        card.appendChild(meta);
+
+        // Actions
+        const actions = document.createElement('div');
+        actions.className = 'review-actions';
+
+        // STAFF + ADMIN: remove published reviews
+        if (status === 'published') {
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'btn-sm remove';
+          removeBtn.innerHTML = `
+            <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            Remove from public`;
+          removeBtn.addEventListener('click', () => openRemove(r));
+          actions.appendChild(removeBtn);
+        }
+
+        // ADMIN only extra controls
+        if (state.isAdmin) {
+          if (status === 'pending') {
+            const pubBtn = document.createElement('button');
+            pubBtn.className = 'btn-sm publish';
+            pubBtn.innerHTML = `
+              <svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>
+              Publish`;
+            pubBtn.addEventListener('click', () => publishReview(r));
+            actions.appendChild(pubBtn);
+          }
+
+          if (status === 'removed') {
+            const restoreBtn = document.createElement('button');
+            restoreBtn.className = 'btn-sm restore';
+            restoreBtn.innerHTML = `
+              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+              Restore to public`;
+            restoreBtn.addEventListener('click', () => restoreReview(r));
+            actions.appendChild(restoreBtn);
+          }
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'btn-sm delete';
+          delBtn.innerHTML = `
+            <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            Delete`;
+          delBtn.addEventListener('click', () => openDelete(r));
+          actions.appendChild(delBtn);
+        }
+
+        if (actions.children.length) {
+          card.appendChild(actions);
+        }
+
+        gridEl.appendChild(card);
+      });
+
+      LOG.ok('GRID', 'Rendered', list.length, 'card(s).');
+    }
+
+    /* ═════════════════════════════════════════════
+       REMOVE (staff + admin)
+       ═════════════════════════════════════════════ */
+    function openRemove(r) {
+      LOG.step('REMOVE', 'Opening modal for review', r.id);
+      state.pendingAction = r;
+
+      removePreview.innerHTML = `
+        <div class="stars">${starsFor(r.rating)}</div>
+        <strong>${esc(r.name || 'Guest')}${r.title ? ' — ' + esc(r.title) : ''}</strong>
+        <div>${esc((r.body || '').slice(0, 180))}${(r.body || '').length > 180 ? '…' : ''}</div>`;
+
+      removeReason.value = '';
+      removeBackdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => removeReason.focus(), 220);
+    }
+    function closeRemove() {
+      removeBackdrop.classList.remove('show');
+      document.body.style.overflow = '';
+      state.pendingAction = null;
+    }
+    removeClose.addEventListener('click', closeRemove);
+    removeCancel.addEventListener('click', closeRemove);
+    removeBackdrop.addEventListener('click', (e) => {
+      if (e.target === removeBackdrop) closeRemove();
+    });
+
+    removeConfirm.addEventListener('click', async () => {
+      const r = state.pendingAction;
+      if (!r) return;
+
+      const reason = removeReason.value.trim();
+      if (reason.length < 3) {
+        removeReason.focus();
+        removeReason.style.borderColor = 'var(--c-error)';
+        return;
+      }
+      removeReason.style.borderColor = '';
+
+      // Display name for the record (snapshot)
+      const removedByName =
+        state.profile?.full_name?.trim() ||
+        state.user?.email?.split('@')[0] ||
+        'Staff';
+
+      LOG.step('REMOVE', 'Updating review', r.id);
+
+      removeConfirm.disabled = true;
+      removeSpinner.hidden = false;
+      removeLabel.textContent = 'Removing…';
+
+      const { error } = await supabase
+        .from('reviews')
+        .update({
+          is_published:     false,
+          removed_by:       state.user.id,
+          removed_by_name:  removedByName,
+          removed_at:       new Date().toISOString(),
+          removal_reason:   reason,
+        })
+        .eq('id', r.id);
+
+      removeConfirm.disabled = false;
+      removeSpinner.hidden = true;
+      removeLabel.textContent = 'Remove from public';
+
+      if (error) {
+        LOG.err('REMOVE', 'FAILED');
+        LOG.err('REMOVE', '  code   :', error.code);
+        LOG.err('REMOVE', '  message:', error.message);
+        LOG.err('REMOVE', '  details:', error.details);
+        LOG.err('REMOVE', '  hint   :', error.hint);
+        closeRemove();
+        showAlert(error.message || 'Could not remove review.');
+        return;
+      }
+
+      LOG.ok('REMOVE', 'Review hidden from public.');
+      closeRemove();
+      await loadReviews();
+      showAlert('Review removed from the public site.', 'success');
+    });
+
+    /* ═════════════════════════════════════════════
+       PUBLISH (admin only)
+       ═════════════════════════════════════════════ */
+    async function publishReview(r) {
+      if (!state.isAdmin) return;
+      LOG.step('PUBLISH', 'Publishing review', r.id);
+
+      const { error } = await supabase
+        .from('reviews')
+        .update({
+          is_published:   true,
+          removed_by:     null,
+          removed_by_name:null,
+          removed_at:     null,
+          removal_reason: null,
+        })
+        .eq('id', r.id);
+
+      if (error) {
+        LOG.err('PUBLISH', 'FAILED:', error);
+        showAlert(error.message || 'Could not publish review.');
+        return;
+      }
+
+      LOG.ok('PUBLISH', 'Published.');
+      await loadReviews();
+      showAlert('Review published.', 'success');
+    }
+
+    /* ═════════════════════════════════════════════
+       RESTORE (admin only)
+       ═════════════════════════════════════════════ */
+    async function restoreReview(r) {
+      if (!state.isAdmin) return;
+      LOG.step('RESTORE', 'Restoring review', r.id);
+
+      const { error } = await supabase
+        .from('reviews')
+        .update({
+          is_published:   true,
+          removed_by:     null,
+          removed_by_name:null,
+          removed_at:     null,
+          removal_reason: null,
+        })
+        .eq('id', r.id);
+
+      if (error) {
+        LOG.err('RESTORE', 'FAILED:', error);
+        showAlert(error.message || 'Could not restore review.');
+        return;
+      }
+
+      LOG.ok('RESTORE', 'Restored to public.');
+      await loadReviews();
+      showAlert('Review restored to the public site.', 'success');
+    }
+
+    /* ═════════════════════════════════════════════
+       DELETE (admin only, permanent)
+       ═════════════════════════════════════════════ */
+    function openDelete(r) {
+      LOG.step('DELETE', 'Opening delete modal for', r.id);
+      state.pendingDelete = r;
+
+      deletePreview.innerHTML = `
+        <div class="stars">${starsFor(r.rating)}</div>
+        <strong>${esc(r.name || 'Guest')}${r.title ? ' — ' + esc(r.title) : ''}</strong>
+        <div>${esc((r.body || '').slice(0, 180))}${(r.body || '').length > 180 ? '…' : ''}</div>`;
+
+      deleteBackdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDelete() {
+      deleteBackdrop.classList.remove('show');
+      document.body.style.overflow = '';
+      state.pendingDelete = null;
+    }
+    deleteClose.addEventListener('click', closeDelete);
+    deleteCancel.addEventListener('click', closeDelete);
+    deleteBackdrop.addEventListener('click', (e) => {
+      if (e.target === deleteBackdrop) closeDelete();
+    });
+
+    deleteConfirm.addEventListener('click', async () => {
+      const r = state.pendingDelete;
+      if (!r) return;
+
+      LOG.step('DELETE', 'Deleting review', r.id);
+
+      deleteConfirm.disabled = true;
+      deleteSpinner.hidden = false;
+      deleteLabel.textContent = 'Deleting…';
+
+      const { error } = await supabase
+        .from('reviews')
+        .delete()
+        .eq('id', r.id);
+
+      deleteConfirm.disabled = false;
+      deleteSpinner.hidden = true;
+      deleteLabel.textContent = 'Delete forever';
+
+      if (error) {
+        LOG.err('DELETE', 'FAILED');
+        LOG.err('DELETE', '  code   :', error.code);
+        LOG.err('DELETE', '  message:', error.message);
+        LOG.err('DELETE', '  details:', error.details);
+        LOG.err('DELETE', '  hint   :', error.hint);
+        closeDelete();
+        showAlert(error.message || 'Could not delete review.');
+        return;
+      }
+
+      LOG.ok('DELETE', 'Review permanently removed.');
+      closeDelete();
+      await loadReviews();
+      showAlert('Review permanently deleted.', 'success');
+    });
+
+    /* ═════════════════════════════════════════════
+       LOAD REVIEWS
+       ═════════════════════════════════════════════ */
+    async function loadReviews() {
+      LOG.step('LOAD', 'Fetching reviews…');
+      const { data, error } = await supabase
+        .from('reviews')
+        .select(`
+          id, name, email, rating, title, body, service_id,
+          is_published, created_at,
+          removed_by, removed_by_name, removed_at, removal_reason
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        LOG.err('LOAD', 'SELECT FAILED');
+        LOG.err('LOAD', '  code   :', error.code);
+        LOG.err('LOAD', '  message:', error.message);
+        LOG.err('LOAD', '  details:', error.details);
+        LOG.err('LOAD', '  hint   :', error.hint);
+        showAlert('Could not load reviews: ' + (error.message || 'unknown'));
+        state.reviews = [];
+      } else {
+        LOG.ok('LOAD', 'Got', data.length, 'review(s).');
+        state.reviews = data || [];
+      }
+
+      renderStats();
+      renderGrid();
+    }
+
+    /* ═════════════════════════════════════════════
+       Role notice
+       ═════════════════════════════════════════════ */
+    function updateRoleNotice() {
+      if (state.role === 'staff') {
+        roleNotice.hidden = false;
+        roleNoticeText.innerHTML =
+          'You\'re signed in as <strong>staff</strong>. You can ' +
+          '<strong>remove inappropriate reviews from the public site</strong> — ' +
+          'admins will see your name and reason, and can delete permanently. ' +
+          'You can\'t publish, edit or delete reviews.';
+      } else if (state.role === 'admin') {
+        roleNotice.hidden = false;
+        roleNoticeText.innerHTML =
+          'You\'re signed in as <strong>admin</strong>. You can publish, remove, ' +
+          'restore, and permanently delete any review. Removal records from staff ' +
+          'are shown on each removed review.';
+      } else if (state.role === 'developer') {
+        roleNotice.hidden = false;
+        roleNoticeText.innerHTML =
+          'You\'re signed in as <strong>developer</strong>. Full moderation control, ' +
+          'including publishing, removing, restoring, and deleting reviews.';
+      } else {
+        roleNotice.hidden = true;
+      }
+    }
+
+    /* ═════════════════════════════════════════════
+       BOOT
+       ═════════════════════════════════════════════ */
+    async function boot() {
+      LOG.step('BOOT', 'getSession()…');
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session?.user) {
+        LOG.warn('BOOT', 'No session → login.html');
+        location.replace('login.html');
+        return;
+      }
+
+      state.user = session.user;
+      LOG.ok('BOOT', 'Signed in as:', session.user.email);
+
+      // Fetch my profile for role
+      const { data: profile, error: pErr } = await supabase
+        .from('profiles')
+        .select('full_name, role, avatar_url')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (pErr) LOG.err('BOOT', 'Profile lookup FAILED:', pErr);
+      else     LOG.ok('BOOT', 'Profile:', profile);
+
+      state.profile = profile;
+      state.role    = (profile?.role || 'staff').toLowerCase();
+      state.isAdmin = state.role === 'admin' || state.role === 'developer';
+      state.isStaff = state.role === 'staff';
+
+      // Guard: only staff+ can view this page
+      if (!['staff','admin','developer'].includes(state.role)) {
+        LOG.warn('BOOT', 'Unknown role:', state.role, '— redirecting to dashboard.');
+        location.replace('dashboard.html');
+        return;
+      }
+
+      LOG.info('BOOT', 'Role:', state.role, '| isAdmin:', state.isAdmin);
+
+      // Sidebar user card
+      const displayName =
+        profile?.full_name?.trim() ||
+        session.user.email?.split('@')[0] ||
+        'You';
+      userNameEl.textContent = displayName;
+      userRoleEl.textContent = state.role;
+      userAvatarEl.src = profile?.avatar_url || DEFAULT_AVATAR;
+      userAvatarEl.onerror = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+
+      updateRoleNotice();
+      await loadReviews();
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    boot();
+    LOG.info('reviews.html ready.');
+  </script>
+</body>
+</html>

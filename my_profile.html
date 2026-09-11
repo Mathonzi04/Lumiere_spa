@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My profile · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     Lumière Spa — my_profile.html (self-contained)
+     ========================================================= */
+
+  :root {
+    --c-bg:            #faf7f2;
+    --c-bg-alt:        #f4ede4;
+    --c-surface:       #ffffff;
+
+    --c-ink:           #2b1d13;
+    --c-ink-soft:      #5c4a3a;
+    --c-ink-muted:     #8a7a6a;
+
+    --c-brand:         #b9926a;
+    --c-brand-dark:    #8f6d4a;
+    --c-brand-soft:    #f1e6d8;
+
+    --c-border:        #e8ddce;
+    --c-border-strong: #d9c9b3;
+
+    --c-error:         #c0392b;
+    --c-error-bg:      #fdecea;
+    --c-success:       #1e7a3c;
+
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 2px 6px rgba(43,29,19,.06);
+    --shadow:    0 10px 30px rgba(43,29,19,.08);
+
+    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+
+    --transition: 180ms ease;
+    --sidebar-w: 260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    background: var(--c-bg);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 .3em;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+  h1 { font-size: 34px; }
+  h2 { font-size: 22px; }
+  p  { margin: 0 0 1em; color: var(--c-ink-soft); }
+
+  /* =========================================================
+     LAYOUT
+     ========================================================= */
+  .app {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: 100vh;
+  }
+
+  /* =========================================================
+     SIDEBAR (identical to dashboard)
+     ========================================================= */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 18px 18px;
+    background:
+      radial-gradient(90% 40% at 0% 100%, rgba(185,146,106,.22), transparent 60%),
+      linear-gradient(165deg, #2b1d13 0%, #3a281b 60%, #4a3423 100%);
+    color: #f6ede4;
+    overflow-y: auto;
+    z-index: 20;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 22px;
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    border-bottom: 1px solid rgba(246,237,228,.1);
+    margin-bottom: 18px;
+  }
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d8b48f, #b9926a);
+    color: #2b1d13;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    flex: none;
+  }
+  .brand-name { color: #f6ede4; }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+  .nav-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(246,237,228,.4);
+    padding: 16px 12px 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(246,237,228,.75);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+  }
+  .nav-item:hover {
+    background: rgba(246,237,228,.07);
+    color: #f8f1e8;
+  }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(185,146,106,.28), rgba(185,146,106,.14));
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(185,146,106,.35);
+  }
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 22px;
+    border-radius: 0 3px 3px 0;
+    background: var(--c-brand);
+  }
+  .nav-item .ico {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: rgba(185,146,106,.35);
+    color: #f8f1e8;
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-top: 14px;
+    border-radius: var(--radius);
+    background: rgba(246,237,228,.06);
+    border: 1px solid rgba(246,237,228,.08);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .user-card:hover { background: rgba(246,237,228,.11); }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #4a3423;
+    border: 2px solid rgba(246,237,228,.15);
+    flex: none;
+  }
+  .user-meta { min-width: 0; flex: 1; }
+  .user-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #f8f1e8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .user-role {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--c-brand);
+  }
+  .user-signout {
+    background: transparent;
+    border: 0;
+    color: rgba(246,237,228,.5);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background var(--transition), color var(--transition);
+    display: grid;
+    place-items: center;
+  }
+  .user-signout:hover {
+    background: rgba(192,57,43,.25);
+    color: #ffd9d4;
+  }
+
+  /* =========================================================
+     MAIN
+     ========================================================= */
+  .main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 34px;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    cursor: pointer;
+    color: var(--c-ink);
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .page-sub {
+    font-size: 12.5px;
+    color: var(--c-ink-muted);
+    margin: 0;
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .icon-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-ink-soft);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+  .icon-btn:hover {
+    background: var(--c-brand-soft);
+    border-color: var(--c-border-strong);
+    color: var(--c-brand-dark);
+  }
+  .icon-btn svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 1.75; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .content {
+    padding: 30px 34px 60px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* =========================================================
+     PROFILE VIEW CARD
+     ========================================================= */
+  .profile-wrap {
+    width: min(880px, 100%);
+  }
+
+  /* ---- hero ---- */
+  .profile-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(185,146,106,.28), transparent 55%),
+      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
+    color: #f8f1e8;
+    padding: 40px 40px 34px;
+    margin-bottom: 22px;
+  }
+  .profile-hero::after {
+    content: "";
+    position: absolute;
+    right: -60px; bottom: -80px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,146,106,.35), transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    flex-wrap: wrap;
+  }
+
+  .hero-avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(246,237,228,.18);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    background: #4a3423;
+    flex: none;
+  }
+
+  .hero-meta { min-width: 0; flex: 1; }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 700;
+    color: #f8f1e8;
+    margin: 0 0 6px;
+    line-height: 1.1;
+    word-break: break-word;
+  }
+
+  .hero-email {
+    font-size: 14px;
+    color: rgba(246,237,228,.7);
+    margin: 0 0 12px;
+    word-break: break-all;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: rgba(185,146,106,.28);
+    color: #f8f1e8;
+    border: 1px solid rgba(185,146,106,.4);
+  }
+  .pill.pill-ok {
+    background: rgba(30,122,60,.25);
+    color: #c8f0d3;
+    border-color: rgba(30,122,60,.4);
+  }
+  .pill.pill-muted {
+    background: rgba(246,237,228,.08);
+    color: rgba(246,237,228,.7);
+    border-color: rgba(246,237,228,.15);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    align-self: flex-start;
+    position: relative;
+  }
+
+  .btn-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2b1d13;
+    background: linear-gradient(135deg, #f2e3cf, #d8b48f);
+    border: 0;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .btn-edit:hover { transform: translateY(-1px); box-shadow: 0 14px 30px rgba(0,0,0,.3); }
+  .btn-edit svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* ---- info card ---- */
+  .info-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 6px 0;
+    margin-bottom: 22px;
+  }
+
+  .info-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 28px 12px;
+  }
+  .info-head h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+  .info-head .meta {
+    font-size: 12.5px;
+    color: var(--c-ink-muted);
+  }
+
+  .info-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 4px 28px 22px;
+  }
+
+  .info-row {
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--c-border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .info-row:nth-last-child(-n+2) { border-bottom: 0; }
+
+  .info-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-ink-muted);
+  }
+  .info-label svg {
+    width: 14px; height: 14px;
+    stroke: currentColor; stroke-width: 1.9; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+    color: var(--c-brand);
+  }
+
+  .info-value {
+    font-size: 15px;
+    color: var(--c-ink);
+    font-weight: 500;
+    word-break: break-word;
+    line-height: 1.45;
+  }
+  .info-value.empty {
+    color: var(--c-ink-muted);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .info-row.full {
+    grid-column: 1 / -1;
+    border-bottom: 1px dashed var(--c-border);
+  }
+  .info-row.full:last-child { border-bottom: 0; }
+
+  /* ---- account card ---- */
+  .account-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 4px 28px 24px;
+  }
+  .account-item {
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+  }
+  .account-item .info-label { margin-bottom: 4px; }
+  .account-item .info-value { font-size: 14px; }
+
+  /* ---- signout / danger ---- */
+  .danger-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 28px;
+    border-top: 1px solid var(--c-border);
+    flex-wrap: wrap;
+  }
+  .danger-text { font-size: 13px; color: var(--c-ink-muted); margin: 0; }
+  .btn-signout {
+    padding: 10px 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--c-error);
+    background: var(--c-error-bg);
+    border: 1px solid #f3c3bd;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+  }
+  .btn-signout:hover {
+    background: var(--c-error);
+    color: #fff;
+    border-color: var(--c-error);
+  }
+
+  /* ---- alert ---- */
+  .alert {
+    display: block;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    background: var(--c-error-bg);
+    color: var(--c-error);
+    border: 1px solid #f3c3bd;
+    margin: 0 0 20px;
+  }
+  .alert[hidden] { display: none; }
+
+  /* ---- loading skeleton ---- */
+  .skeleton {
+    background: linear-gradient(90deg, #efe6d8 0%, #f6ede0 50%, #efe6d8 100%);
+    background-size: 200% 100%;
+    animation: sk 1.3s linear infinite;
+    border-radius: 6px;
+    display: inline-block;
+    color: transparent;
+  }
+  @keyframes sk { to { background-position: -200% 0; } }
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(43,29,19,.5);
+    z-index: 15;
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0;
+      width: var(--sidebar-w);
+      transform: translateX(-100%);
+      transition: transform 240ms cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .overlay.show { display: block; opacity: 1; }
+    .menu-toggle { display: grid; place-items: center; }
+    .topbar { padding: 14px 18px; }
+    .content { padding: 22px 18px 50px; }
+  }
+
+  @media (max-width: 640px) {
+    .profile-hero { padding: 28px 22px 24px; }
+    .hero-inner { gap: 18px; }
+    .hero-avatar { width: 88px; height: 88px; }
+    .hero-name { font-size: 26px; }
+    .hero-actions { margin-left: 0; width: 100%; }
+    .btn-edit { width: 100%; justify-content: center; }
+    .info-list { grid-template-columns: 1fr; padding: 4px 20px 20px; }
+    .info-row:nth-last-child(-n+2) { border-bottom: 1px dashed var(--c-border); }
+    .info-row:last-child { border-bottom: 0; }
+    .info-head { padding: 18px 20px 10px; }
+    .account-grid { padding: 4px 20px 20px; }
+    .danger-row { padding: 18px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+
+    <!-- ══════════════ SIDEBAR ══════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="brand">
+        <span class="brand-mark">L</span>
+        <span class="brand-name">Lumière</span>
+      </div>
+
+      <nav class="nav" id="nav">
+        <div class="nav-label">Workspace</div>
+
+        <a class="nav-item" href="bookings.html" data-page="bookings">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <span>Bookings</span>
+        </a>
+
+        <a class="nav-item" href="messages.html" data-page="messages">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+          <span>Messages</span>
+          <span class="badge">3</span>
+        </a>
+
+        <a class="nav-item" href="reviews.html" data-page="reviews">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+          <span>Reviews</span>
+        </a>
+
+        <div class="nav-label">Manage</div>
+
+        <a class="nav-item" href="team.html" data-page="team">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+          <span>Team</span>
+        </a>
+
+        <a class="nav-item" href="finances.html" data-page="finances">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+          <span>Finances</span>
+        </a>
+
+        <div class="nav-label">Account</div>
+
+        <a class="nav-item active" href="my_profile.html" data-page="my-profile">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>My profile</span>
+        </a>
+
+        <a class="nav-item" href="about.html" data-page="about">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          <span>About us</span>
+        </a>
+      </nav>
+
+      <!-- user card (self-link, no-op) -->
+      <div class="user-card" id="user-card" title="My profile">
+        <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+        <div class="user-meta">
+          <div class="user-name" id="user-name">Loading…</div>
+          <div class="user-role" id="user-role">—</div>
+        </div>
+        <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════ MAIN ══════════════ -->
+    <main class="main">
+
+      <header class="topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+
+        <div>
+          <h1 class="page-title">My profile</h1>
+          <p class="page-sub" id="today"></p>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="bell-btn" title="Notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+          </button>
+          <button class="icon-btn" id="edit-top" title="Edit profile" aria-label="Edit profile">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="profile-wrap">
+
+          <div id="alert" class="alert" hidden></div>
+
+          <!-- ═══════════ HERO ═══════════ -->
+          <div class="profile-hero">
+            <div class="hero-inner">
+              <img class="hero-avatar" id="hero-avatar" alt="Profile picture" />
+
+              <div class="hero-meta">
+                <h1 class="hero-name" id="hero-name">
+                  <span class="skeleton" style="width:220px;height:32px;">&nbsp;</span>
+                </h1>
+                <p class="hero-email" id="hero-email">
+                  <span class="skeleton" style="width:260px;height:16px;">&nbsp;</span>
+                </p>
+                <div class="hero-pills" id="hero-pills">
+                  <span class="pill pill-muted">Loading…</span>
+                </div>
+              </div>
+
+              <div class="hero-actions">
+                <button class="btn-edit" id="edit-hero">
+                  <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                  Edit profile
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══════════ CONTACT INFO ═══════════ -->
+          <div class="info-card">
+            <div class="info-head">
+              <h2>Contact details</h2>
+              <span class="meta">From your profile</span>
+            </div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                  Full name
+                </span>
+                <span class="info-value" id="v-name">—</span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">
+                  <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></svg>
+                  Cell number
+                </span>
+                <span class="info-value" id="v-cell">—</span>
+              </div>
+
+              <div class="info-row full">
+                <span class="info-label">
+                  <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Address
+                </span>
+                <span class="info-value" id="v-address">—</span>
+              </div>
+
+              <div class="info-row full">
+                <span class="info-label">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>
+                  Email address
+                </span>
+                <span class="info-value" id="v-email">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══════════ ACCOUNT INFO ═══════════ -->
+          <div class="info-card">
+            <div class="info-head">
+              <h2>Account</h2>
+              <span class="meta">Read-only</span>
+            </div>
+
+            <div class="account-grid">
+              <div class="account-item">
+                <div class="info-label">Role</div>
+                <div class="info-value" id="v-role">—</div>
+              </div>
+
+              <div class="account-item">
+                <div class="info-label">Account status</div>
+                <div class="info-value" id="v-status">—</div>
+              </div>
+
+              <div class="account-item">
+                <div class="info-label">Member since</div>
+                <div class="info-value" id="v-since">—</div>
+              </div>
+
+              <div class="account-item">
+                <div class="info-label">Profile ID</div>
+                <div class="info-value" id="v-id" style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;">—</div>
+              </div>
+            </div>
+
+            <div class="danger-row">
+              <p class="danger-text">Signed in on this device. Sign out to switch accounts.</p>
+              <button class="btn-signout" id="signout-2">Sign out</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    /* ─────────────────────────────────────────────
+       Supabase — inline
+       ───────────────────────────────────────────── */
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
+
+    /* ─────────────────────────────────────────────
+       Logging
+       ───────────────────────────────────────────── */
+    const LOG = {
+      info : (...a) => console.log  ('%c[ME]',     'color:#2a5d95;font-weight:700', ...a),
+      ok   : (...a) => console.log  ('%c[ME ✓]',   'color:#1e7a3c;font-weight:700', ...a),
+      warn : (...a) => console.warn ('%c[ME !]',   'color:#b8860b;font-weight:700', ...a),
+      err  : (...a) => console.error('%c[ME ✗]',   'color:#c0392b;font-weight:700', ...a),
+      step : (n, ...a) => console.log(`%c[ME → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
+    };
+
+    LOG.info('my_profile.html loaded');
+    LOG.info('Supabase URL :', SUPABASE_URL);
+
+    /* ─────────────────────────────────────────────
+       Default avatar (inline SVG data URI)
+       ───────────────────────────────────────────── */
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+      "</linearGradient></defs>" +
+      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+    /* ─────────────────────────────────────────────
+       DOM refs
+       ───────────────────────────────────────────── */
+    const alertEl       = document.getElementById('alert');
+    const todayEl       = document.getElementById('today');
+
+    const heroAvatar    = document.getElementById('hero-avatar');
+    const heroName      = document.getElementById('hero-name');
+    const heroEmail     = document.getElementById('hero-email');
+    const heroPills     = document.getElementById('hero-pills');
+
+    const vName         = document.getElementById('v-name');
+    const vCell         = document.getElementById('v-cell');
+    const vAddress      = document.getElementById('v-address');
+    const vEmail        = document.getElementById('v-email');
+    const vRole         = document.getElementById('v-role');
+    const vStatus       = document.getElementById('v-status');
+    const vSince        = document.getElementById('v-since');
+    const vId           = document.getElementById('v-id');
+
+    const userNameEl    = document.getElementById('user-name');
+    const userRoleEl    = document.getElementById('user-role');
+    const userAvatarEl  = document.getElementById('user-avatar');
+
+    const sidebar       = document.getElementById('sidebar');
+    const overlay       = document.getElementById('overlay');
+    const menuToggle    = document.getElementById('menu-toggle');
+
+    const editHero      = document.getElementById('edit-hero');
+    const editTop       = document.getElementById('edit-top');
+    const bellBtn       = document.getElementById('bell-btn');
+    const signoutBtn    = document.getElementById('signout-btn');
+    const signoutBtn2   = document.getElementById('signout-2');
+    const userCard      = document.getElementById('user-card');
+
+    /* ─────────────────────────────────────────────
+       Topbar date
+       ───────────────────────────────────────────── */
+    todayEl.textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    /* ─────────────────────────────────────────────
+       Helpers
+       ───────────────────────────────────────────── */
+    function showAlert(msg) {
+      LOG.warn('Alert:', msg);
+      alertEl.textContent = msg;
+      alertEl.hidden = false;
+      alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideAlert() { alertEl.hidden = true; }
+
+    function setField(el, value, fallback = 'Not provided') {
+      if (value && String(value).trim()) {
+        el.textContent = value;
+        el.classList.remove('empty');
+      } else {
+        el.textContent = fallback;
+        el.classList.add('empty');
+      }
+    }
+
+    function prettyRole(role) {
+      const r = (role || 'admin').toLowerCase();
+      if (r === 'developer') return 'Developer';
+      if (r === 'admin')     return 'Admin';
+      return 'Staff';
+    }
+
+    function prettyDate(iso) {
+      if (!iso) return '—';
+      try {
+        return new Date(iso).toLocaleDateString(undefined, {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch { return '—'; }
+    }
+
+    /* ─────────────────────────────────────────────
+       Mobile sidebar
+       ───────────────────────────────────────────── */
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+      LOG.step('UI', 'Sidebar opened.');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    /* ─────────────────────────────────────────────
+       Navigation actions
+       ───────────────────────────────────────────── */
+    function goEdit() {
+      LOG.info('UI', 'Edit profile → profiles.html');
+      location.href = 'profiles.html';
+    }
+    editHero.addEventListener('click', goEdit);
+    editTop .addEventListener('click', goEdit);
+
+    bellBtn.addEventListener('click', () => {
+      LOG.info('UI', 'Bell → messages.html');
+      location.href = 'messages.html';
+    });
+
+    async function doSignout() {
+      LOG.step('SIGNOUT', 'Signing out…');
+      const { error } = await supabase.auth.signOut();
+      if (error) LOG.err('SIGNOUT', 'signOut FAILED:', error);
+      else       LOG.ok('SIGNOUT', 'Signed out.');
+      location.replace('login.html');
+    }
+    signoutBtn.addEventListener('click', doSignout);
+    signoutBtn2.addEventListener('click', doSignout);
+
+    // Self-link: clicking user card just closes mobile sidebar
+    userCard.addEventListener('click', (e) => {
+      if (e.target.closest('#signout-btn')) return;
+      LOG.info('UI', 'User card clicked (already on my profile).');
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    /* ─────────────────────────────────────────────
+       Load
+       ───────────────────────────────────────────── */
+    async function load() {
+      LOG.step('BOOT', 'getSession()…');
+      const { data: { session }, error: sessErr } = await supabase.auth.getSession();
+
+      if (sessErr) {
+        LOG.err('BOOT', 'getSession failed:', sessErr);
+        showAlert('Could not read your session. Please sign in again.');
+        return;
+      }
+      if (!session) {
+        LOG.warn('BOOT', 'No session → login.html');
+        location.replace('login.html');
+        return;
+      }
+
+      const user = session.user;
+      LOG.ok('BOOT', 'Signed in as:', user.email, '/ id:', user.id);
+
+      LOG.step('BOOT', 'Fetching profile row…');
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) {
+        LOG.err('BOOT', 'profiles SELECT FAILED');
+        LOG.err('BOOT', '  code   :', error.code);
+        LOG.err('BOOT', '  message:', error.message);
+        LOG.err('BOOT', '  details:', error.details);
+        LOG.err('BOOT', '  hint   :', error.hint);
+        LOG.err('BOOT', '  full   :', error);
+        showAlert('Could not load your profile. ' + (error.message || ''));
+        return;
+      }
+
+      LOG.ok('BOOT', 'Profile row:', profile);
+
+      /* ── guards ── */
+      if (profile && profile.is_active === false) {
+        LOG.warn('BOOT', 'Account deactivated → sign out.');
+        await supabase.auth.signOut();
+        location.replace('login.html');
+        return;
+      }
+      if (profile && profile.onboarded === false) {
+        LOG.warn('BOOT', 'Not onboarded → profiles.html');
+        location.replace('profiles.html');
+        return;
+      }
+
+      /* ── derive display values ── */
+      const displayName =
+        profile?.full_name?.trim() ||
+        user.email?.split('@')[0] ||
+        'Your profile';
+      const role  = (profile?.role || 'admin').toLowerCase();
+      const email = profile?.email || user.email || '';
+
+      /* ═══ hero ═══ */
+      heroName.textContent  = displayName;
+      heroEmail.textContent = email;
+      heroAvatar.src        = profile?.avatar_url || DEFAULT_AVATAR;
+      heroAvatar.onerror    = () => { heroAvatar.src = DEFAULT_AVATAR; };
+
+      heroPills.innerHTML = '';
+      const rolePill = document.createElement('span');
+      rolePill.className = 'pill';
+      rolePill.textContent = prettyRole(role);
+      heroPills.appendChild(rolePill);
+
+      if (profile?.onboarded) {
+        const okPill = document.createElement('span');
+        okPill.className = 'pill pill-ok';
+        okPill.textContent = 'Onboarded';
+        heroPills.appendChild(okPill);
+      }
+
+      const idPill = document.createElement('span');
+      idPill.className = 'pill pill-muted';
+      idPill.textContent = 'ID ' + (user.id || '').slice(0, 8) + '…';
+      heroPills.appendChild(idPill);
+
+      /* ═══ contact card ═══ */
+      setField(vName,    profile?.full_name);
+      setField(vCell,    profile?.cell_number);
+      setField(vAddress, profile?.address);
+      setField(vEmail,   email);
+
+      /* ═══ account card ═══ */
+      vRole.textContent   = prettyRole(role);
+      vStatus.textContent = profile?.is_active === false ? 'Deactivated' : 'Active';
+      vSince.textContent  = prettyDate(profile?.created_at || user.created_at);
+      vId.textContent     = user.id || '—';
+
+      /* ═══ sidebar user card ═══ */
+      userNameEl.textContent = displayName;
+      userRoleEl.textContent = role;
+      userAvatarEl.src       = profile?.avatar_url || DEFAULT_AVATAR;
+      userAvatarEl.onerror   = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+
+      LOG.ok('BOOT', 'UI populated. Name:', displayName, '| role:', role);
+    }
+
+    /* ─────────────────────────────────────────────
+       Auth state listener
+       ───────────────────────────────────────────── */
+    supabase.auth.onAuthStateChange((event, session) => {
+      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+    });
+
+    load();
+    LOG.info('my_profile.html ready.');
+  </script>
+</body>
+</html>
