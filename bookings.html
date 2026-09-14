@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bookings · Lumière Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --c-bg:#faf7f2;--c-bg-alt:#f4ede4;--c-surface:#fff;
+    --c-ink:#2b1d13;--c-ink-soft:#5c4a3a;--c-ink-muted:#8a7a6a;
+    --c-brand:#b9926a;--c-brand-dark:#8f6d4a;--c-brand-soft:#f1e6d8;
+    --c-border:#e8ddce;--c-border-strong:#d9c9b3;
+    --c-error:#c0392b;--c-error-bg:#fdecea;
+    --c-success:#1e7a3c;--c-success-bg:#e8f5ec;
+    --c-warn:#b8860b;--c-warn-bg:#fdf6e3;
+    --c-info:#2a5d95;--c-info-bg:#eef4fb;
+    --c-purple:#7c5cbb;--c-purple-bg:#f0ebfa;
+    --radius-sm:8px;--radius:12px;--radius-lg:20px;--radius-pill:999px;
+    --shadow-sm:0 2px 6px rgba(43,29,19,.06);
+    --shadow:0 10px 30px rgba(43,29,19,.08);
+    --font-body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --font-display:'Cormorant Garamond',Georgia,serif;
+    --transition:200ms cubic-bezier(.4,0,.2,1);
+    --sidebar-w:260px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-body);color:var(--c-ink);background:var(--c-bg);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+  img{display:block;max-width:100%}a{color:inherit;text-decoration:none}button,input,textarea,select{font-family:inherit}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0 0 .3em;line-height:1.15;letter-spacing:-.01em}
+
+  .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+
+  .sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:26px 18px 18px;background:radial-gradient(90% 40% at 0% 100%,rgba(185,146,106,.22),transparent 60%),linear-gradient(165deg,#2b1d13 0%,#3a281b 60%,#4a3423 100%);color:#f6ede4;overflow-y:auto;z-index:20}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 8px 22px;font-family:var(--font-display);font-size:21px;font-weight:700;letter-spacing:.02em;border-bottom:1px solid rgba(246,237,228,.1);margin-bottom:18px}
+  .brand-mark{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#d8b48f,#b9926a);color:#2b1d13;font-family:var(--font-display);font-size:18px;font-weight:700;flex:none}
+  .brand-name{color:#f6ede4}
+  .nav{display:flex;flex-direction:column;gap:2px;flex:1}
+  .nav-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,237,228,.4);padding:16px 12px 8px}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius);font-size:14px;font-weight:500;color:rgba(246,237,228,.75);cursor:pointer;position:relative;transition:background var(--transition),color var(--transition)}
+  .nav-item:hover{background:rgba(246,237,228,.07);color:#f8f1e8}
+  .nav-item.active{background:linear-gradient(135deg,rgba(185,146,106,.28),rgba(185,146,106,.14));color:#fff;box-shadow:inset 0 0 0 1px rgba(185,146,106,.35)}
+  .nav-item.active::before{content:"";position:absolute;left:-18px;top:50%;transform:translateY(-50%);width:3px;height:22px;border-radius:0 3px 3px 0;background:var(--c-brand)}
+  .nav-item .ico{width:20px;height:20px;flex:none;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .user-card{display:flex;align-items:center;gap:12px;padding:12px;margin-top:14px;border-radius:var(--radius);background:rgba(246,237,228,.06);border:1px solid rgba(246,237,228,.08);cursor:pointer;transition:background var(--transition)}
+  .user-card:hover{background:rgba(246,237,228,.11)}
+  .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#4a3423;border:2px solid rgba(246,237,228,.15);flex:none}
+  .user-meta{min-width:0;flex:1}
+  .user-name{font-size:13.5px;font-weight:600;color:#f8f1e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-role{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-brand)}
+  .user-signout{background:transparent;border:0;color:rgba(246,237,228,.5);cursor:pointer;padding:4px;border-radius:6px;display:grid;place-items:center;transition:background var(--transition),color var(--transition)}
+  .user-signout:hover{background:rgba(192,57,43,.25);color:#ffd9d4}
+
+  .main{min-width:0;display:flex;flex-direction:column}
+  .topbar{display:flex;align-items:center;gap:16px;padding:18px 34px;background:var(--c-bg);border-bottom:1px solid var(--c-border);position:sticky;top:0;z-index:10}
+  .menu-toggle{display:none;background:transparent;border:1px solid var(--c-border);border-radius:var(--radius-sm);padding:8px;cursor:pointer;color:var(--c-ink)}
+  .page-title{font-family:var(--font-display);font-size:24px;font-weight:600;margin:0}
+  .page-sub{font-size:12.5px;color:var(--c-ink-muted);margin:0}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .icon-btn{display:grid;place-items:center;width:38px;height:38px;border-radius:var(--radius);background:var(--c-surface);border:1px solid var(--c-border);color:var(--c-ink-soft);cursor:pointer;transition:background var(--transition),border-color var(--transition),color var(--transition)}
+  .icon-btn:hover{background:var(--c-brand-soft);border-color:var(--c-border-strong);color:var(--c-brand-dark)}
+  .icon-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  .content{padding:26px 34px 60px;flex:1}
+
+  .hero{position:relative;overflow:hidden;border-radius:var(--radius-lg);padding:32px 36px;margin-bottom:24px;background:radial-gradient(120% 120% at 100% 0%,rgba(185,146,106,.32),transparent 55%),linear-gradient(135deg,#2b1d13 0%,#4a3423 100%);color:#f8f1e8}
+  .hero::after{content:"";position:absolute;right:-80px;bottom:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(185,146,106,.4),transparent 65%);pointer-events:none}
+  .hero-inner{position:relative}
+  .hero-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-brand);margin-bottom:10px}
+  .hero h1{color:#f8f1e8;font-size:36px;margin:0 0 6px}
+  .hero p{color:rgba(246,237,228,.75);margin:0 0 22px;max-width:560px;font-size:14.5px}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:22px;font-size:12.5px;color:rgba(246,237,228,.7)}
+  .hero-stats strong{display:block;font-family:var(--font-display);font-size:26px;color:#f8f1e8;font-weight:700;line-height:1.05}
+  .hero-stats .s-pending strong{color:#f4cd88}
+  .hero-stats .s-confirmed strong{color:#a9dcba}
+  .hero-stats .s-completed strong{color:#a3c3e4}
+  .hero-stats .s-resched strong{color:#c5b0e8}
+  .hero-stats .s-cancelled strong{color:#f2a89e}
+  .hero-stats .s-refund strong{color:#f0c674}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px;align-items:center}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:8px 14px;font-size:12.5px;font-weight:600;border-radius:var(--radius-pill);background:var(--c-surface);color:var(--c-ink-soft);border:1px solid var(--c-border);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background var(--transition),border-color var(--transition),color var(--transition),transform var(--transition);white-space:nowrap}
+  .chip:hover{border-color:var(--c-border-strong)}
+  .chip.active{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(185,146,106,.3)}
+  .chip .n{font-size:11px;font-weight:700;padding:1px 7px;border-radius:var(--radius-pill);background:rgba(43,29,19,.06);color:inherit}
+  .chip.active .n{background:rgba(255,255,255,.25)}
+
+  .search-wrap{margin-left:auto;position:relative}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--c-ink-muted);stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+  .search-wrap input{padding:9px 14px 9px 36px;font-size:13.5px;border:1px solid var(--c-border);border-radius:var(--radius-pill);background:var(--c-surface);outline:none;width:240px;transition:border-color var(--transition),box-shadow var(--transition)}
+  .search-wrap input:focus{border-color:var(--c-brand);box-shadow:0 0 0 4px rgba(185,146,106,.15)}
+
+  .list{display:flex;flex-direction:column;gap:12px}
+  .bkg{position:relative;display:flex;align-items:stretch;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition)}
+  .bkg:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:var(--c-border-strong)}
+  .bkg.is-cancelled,.bkg.is-completed,.bkg.is-rescheduled{opacity:.9}
+  .bkg-stripe{width:5px;flex-shrink:0}
+  .bkg[data-status="pending"]   .bkg-stripe{background:linear-gradient(180deg,#f4cd88,#e8b75f)}
+  .bkg[data-status="confirmed"] .bkg-stripe{background:linear-gradient(180deg,#2fa060,#67c08b)}
+  .bkg[data-status="completed"] .bkg-stripe{background:linear-gradient(180deg,#2a5d95,#6b9bd1)}
+  .bkg[data-status="cancelled"] .bkg-stripe{background:linear-gradient(180deg,#c0392b,#e07a6e)}
+
+  .bkg-body{flex:1;min-width:0;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .bkg-date{display:flex;flex-direction:column;align-items:center;justify-content:center;width:72px;flex-shrink:0;padding:8px;border-radius:var(--radius);background:var(--c-bg);border:1px solid var(--c-border);position:relative}
+  .bkg-date .d-day{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--c-ink);line-height:1}
+  .bkg-date .d-mo{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted);margin-top:2px}
+  .bkg-date .d-time{font-size:11px;font-weight:700;color:var(--c-brand-dark);margin-top:4px}
+  .bkg-date .d-old{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;background:var(--c-purple-bg);color:var(--c-purple);padding:1px 6px;border-radius:var(--radius-pill);white-space:nowrap}
+
+  .bkg-main{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+  .bkg-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .bkg-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--c-ink);margin:0;line-height:1.2;word-break:break-word}
+  .status-pill{padding:4px 11px;border-radius:var(--radius-pill);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+  .status-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .status-pill.pending{background:var(--c-warn-bg);color:var(--c-warn)}
+  .status-pill.confirmed{background:var(--c-success-bg);color:var(--c-success)}
+  .status-pill.completed{background:var(--c-info-bg);color:var(--c-info)}
+  .status-pill.cancelled{background:var(--c-error-bg);color:var(--c-error)}
+  .ref-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;color:var(--c-ink-muted);letter-spacing:.03em;background:var(--c-bg-alt);padding:3px 9px;border-radius:var(--radius-sm)}
+
+  .bkg-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--c-ink-soft)}
+  .bkg-meta span{display:inline-flex;align-items:center;gap:6px;min-width:0}
+  .bkg-meta span a:hover{color:var(--c-brand-dark);text-decoration:underline}
+  .bkg-meta svg{width:14px;height:14px;stroke:var(--c-brand);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .bkg-note{font-size:12.5px;color:var(--c-ink-muted);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:520px}
+
+  .bkg-tag{font-size:12px;display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill);margin-right:6px;margin-top:4px}
+  .bkg-tag svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .bkg-tag.info{background:var(--c-info-bg);color:var(--c-info)}
+  .bkg-tag.error{background:var(--c-error-bg);color:var(--c-error)}
+  .bkg-tag.purple{background:var(--c-purple-bg);color:var(--c-purple)}
+  .bkg-tag.warn{background:var(--c-warn-bg);color:var(--c-warn)}
+  .bkg-tag.success{background:var(--c-success-bg);color:var(--c-success)}
+
+  .bkg-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+  .btn-sm{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;font-size:12px;font-weight:600;border-radius:var(--radius);cursor:pointer;border:1px solid var(--c-border-strong);background:var(--c-surface);color:var(--c-ink-soft);transition:background var(--transition),border-color var(--transition),color var(--transition),transform var(--transition);white-space:nowrap}
+  .btn-sm:hover{transform:translateY(-1px)}
+  .btn-sm svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .btn-sm.confirm{color:var(--c-success);border-color:#b7e2c2;background:var(--c-success-bg)}
+  .btn-sm.confirm:hover{background:var(--c-success);color:#fff;border-color:var(--c-success)}
+  .btn-sm.complete{color:var(--c-info);border-color:#c3d7ef;background:var(--c-info-bg)}
+  .btn-sm.complete:hover{background:var(--c-info);color:#fff;border-color:var(--c-info)}
+  .btn-sm.reschedule{color:var(--c-purple);border-color:#d6c8ee;background:var(--c-purple-bg)}
+  .btn-sm.reschedule:hover{background:var(--c-purple);color:#fff;border-color:var(--c-purple)}
+  .btn-sm.cancel{color:var(--c-warn);border-color:#f1dfb5;background:var(--c-warn-bg)}
+  .btn-sm.cancel:hover{background:var(--c-warn);color:#fff;border-color:var(--c-warn)}
+  .btn-sm.refund{color:#b8860b;border-color:#f1dfb5;background:linear-gradient(135deg,#fdf6e3,#f9ead0)}
+  .btn-sm.refund:hover{background:var(--c-warn);color:#fff;border-color:var(--c-warn)}
+  .btn-sm.delete{color:var(--c-error);border-color:#f3c3bd;background:var(--c-error-bg)}
+  .btn-sm.delete:hover{background:var(--c-error);color:#fff;border-color:var(--c-error)}
+  .btn-sm.view{color:var(--c-brand-dark);border-color:var(--c-border-strong)}
+  .btn-sm.view:hover{background:var(--c-brand-soft)}
+
+  .empty{text-align:center;padding:60px 20px;background:var(--c-surface);border:1px dashed var(--c-border-strong);border-radius:var(--radius-lg);color:var(--c-ink-muted)}
+  .empty svg{width:48px;height:48px;margin:0 auto 12px;stroke:var(--c-brand);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .empty h3{font-size:22px;color:var(--c-ink);margin:0 0 6px}
+
+  .alert{display:block;padding:12px 16px;border-radius:var(--radius);font-size:13.5px;font-weight:500;line-height:1.45;background:var(--c-error-bg);color:var(--c-error);border:1px solid #f3c3bd;margin:0 0 20px}
+  .alert[hidden]{display:none}
+  .alert[data-type="success"]{background:var(--c-success-bg);color:var(--c-success);border-color:#b7e2c2}
+  .alert[data-type="warn"]{background:var(--c-warn-bg);color:var(--c-warn);border-color:#f1dfb5}
+
+  .role-notice{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--radius);font-size:12.5px;line-height:1.5;margin-bottom:20px;background:var(--c-brand-soft);color:var(--c-brand-dark);border:1px solid var(--c-border-strong)}
+  .role-notice svg{width:16px;height:16px;flex:none;margin-top:2px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .role-notice strong{color:var(--c-ink)}
+
+  /* MODALS */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(20,13,8,.7);backdrop-filter:blur(6px);z-index:100;display:grid;place-items:center;padding:24px;opacity:0;pointer-events:none;transition:opacity var(--transition)}
+  .modal-backdrop.show{opacity:1;pointer-events:auto}
+  .modal{width:min(560px,100%);max-height:calc(100vh - 48px);background:var(--c-surface);border-radius:var(--radius-lg);box-shadow:0 40px 80px rgba(0,0,0,.4);overflow:hidden;display:flex;flex-direction:column;transform:translateY(16px) scale(.98);transition:transform 260ms cubic-bezier(.4,0,.2,1);position:relative}
+  .modal.modal-wide{width:min(720px,100%)}
+  .modal-backdrop.show .modal{transform:translateY(0) scale(1)}
+  .modal-scroll{overflow-y:auto;flex:1}
+  .modal-close{position:absolute;top:16px;right:16px;z-index:4;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.94);border:0;cursor:pointer;color:var(--c-ink);box-shadow:0 6px 16px rgba(0,0,0,.2);transition:background var(--transition),transform var(--transition)}
+  .modal-close:hover{background:#fff;transform:rotate(90deg)}
+  .modal-close svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .modal-head{padding:26px 30px 16px;background:radial-gradient(120% 100% at 100% 0%,rgba(185,146,106,.25),transparent 55%),linear-gradient(135deg,#f9f2e9 0%,#f4ede4 100%);border-bottom:1px solid var(--c-border)}
+  .modal-head h3{font-size:24px;margin:0 0 4px}
+  .modal-head p{font-size:13.5px;color:var(--c-ink-muted);margin:0}
+  .modal-body{padding:22px 30px 10px}
+  .modal-foot{padding:16px 30px 22px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--c-border);background:var(--c-bg);flex-wrap:wrap}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-size:14px;font-weight:600;border-radius:var(--radius);cursor:pointer;border:1px solid transparent;transition:transform var(--transition),box-shadow var(--transition),background var(--transition),color var(--transition),border-color var(--transition)}
+  .btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .btn-primary{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;box-shadow:0 8px 18px rgba(185,146,106,.28)}
+  .btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(185,146,106,.38)}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed}
+  .btn-ghost{background:var(--c-surface);color:var(--c-ink-soft);border-color:var(--c-border)}
+  .btn-ghost:hover{background:var(--c-brand-soft);border-color:var(--c-border-strong);color:var(--c-brand-dark)}
+  .btn-danger{background:var(--c-error);color:#fff;border-color:var(--c-error)}
+  .btn-danger:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(192,57,43,.35)}
+  .btn-warn{background:var(--c-warn);color:#fff;border-color:var(--c-warn)}
+  .btn-warn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(184,134,11,.35)}
+  .btn-info{background:var(--c-info);color:#fff;border-color:var(--c-info)}
+  .btn-info:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(42,93,149,.35)}
+  .btn-success{background:var(--c-success);color:#fff;border-color:var(--c-success)}
+  .btn-success:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(30,122,60,.35)}
+  .btn-purple{background:var(--c-purple);color:#fff;border-color:var(--c-purple)}
+  .btn-purple:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 22px rgba(124,92,187,.35)}
+
+  .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  .detail-item{padding:12px 14px;background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--radius)}
+  .detail-item .lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:4px}
+  .detail-item .val{font-size:14.5px;color:var(--c-ink);font-weight:500;word-break:break-word}
+  .detail-item .val a:hover{color:var(--c-brand-dark);text-decoration:underline}
+  .detail-item .val.muted{color:var(--c-ink-muted);font-style:italic;font-weight:400}
+  .detail-item.full{grid-column:1/-1}
+  .detail-item .val.notes{white-space:pre-wrap;font-weight:400;color:var(--c-ink-soft)}
+  .detail-item.info-card{background:var(--c-info-bg);border-color:#c3d7ef}
+  .detail-item.info-card .lbl{color:var(--c-info)}
+  .detail-item.warn-card{background:var(--c-error-bg);border-color:#f3c3bd}
+  .detail-item.warn-card .lbl{color:var(--c-error)}
+  .detail-item.purple-card{background:var(--c-purple-bg);border-color:#d6c8ee}
+  .detail-item.purple-card .lbl{color:var(--c-purple)}
+  .detail-item.refund-card{background:linear-gradient(135deg,#fdf6e3,#f9ead0);border-color:#f1dfb5}
+  .detail-item.refund-card .lbl{color:var(--c-warn)}
+
+  .modal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .modal-field label{font-size:12.5px;font-weight:600;color:var(--c-ink-soft);letter-spacing:.02em}
+  .modal-field label .req{color:var(--c-error)}
+  .modal-field select,.modal-field input,.modal-field textarea{width:100%;padding:11px 14px;font-size:14.5px;color:var(--c-ink);background:#fff;border:1.5px solid var(--c-border);border-radius:var(--radius);outline:none;font-family:inherit;transition:border-color var(--transition),box-shadow var(--transition)}
+  .modal-field textarea{min-height:76px;line-height:1.55;resize:vertical}
+  .modal-field select:focus,.modal-field input:focus,.modal-field textarea:focus{border-color:var(--c-brand);box-shadow:0 0 0 4px rgba(185,146,106,.15)}
+  .modal-field .hint{font-size:12px;color:var(--c-ink-muted);margin:2px 0 0}
+  .grid-2-modal{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  .field-preview{padding:16px 18px;border:1px solid var(--c-border);border-radius:var(--radius);background:var(--c-bg);margin-bottom:18px}
+  .field-preview .row1{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--c-ink);line-height:1.2;margin-bottom:2px}
+  .field-preview .row2{font-size:13px;color:var(--c-ink-muted)}
+
+  .actor-line{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--radius);background:linear-gradient(135deg,#fdf6e3,#f9ead0);border:1px solid #f1dfb5;margin-bottom:18px}
+  .actor-line .avatar{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c-warn),#8f6a08);color:#fff;font-family:var(--font-display);font-weight:700;font-size:14px;flex:none}
+  .actor-line .txt{font-size:13px;color:#7a5a08;line-height:1.4}
+  .actor-line .txt strong{color:#4a3a08;font-weight:700}
+
+  /* REFUND CALC */
+  .refund-calc{margin:8px 0 18px;padding:16px 18px;border-radius:var(--radius);background:linear-gradient(135deg,#fdf6e3,#f9ead0);border:1px solid #f1dfb5}
+  .refund-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:#5c4a10}
+  .refund-row:not(:last-child){border-bottom:1px dashed rgba(184,134,11,.25)}
+  .refund-row.total{font-weight:700;color:#3d3008;border-top:2px solid rgba(184,134,11,.4);padding-top:12px;margin-top:6px}
+  .refund-row .label{opacity:.85}
+  .refund-row .amt{font-variant-numeric:tabular-nums;font-weight:600}
+  .refund-row.total .amt{font-size:18px;font-family:var(--font-display)}
+
+  /* HISTORY TIMELINE */
+  .timeline{position:relative;padding-left:28px;margin:8px 0 18px}
+  .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--c-border)}
+  .tl-item{position:relative;padding:8px 0 14px}
+  .tl-item::before{content:"";position:absolute;left:-28px;top:12px;width:16px;height:16px;border-radius:50%;border:3px solid var(--c-surface);background:var(--c-brand);box-shadow:0 0 0 1px var(--c-border)}
+  .tl-item.created::before{background:var(--c-brand)}
+  .tl-item.confirmed::before{background:var(--c-success)}
+  .tl-item.completed::before{background:var(--c-info)}
+  .tl-item.cancelled::before{background:var(--c-error)}
+  .tl-item.rescheduled::before{background:var(--c-purple)}
+  .tl-item.refund_requested::before{background:var(--c-warn)}
+  .tl-item.refund_processed::before{background:#2fa060}
+  .tl-item.refund_declined::before{background:var(--c-error)}
+  .tl-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+  .tl-title{font-size:13.5px;font-weight:700;color:var(--c-ink)}
+  .tl-when{font-size:11.5px;color:var(--c-ink-muted)}
+  .tl-by{font-size:11.5px;color:var(--c-ink-muted)}
+  .tl-desc{font-size:13px;color:var(--c-ink-soft);line-height:1.55}
+  .tl-desc .old{text-decoration:line-through;color:var(--c-ink-muted);font-size:12.5px}
+  .tl-desc .new{color:var(--c-ink);font-weight:600}
+
+  .overlay{display:none;position:fixed;inset:0;background:rgba(43,29,19,.5);z-index:15;opacity:0;transition:opacity var(--transition)}
+
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;transform:translateX(-100%);transition:transform 240ms cubic-bezier(.4,0,.2,1)}
+    .sidebar.open{transform:translateX(0)}
+    .overlay.show{display:block;opacity:1}
+    .menu-toggle{display:grid;place-items:center}
+    .topbar{padding:14px 18px}
+    .content{padding:22px 18px 50px}
+    .hero{padding:26px 22px}
+    .hero h1{font-size:28px}
+    .hero-stats{gap:14px}
+    .hero-stats strong{font-size:20px}
+    .search-wrap{margin-left:0;width:100%}
+    .search-wrap input{width:100%}
+    .bkg-body{padding:14px}
+    .bkg-date{width:60px}
+    .bkg-date .d-day{font-size:22px}
+    .detail-grid{grid-template-columns:1fr}
+    .modal-head{padding:22px 22px 14px}
+    .modal-body{padding:18px 22px 8px}
+    .modal-foot{padding:14px 22px 18px}
+    .grid-2-modal{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark">L</span><span class="brand-name">Lumière</span></div>
+    <nav class="nav">
+      <div class="nav-label">Workspace</div>
+      <a class="nav-item active" href="bookings.html">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+        <span>Bookings</span>
+      </a>
+      <a class="nav-item" href="messages.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+        <span>Messages</span>
+      </a>
+      <a class="nav-item" href="reviews.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+        <span>Reviews</span>
+      </a>
+      <div class="nav-label">Manage</div>
+      <a class="nav-item" href="services.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/></svg>
+        <span>Services</span>
+      </a>
+      <a class="nav-item" href="team.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+        <span>Team</span>
+      </a>
+      <a class="nav-item" href="finances.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+        <span>Finances</span>
+      </a>
+      <div class="nav-label">Account</div>
+      <a class="nav-item" href="my_profile.html">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>My profile</span>
+      </a>
+      <a class="nav-item" href="about_us.html">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span>About us</span>
+      </a>
+    </nav>
+
+    <div class="user-card" id="user-card" title="My profile">
+      <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+      <div class="user-meta">
+        <div class="user-name" id="user-name">Loading…</div>
+        <div class="user-role" id="user-role">—</div>
+      </div>
+      <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <path d="M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+      <div>
+        <h1 class="page-title">Bookings</h1>
+        <p class="page-sub" id="today"></p>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="refresh-btn" title="Refresh">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="content">
+      <div id="alert" class="alert" hidden></div>
+
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-eyebrow">Appointment pipeline</div>
+          <h1>Bookings lifecycle</h1>
+          <p>Confirm, complete, reschedule or cancel. Cancelled bookings can move through the refund process.</p>
+          <div class="hero-stats">
+            <div class="s-pending"><strong id="s-pending">—</strong>Pending</div>
+            <div class="s-confirmed"><strong id="s-confirmed">—</strong>Confirmed</div>
+            <div class="s-completed"><strong id="s-completed">—</strong>Completed</div>
+            <div class="s-resched"><strong id="s-resched">—</strong>Rescheduled</div>
+            <div class="s-cancelled"><strong id="s-cancelled">—</strong>Cancelled</div>
+            <div class="s-refund"><strong id="s-refund">—</strong>Refunds</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-notice" id="role-notice" hidden>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg>
+        <span id="role-notice-text"></span>
+      </div>
+
+      <div class="toolbar">
+        <div class="chips" id="chips">
+          <button class="chip active" data-filter="all">All <span class="n" id="c-all">0</span></button>
+          <button class="chip" data-filter="pending">Pending <span class="n" id="c-pending">0</span></button>
+          <button class="chip" data-filter="confirmed">Confirmed <span class="n" id="c-confirmed">0</span></button>
+          <button class="chip" data-filter="completed">Completed <span class="n" id="c-completed">0</span></button>
+          <button class="chip" data-filter="rescheduled">Rescheduled <span class="n" id="c-rescheduled">0</span></button>
+          <button class="chip" data-filter="cancelled">Cancelled <span class="n" id="c-cancelled">0</span></button>
+          <button class="chip" data-filter="refunds">Refunds <span class="n" id="c-refunds">0</span></button>
+        </div>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="Search name, email, code…" />
+        </div>
+      </div>
+
+      <div class="list" id="list"></div>
+    </section>
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-backdrop" id="detail-backdrop">
+  <div class="modal modal-wide">
+    <button class="modal-close" id="detail-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3 id="d-title">Booking</h3>
+        <p id="d-sub">—</p>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid" id="d-grid"></div>
+
+        <div style="margin-top:20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:10px">History</div>
+          <div class="timeline" id="d-timeline">
+            <div style="color:var(--c-ink-muted);font-size:13px">Loading…</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="d-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETE MODAL -->
+<div class="modal-backdrop" id="complete-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="complete-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3>Complete booking</h3>
+        <p>Record who attended the client before closing this session.</p>
+      </div>
+      <div class="modal-body">
+        <div class="field-preview" id="complete-preview"></div>
+        <div class="modal-field">
+          <label for="complete-staff">Attending staff member <span class="req">*</span></label>
+          <select id="complete-staff"><option value="">Select staff member…</option></select>
+          <p class="hint" id="complete-staff-hint"></p>
+        </div>
+        <div class="modal-field">
+          <label for="complete-notes">Session notes <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <textarea id="complete-notes" placeholder="How did the session go?"></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="complete-cancel">Cancel</button>
+        <button type="button" class="btn btn-info" id="complete-do">
+          <span class="btn-label" id="complete-do-label">Mark completed</span>
+          <span class="spinner" id="complete-spinner" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESCHEDULE MODAL -->
+<div class="modal-backdrop" id="resched-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="resched-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head" style="background:radial-gradient(120% 100% at 100% 0%,rgba(124,92,187,.2),transparent 55%),linear-gradient(135deg,#f3eefa 0%,#ede5f7 100%)">
+        <h3 style="color:var(--c-purple)">Reschedule booking</h3>
+        <p>Move this appointment to a new date and time. The client will be notified.</p>
+      </div>
+      <div class="modal-body">
+        <div class="field-preview" id="resched-preview"></div>
+
+        <div class="grid-2-modal">
+          <div class="modal-field">
+            <label for="resched-date">New date <span class="req">*</span></label>
+            <input id="resched-date" type="date" required />
+          </div>
+          <div class="modal-field">
+            <label for="resched-time">New time <span class="req">*</span></label>
+            <input id="resched-time" type="time" required />
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label for="resched-reason">Reason for rescheduling <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <textarea id="resched-reason" placeholder="e.g. Client requested different day, staff unavailable…"></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="resched-cancel">Cancel</button>
+        <button type="button" class="btn btn-purple" id="resched-do">
+          <span class="btn-label" id="resched-do-label">Reschedule</span>
+          <span class="spinner" id="resched-spinner" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-backdrop" id="cancel-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="cancel-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3 style="color:var(--c-warn)">Cancel this booking</h3>
+        <p>The reason and your name will be recorded permanently.</p>
+      </div>
+      <div class="modal-body">
+        <div class="field-preview" id="cancel-preview"></div>
+
+        <div class="actor-line" id="cancel-actor">
+          <div class="avatar" id="cancel-actor-avatar">?</div>
+          <div class="txt">
+            Cancelling as <strong id="cancel-actor-name">—</strong>
+            <div style="opacity:.75;font-size:12px;margin-top:2px">This will be saved as the person who cancelled.</div>
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label for="cancel-reason">Reason for cancellation <span class="req">*</span></label>
+          <textarea id="cancel-reason" placeholder="e.g. Client requested a different date, staff unavailable, duplicate booking…"></textarea>
+          <p class="hint">Minimum 5 characters. This is shown on the booking record.</p>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="cancel-cancel">Keep booking</button>
+        <button type="button" class="btn btn-warn" id="cancel-do">
+          <span class="btn-label" id="cancel-do-label">Cancel booking</span>
+          <span class="spinner" id="cancel-spinner" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REFUND MODAL -->
+<div class="modal-backdrop" id="refund-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="refund-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head" style="background:radial-gradient(120% 100% at 100% 0%,rgba(184,134,11,.2),transparent 55%),linear-gradient(135deg,#fffbf0 0%,#fdf6e3 100%)">
+        <h3 style="color:var(--c-warn)">Process refund</h3>
+        <p>Review the amount and record the refund. A 10% administration fee is retained.</p>
+      </div>
+      <div class="modal-body">
+        <div class="field-preview" id="refund-preview"></div>
+
+        <div class="modal-field">
+          <label for="refund-status">Refund status <span class="req">*</span></label>
+          <select id="refund-status">
+            <option value="requested">Requested (pending review)</option>
+            <option value="processing">Processing (in progress)</option>
+            <option value="refunded">Refunded (completed)</option>
+            <option value="declined">Declined (no refund)</option>
+          </select>
+        </div>
+
+        <div class="refund-calc" id="refund-calc"></div>
+
+        <div class="modal-field">
+          <label for="refund-reference">Payment reference <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <input id="refund-reference" type="text" placeholder="e.g. EFT transaction ID, PayFast ref…" />
+          <p class="hint">Bank transfer, card refund or cash handover — record it here for the audit trail.</p>
+        </div>
+
+        <div class="modal-field">
+          <label for="refund-notes">Notes <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <textarea id="refund-notes" placeholder="Anything worth remembering about this refund…"></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="refund-cancel">Cancel</button>
+        <button type="button" class="btn btn-warn" id="refund-do">
+          <span class="btn-label" id="refund-do-label">Save refund</span>
+          <span class="spinner" id="refund-spinner" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL (confirm / delete) -->
+<div class="modal-backdrop" id="confirm-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="confirm-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3 id="confirm-title">Are you sure?</h3>
+        <p id="confirm-sub">This action cannot be undone.</p>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-msg" style="margin:0;font-size:14px;color:var(--c-ink-soft);line-height:1.6;"></p>
+        <div class="detail-item" id="confirm-preview" style="margin-top:14px;display:none"></div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+        <button type="button" class="btn" id="confirm-do">
+          <span class="btn-label" id="confirm-do-label">Confirm</span>
+          <span class="spinner" id="confirm-spinner" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  const LOG = {
+    info:(...a)=>console.log('%c[BKG]','color:#2a5d95;font-weight:700',...a),
+    ok  :(...a)=>console.log('%c[BKG ✓]','color:#1e7a3c;font-weight:700',...a),
+    warn:(...a)=>console.warn('%c[BKG !]','color:#b8860b;font-weight:700',...a),
+    err :(...a)=>console.error('%c[BKG ✗]','color:#c0392b;font-weight:700',...a),
+    step:(n,...a)=>console.log(`%c[BKG → ${n}]`,'color:#8f6d4a;font-weight:700',...a),
+  };
+  LOG.info('bookings.html loaded');
+
+  const DEFAULT_AVATAR =
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+    "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+    "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+    "</linearGradient></defs>" +
+    "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+    "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+    "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+  const state = {
+    user: null, profile: null, role: 'staff', isAdmin: false,
+    bookings: [], staffList: [],
+    filter: 'all', search: '',
+    pendingAction: null, completing: null, cancelling: null, rescheduling: null, refunding: null,
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => (s ?? '').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  function parseDateOnly(s) {
+    if (!s) return null;
+    try { return new Date(s + 'T00:00:00'); } catch { return null; }
+  }
+  function fmtDateLong(s) {
+    const d = parseDateOnly(s);
+    if (!d) return '—';
+    return `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  }
+  function dateParts(s) {
+    const d = parseDateOnly(s);
+    if (!d) return { day:'—', month:'—' };
+    return { day: String(d.getDate()).padStart(2,'0'), month: MONTHS[d.getMonth()] };
+  }
+  function fmtTime12(t) {
+    if (!t) return '—';
+    try {
+      const [h, m] = t.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+    } catch { return t; }
+  }
+  function fmtDateTime(iso) {
+    if (!iso) return '—';
+    try {
+      return new Date(iso).toLocaleString(undefined, {
+        day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+      });
+    } catch { return '—'; }
+  }
+  const fmtMoney = (n) => {
+    const num = Number(n) || 0;
+    return 'R ' + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  };
+  const initials = (n) => (n||'?').trim().split(/\s+/).slice(0,2).map(w => w.charAt(0).toUpperCase()).join('');
+
+  function showAlert(msg, type = 'error') {
+    alertEl.textContent = msg;
+    alertEl.dataset.type = type;
+    alertEl.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  const hideAlert = () => { alertEl.hidden = true; };
+
+  /* sidebar + auth */
+  const todayEl = $('today'), refreshBtn = $('refresh-btn'), menuToggle = $('menu-toggle');
+  const sidebar = $('sidebar'), overlay = $('overlay');
+  const userCard = $('user-card'), userNameEl = $('user-name'), userRoleEl = $('user-role'), userAvatarEl = $('user-avatar'), signoutBtn = $('signout-btn');
+  const alertEl = $('alert'), listEl = $('list'), chipsEl = $('chips'), searchEl = $('search');
+  const roleNotice = $('role-notice'), roleNoticeText = $('role-notice-text');
+  const sPending = $('s-pending'), sConfirmed = $('s-confirmed'), sCompleted = $('s-completed'), sResched = $('s-resched'), sCancelled = $('s-cancelled'), sRefund = $('s-refund');
+  const cAll = $('c-all'), cPending = $('c-pending'), cConfirmed = $('c-confirmed'), cCompleted = $('c-completed'), cRescheduled = $('c-rescheduled'), cCancelled = $('c-cancelled'), cRefunds = $('c-refunds');
+
+  todayEl.textContent = new Date().toLocaleDateString(undefined, { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  menuToggle.addEventListener('click', () => { sidebar.classList.add('open'); overlay.classList.add('show'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+  async function doSignout() { await supabase.auth.signOut(); location.replace('login.html'); }
+  signoutBtn.addEventListener('click', (e) => { e.stopPropagation(); doSignout(); });
+  userCard.addEventListener('click', (e) => { if (e.target.closest('#signout-btn')) return; location.href = 'my_profile.html'; });
+
+  chipsEl.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip'); if (!chip) return;
+    state.filter = chip.dataset.filter;
+    chipsEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === chip));
+    renderList();
+  });
+  searchEl.addEventListener('input', () => { state.search = searchEl.value.trim().toLowerCase(); renderList(); });
+
+  /* stats */
+  function renderStats() {
+    const c = (s) => state.bookings.filter(b => b.status === s).length;
+    const resched = state.bookings.filter(b => (b.reschedule_count || 0) > 0).length;
+    const refundCount = state.bookings.filter(b => b.refund_status && b.refund_status !== 'none').length;
+
+    sPending.textContent = c('pending');
+    sConfirmed.textContent = c('confirmed');
+    sCompleted.textContent = c('completed');
+    sResched.textContent = resched;
+    sCancelled.textContent = c('cancelled');
+    sRefund.textContent = refundCount;
+
+    cAll.textContent = state.bookings.length;
+    cPending.textContent = c('pending');
+    cConfirmed.textContent = c('confirmed');
+    cCompleted.textContent = c('completed');
+    cRescheduled.textContent = resched;
+    cCancelled.textContent = c('cancelled');
+    cRefunds.textContent = refundCount;
+  }
+
+  function applyFilter(list) {
+    let out = list;
+    if (state.filter === 'rescheduled') out = out.filter(b => (b.reschedule_count || 0) > 0);
+    else if (state.filter === 'refunds') out = out.filter(b => b.refund_status && b.refund_status !== 'none');
+    else if (state.filter !== 'all') out = out.filter(b => b.status === state.filter);
+
+    if (state.search) {
+      const q = state.search;
+      out = out.filter(b => `${b.client_name||''} ${b.client_email||''} ${b.client_phone||''} ${b.service_name||''} ${b.reference_code||''}`.toLowerCase().includes(q));
+    }
+
+    const prio = { pending: 0, confirmed: 1, completed: 2, cancelled: 3 };
+    out.sort((a, b) => {
+      const pa = prio[a.status] ?? 9, pb = prio[b.status] ?? 9;
+      if (pa !== pb) return pa - pb;
+      const da = a.preferred_date || '', db = b.preferred_date || '';
+      if (da !== db) return da < db ? -1 : 1;
+      return (a.preferred_time || '').localeCompare(b.preferred_time || '');
+    });
+    return out;
+  }
+
+  function statusPill(status) {
+    const label = status.charAt(0).toUpperCase() + status.slice(1);
+    return `<span class="status-pill ${esc(status)}">${esc(label)}</span>`;
+  }
+
+  function refundPill(rs) {
+    if (!rs || rs === 'none') return '';
+    const map = {
+      requested:  { label: 'Refund requested', cls: 'warn' },
+      processing: { label: 'Refund processing', cls: 'warn' },
+      refunded:   { label: 'Refunded', cls: 'success' },
+      declined:   { label: 'Refund declined', cls: 'error' },
+    };
+    const m = map[rs]; if (!m) return '';
+    return `<span class="bkg-tag ${m.cls}">
+      <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      ${m.label}${rs === 'refunded' ? ' · ' + 'done' : ''}</span>`;
+  }
+
+  function renderList() {
+    const list = applyFilter(state.bookings);
+    listEl.innerHTML = '';
+
+    if (!list.length) {
+      listEl.innerHTML = `
+        <div class="empty">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <h3>No bookings</h3>
+          <p>Try a different filter, or wait for new requests.</p>
+        </div>`;
+      return;
+    }
+
+    list.forEach(b => {
+      const el = document.createElement('div');
+      el.className = 'bkg' + (b.status === 'cancelled' ? ' is-cancelled' : '') + (b.status === 'completed' ? ' is-completed' : '') + ((b.reschedule_count || 0) > 0 ? ' is-rescheduled' : '');
+      el.dataset.status = b.status;
+
+      const dp = dateParts(b.preferred_date);
+      const isResched = (b.reschedule_count || 0) > 0;
+      const hasRefund = b.refund_status && b.refund_status !== 'none';
+
+      const actions = [];
+      actions.push(`<button class="btn-sm view" data-act="view"><svg viewBox="0 0 24 24"><path d="M1.5 12S5 5.5 12 5.5 22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>View</button>`);
+
+      if (b.status === 'pending') {
+        actions.push(`<button class="btn-sm confirm" data-act="confirm"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>Confirm</button>`);
+      }
+      if (b.status === 'pending' || b.status === 'confirmed') {
+        actions.push(`<button class="btn-sm reschedule" data-act="reschedule"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reschedule</button>`);
+      }
+      if (b.status === 'confirmed') {
+        actions.push(`<button class="btn-sm complete" data-act="complete"><svg viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14.01l-3-3"/></svg>Complete</button>`);
+      }
+      if (state.isAdmin && (b.status === 'pending' || b.status === 'confirmed')) {
+        actions.push(`<button class="btn-sm cancel" data-act="cancel"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>Cancel</button>`);
+      }
+      if (state.isAdmin && b.status === 'cancelled') {
+        const label = hasRefund && b.refund_status !== 'none' ? 'Edit refund' : 'Process refund';
+        actions.push(`<button class="btn-sm refund" data-act="refund"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>${label}</button>`);
+      }
+      if (state.isAdmin) {
+        actions.push(`<button class="btn-sm delete" data-act="delete"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>`);
+      }
+
+      const attendedLine = (b.attended_by_name && b.status === 'completed')
+        ? `<span class="bkg-tag info"><svg viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14.01l-3-3"/></svg>Attended by ${esc(b.attended_by_name)}</span>` : '';
+
+      const cancelledLine = (b.status === 'cancelled' && (b.cancelled_by_name || b.cancellation_reason))
+        ? `<span class="bkg-tag error"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>Cancelled${b.cancelled_by_name ? ' by ' + esc(b.cancelled_by_name) : ''}${b.cancellation_reason ? ' — ' + esc(b.cancellation_reason.slice(0, 60)) + (b.cancellation_reason.length > 60 ? '…' : '') : ''}</span>` : '';
+
+      const reschedLine = isResched
+        ? `<span class="bkg-tag purple"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Rescheduled${b.reschedule_count > 1 ? ' ×' + b.reschedule_count : ''}${b.rescheduled_by_name ? ' by ' + esc(b.rescheduled_by_name) : ''}</span>` : '';
+
+      el.innerHTML = `
+        <div class="bkg-stripe"></div>
+        <div class="bkg-body">
+          <div class="bkg-date">
+            <div class="d-day">${esc(dp.day)}</div>
+            <div class="d-mo">${esc(dp.month)}</div>
+            <div class="d-time">${esc(fmtTime12(b.preferred_time))}</div>
+            ${isResched && b.original_date ? `<div class="d-old">was ${esc(b.original_date.slice(5))}</div>` : ''}
+          </div>
+          <div class="bkg-main">
+            <div class="bkg-top">
+              <h3 class="bkg-title">${esc(b.service_name || 'Treatment')}</h3>
+              ${statusPill(b.status)}
+              <span class="ref-code">${esc(b.reference_code || '—')}</span>
+            </div>
+            <div class="bkg-meta">
+              <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>${esc(b.client_name || '—')}</span>
+              <span><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg><a href="mailto:${esc(b.client_email || '')}">${esc(b.client_email || '—')}</a></span>
+              ${b.client_phone ? `<span><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></svg><a href="tel:${esc(b.client_phone)}">${esc(b.client_phone)}</a></span>` : ''}
+            </div>
+            ${(attendedLine + cancelledLine + reschedLine + refundPill(b.refund_status)) ? `<div>${attendedLine}${reschedLine}${cancelledLine}${refundPill(b.refund_status)}</div>` : ''}
+            ${b.notes && b.status !== 'cancelled' ? `<div class="bkg-note">“${esc(b.notes)}”</div>` : ''}
+          </div>
+          <div class="bkg-actions">${actions.join('')}</div>
+        </div>`;
+
+      el.querySelectorAll('[data-act]').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          const act = btn.dataset.act;
+          if (act === 'view')       openDetail(b);
+          if (act === 'confirm')    askAction(b, 'confirm');
+          if (act === 'complete')   openComplete(b);
+          if (act === 'reschedule') openReschedule(b);
+          if (act === 'cancel')     openCancel(b);
+          if (act === 'refund')     openRefund(b);
+          if (act === 'delete')     askAction(b, 'delete');
+        });
+      });
+      el.addEventListener('click', () => openDetail(b));
+      listEl.appendChild(el);
+    });
+  }
+
+  async function loadBookings() {
+    const { data, error } = await supabase.from('bookings').select('*')
+      .order('preferred_date', { ascending: true })
+      .order('preferred_time', { ascending: true });
+
+    if (error) { showAlert('Could not load bookings: ' + (error.message || '')); state.bookings = []; }
+    else state.bookings = data || [];
+    renderStats();
+    renderList();
+  }
+
+  async function loadStaff() {
+    const { data } = await supabase.from('profiles')
+      .select('id, full_name, role').eq('is_active', true).order('full_name');
+    state.staffList = data || [];
+  }
+
+  refreshBtn.addEventListener('click', async () => {
+    await Promise.all([loadBookings(), loadStaff()]);
+    showAlert('Refreshed.', 'success'); setTimeout(hideAlert, 1800);
+  });
+
+  /* DETAIL MODAL */
+  const detailBackdrop = $('detail-backdrop'), detailClose = $('detail-close');
+  const dTitle = $('d-title'), dSub = $('d-sub'), dGrid = $('d-grid'), dTimeline = $('d-timeline');
+
+  async function openDetail(b) {
+    dTitle.textContent = b.service_name || 'Booking';
+    dSub.textContent = `Ref ${b.reference_code || '—'} · created ${fmtDateTime(b.created_at)}`;
+
+    const fields = [
+      { lbl:'Status', val: b.status.charAt(0).toUpperCase() + b.status.slice(1) },
+      { lbl:'Date', val: fmtDateLong(b.preferred_date) },
+      { lbl:'Time', val: fmtTime12(b.preferred_time) },
+      { lbl:'Client', val: b.client_name || '—' },
+      { lbl:'Email', val: b.client_email ? `<a href="mailto:${esc(b.client_email)}">${esc(b.client_email)}</a>` : '—' },
+      { lbl:'Phone', val: b.client_phone ? `<a href="tel:${esc(b.client_phone)}">${esc(b.client_phone)}</a>` : '—' },
+    ];
+    if (b.attended_by_name) fields.push({ lbl:'Attended by', val: b.attended_by_name, extra:'info-card' });
+    if (b.completed_at) fields.push({ lbl:'Completed at', val: fmtDateTime(b.completed_at) });
+    if (b.reschedule_count > 0) {
+      fields.push({ lbl:'Original date', val: fmtDateLong(b.original_date) + ' · ' + fmtTime12(b.original_time), extra:'purple-card' });
+      fields.push({ lbl:'Rescheduled by', val: b.rescheduled_by_name || '—', extra:'purple-card' });
+    }
+    if (b.cancelled_at) fields.push({ lbl:'Cancelled at', val: fmtDateTime(b.cancelled_at) });
+    if (b.cancelled_by_name) fields.push({ lbl:'Cancelled by', val: b.cancelled_by_name, extra:'warn-card' });
+    if (b.cancellation_reason) fields.push({ lbl:'Cancellation reason', val: b.cancellation_reason, full:true, extra:'warn-card' });
+
+    if (b.refund_status && b.refund_status !== 'none') {
+      fields.push({ lbl:'Refund status', val: b.refund_status.charAt(0).toUpperCase() + b.refund_status.slice(1), extra:'refund-card' });
+      if (b.refund_original_amount) fields.push({ lbl:'Original amount', val: fmtMoney(b.refund_original_amount), extra:'refund-card' });
+      if (b.refund_fee != null) fields.push({ lbl:'10% admin fee', val: '− ' + fmtMoney(b.refund_fee), extra:'refund-card' });
+      if (b.refund_amount != null) fields.push({ lbl:'Refund amount', val: fmtMoney(b.refund_amount), extra:'refund-card' });
+      if (b.refund_reference) fields.push({ lbl:'Reference', val: b.refund_reference, full:true, extra:'refund-card' });
+      if (b.refund_processed_by_name) fields.push({ lbl:'Processed by', val: b.refund_processed_by_name });
+      if (b.refund_processed_at) fields.push({ lbl:'Processed at', val: fmtDateTime(b.refund_processed_at) });
+      if (b.refund_notes) fields.push({ lbl:'Refund notes', val: b.refund_notes, full:true });
+    }
+
+    dGrid.innerHTML = fields.map(f => `
+      <div class="detail-item${f.full ? ' full' : ''}${f.extra ? ' ' + f.extra : ''}">
+        <div class="lbl">${f.lbl}</div>
+        <div class="val${!f.val || f.val === '—' ? ' muted' : ''}">${f.val || '—'}</div>
+      </div>`).join('');
+
+    if (b.notes) dGrid.innerHTML += `<div class="detail-item full"><div class="lbl">Client notes</div><div class="val notes">${esc(b.notes)}</div></div>`;
+    if (b.completion_notes) dGrid.innerHTML += `<div class="detail-item full info-card"><div class="lbl">Session notes</div><div class="val notes">${esc(b.completion_notes)}</div></div>`;
+
+    detailBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Load history
+    dTimeline.innerHTML = '<div style="color:var(--c-ink-muted);font-size:13px">Loading…</div>';
+    const { data: hist, error } = await supabase
+      .from('booking_history')
+      .select('*')
+      .eq('booking_id', b.id)
+      .order('created_at', { ascending: false });
+
+    if (error || !hist?.length) {
+      dTimeline.innerHTML = '<div style="color:var(--c-ink-muted);font-size:13px">No history recorded.</div>';
+      return;
+    }
+
+    dTimeline.innerHTML = hist.map(h => {
+      const meta = describeHistory(h);
+      return `<div class="tl-item ${h.event_type}">
+        <div class="tl-head">
+          <span class="tl-title">${meta.title}</span>
+          <span class="tl-when">${fmtDateTime(h.created_at)}</span>
+          ${h.actor_name ? `<span class="tl-by">· ${esc(h.actor_name)}</span>` : ''}
+        </div>
+        ${meta.desc ? `<div class="tl-desc">${meta.desc}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  function describeHistory(h) {
+    const f = h.from_value || {}, t = h.to_value || {};
+    switch (h.event_type) {
+      case 'created': return { title: 'Booking created', desc: esc(h.notes || '') };
+      case 'confirmed': return { title: 'Confirmed', desc: '' };
+      case 'completed': return { title: 'Completed', desc: '' };
+      case 'cancelled': return { title: 'Cancelled', desc: t.reason ? `Reason: ${esc(t.reason)}` : '' };
+      case 'rescheduled': return {
+        title: 'Rescheduled',
+        desc: `<span class="old">${esc(f.date || '—')} · ${esc(fmtTime12(f.time))}</span> → <span class="new">${esc(t.date || '—')} · ${esc(fmtTime12(t.time))}</span>`
+      };
+      case 'refund_requested': return { title: 'Refund requested', desc: h.notes ? esc(h.notes) : '' };
+      case 'refund_processed': return { title: 'Refund processed', desc: `Amount: ${fmtMoney(t.amount)} (fee ${fmtMoney(t.fee)})${t.reference ? ' · Ref: ' + esc(t.reference) : ''}` };
+      case 'refund_declined': return { title: 'Refund declined', desc: h.notes ? esc(h.notes) : '' };
+      default: return { title: h.event_type, desc: '' };
+    }
+  }
+
+  function closeDetail() { detailBackdrop.classList.remove('show'); document.body.style.overflow = ''; }
+  detailClose.addEventListener('click', closeDetail);
+  $('d-close-btn').addEventListener('click', closeDetail);
+  detailBackdrop.addEventListener('click', (e) => { if (e.target === detailBackdrop) closeDetail(); });
+
+  /* COMPLETE MODAL */
+  const completeBackdrop = $('complete-backdrop');
+  const completePreview = $('complete-preview'), completeStaff = $('complete-staff'), completeStaffHint = $('complete-staff-hint'), completeNotes = $('complete-notes');
+  const completeDo = $('complete-do'), completeDoLabel = $('complete-do-label'), completeSpinner = $('complete-spinner');
+
+  function openComplete(b) {
+    state.completing = b;
+    completePreview.innerHTML = `<div class="row1">${esc(b.service_name || 'Treatment')}</div><div class="row2">${esc(fmtDateLong(b.preferred_date))} · ${esc(fmtTime12(b.preferred_time))} · ${esc(b.client_name || '—')}</div>`;
+
+    completeStaff.innerHTML = '<option value="">Select staff member…</option>';
+    if (state.isAdmin) {
+      state.staffList.forEach(s => {
+        const o = document.createElement('option'); o.value = s.id;
+        o.textContent = `${s.full_name || s.id}${s.role && s.role !== 'staff' ? ' (' + s.role + ')' : ''}`;
+        completeStaff.appendChild(o);
+      });
+      completeStaff.disabled = false;
+      completeStaffHint.textContent = 'Pick the staff member who performed this treatment.';
+    } else {
+      const me = state.staffList.find(s => s.id === state.user.id);
+      const meName = me?.full_name || state.profile?.full_name || 'You';
+      const o = document.createElement('option'); o.value = state.user.id; o.textContent = meName + ' (you)';
+      completeStaff.appendChild(o); completeStaff.value = state.user.id; completeStaff.disabled = true;
+      completeStaffHint.textContent = 'You can only record yourself.';
+    }
+    completeNotes.value = '';
+    completeBackdrop.classList.add('show'); document.body.style.overflow = 'hidden';
+  }
+  function closeComplete() { completeBackdrop.classList.remove('show'); document.body.style.overflow = ''; state.completing = null; }
+  $('complete-close').addEventListener('click', closeComplete);
+  $('complete-cancel').addEventListener('click', closeComplete);
+  completeBackdrop.addEventListener('click', (e) => { if (e.target === completeBackdrop) closeComplete(); });
+
+  completeDo.addEventListener('click', async () => {
+    const b = state.completing; if (!b) return;
+    const staffId = completeStaff.value;
+    if (!staffId) { showAlert('Please select the staff member.'); return; }
+    const staffName = state.staffList.find(s => s.id === staffId)?.full_name || state.profile?.full_name || 'Staff';
+
+    completeDo.disabled = true; completeSpinner.hidden = false; completeDoLabel.textContent = 'Saving…';
+    const { error } = await supabase.from('bookings').update({
+      status: 'completed', attended_by: staffId, completed_at: new Date().toISOString(),
+      completion_notes: completeNotes.value.trim() || null,
+    }).eq('id', b.id);
+    completeDo.disabled = false; completeSpinner.hidden = true; completeDoLabel.textContent = 'Mark completed';
+
+    if (error) { showAlert(error.message || 'Could not complete.'); return; }
+    closeComplete(); await loadBookings();
+    showAlert(`Booking completed — attended by ${staffName}.`, 'success'); setTimeout(hideAlert, 3000);
+  });
+
+  /* RESCHEDULE MODAL */
+  const reschedBackdrop = $('resched-backdrop');
+  const reschedPreview = $('resched-preview'), reschedDate = $('resched-date'), reschedTime = $('resched-time'), reschedReason = $('resched-reason');
+  const reschedDo = $('resched-do'), reschedDoLabel = $('resched-do-label'), reschedSpinner = $('resched-spinner');
+
+  function openReschedule(b) {
+    state.rescheduling = b;
+    reschedPreview.innerHTML = `<div class="row1">${esc(b.service_name || 'Treatment')}</div><div class="row2">Currently: ${esc(fmtDateLong(b.preferred_date))} · ${esc(fmtTime12(b.preferred_time))}</div>`;
+    reschedDate.value = b.preferred_date || '';
+    reschedTime.value = b.preferred_time || '';
+    reschedReason.value = '';
+    reschedBackdrop.classList.add('show'); document.body.style.overflow = 'hidden';
+    setTimeout(() => reschedDate.focus(), 200);
+  }
+  function closeReschedule() { reschedBackdrop.classList.remove('show'); document.body.style.overflow = ''; state.rescheduling = null; }
+  $('resched-close').addEventListener('click', closeReschedule);
+  $('resched-cancel').addEventListener('click', closeReschedule);
+  reschedBackdrop.addEventListener('click', (e) => { if (e.target === reschedBackdrop) closeReschedule(); });
+
+  reschedDo.addEventListener('click', async () => {
+    const b = state.rescheduling; if (!b) return;
+    const date = reschedDate.value, time = reschedTime.value;
+    if (!date || !time) { showAlert('Please pick a new date and time.'); return; }
+    const dow = new Date(date + 'T00:00:00').getDay();
+    if (dow === 0) { showAlert('We\'re closed on Sundays.'); return; }
+
+    reschedDo.disabled = true; reschedSpinner.hidden = false; reschedDoLabel.textContent = 'Saving…';
+    const { error } = await supabase.from('bookings').update({
+      preferred_date: date, preferred_time: time,
+      cancellation_reason: null,
+    }).eq('id', b.id);
+    reschedDo.disabled = false; reschedSpinner.hidden = true; reschedDoLabel.textContent = 'Reschedule';
+
+    if (error) { showAlert(error.message || 'Could not reschedule.'); return; }
+    closeReschedule(); await loadBookings();
+    showAlert('Booking rescheduled.', 'success'); setTimeout(hideAlert, 2400);
+  });
+
+  /* CANCEL MODAL */
+  const cancelBackdrop = $('cancel-backdrop');
+  const cancelPreview = $('cancel-preview'), cancelReason = $('cancel-reason');
+  const cancelActorName = $('cancel-actor-name'), cancelActorAvatar = $('cancel-actor-avatar');
+  const cancelDo = $('cancel-do'), cancelDoLabel = $('cancel-do-label'), cancelSpinner = $('cancel-spinner');
+
+  function openCancel(b) {
+    if (!state.isAdmin) { showAlert('Only admins and developers can cancel bookings.'); return; }
+    state.cancelling = b;
+    cancelPreview.innerHTML = `<div class="row1">${esc(b.service_name || 'Treatment')}</div><div class="row2">${esc(fmtDateLong(b.preferred_date))} · ${esc(fmtTime12(b.preferred_time))} · ${esc(b.client_name || '—')}</div>`;
+    const meName = state.profile?.full_name?.trim() || state.user.email?.split('@')[0] || 'You';
+    cancelActorName.textContent = meName; cancelActorAvatar.textContent = initials(meName);
+    cancelReason.value = ''; cancelReason.style.borderColor = '';
+    cancelBackdrop.classList.add('show'); document.body.style.overflow = 'hidden';
+    setTimeout(() => cancelReason.focus(), 220);
+  }
+  function closeCancel() { cancelBackdrop.classList.remove('show'); document.body.style.overflow = ''; state.cancelling = null; }
+  $('cancel-close').addEventListener('click', closeCancel);
+  $('cancel-cancel').addEventListener('click', closeCancel);
+  cancelBackdrop.addEventListener('click', (e) => { if (e.target === cancelBackdrop) closeCancel(); });
+
+  cancelDo.addEventListener('click', async () => {
+    const b = state.cancelling; if (!b) return;
+    const reason = cancelReason.value.trim();
+    if (reason.length < 5) { cancelReason.style.borderColor = 'var(--c-error)'; cancelReason.focus(); showAlert('Please give a reason (at least 5 characters).'); return; }
+    cancelReason.style.borderColor = '';
+
+    cancelDo.disabled = true; cancelSpinner.hidden = false; cancelDoLabel.textContent = 'Cancelling…';
+    const { error } = await supabase.from('bookings').update({
+      status: 'cancelled',
+      cancelled_at: new Date().toISOString(),
+      cancellation_reason: reason,
+      refund_status: 'none',
+    }).eq('id', b.id);
+    cancelDo.disabled = false; cancelSpinner.hidden = true; cancelDoLabel.textContent = 'Cancel booking';
+
+    if (error) { showAlert(error.message || 'Could not cancel.'); return; }
+    closeCancel(); await loadBookings();
+    showAlert('Booking cancelled.', 'success'); setTimeout(hideAlert, 2400);
+  });
+
+  /* REFUND MODAL */
+  const refundBackdrop = $('refund-backdrop');
+  const refundPreview = $('refund-preview'), refundStatus = $('refund-status');
+  const refundCalc = $('refund-calc'), refundReference = $('refund-reference'), refundNotes = $('refund-notes');
+  const refundDo = $('refund-do'), refundDoLabel = $('refund-do-label'), refundSpinner = $('refund-spinner');
+
+  function openRefund(b) {
+    if (!state.isAdmin) { showAlert('Only admins and developers can process refunds.'); return; }
+    state.refunding = b;
+    refundPreview.innerHTML = `<div class="row1">${esc(b.service_name || 'Treatment')}</div><div class="row2">Ref ${esc(b.reference_code || '—')} · ${esc(b.client_name || '—')} · cancelled ${b.cancelled_at ? fmtDateTime(b.cancelled_at) : '—'}</div>`;
+    refundStatus.value = b.refund_status || 'requested';
+    refundReference.value = b.refund_reference || '';
+    refundNotes.value = b.refund_notes || '';
+    updateRefundCalc(b);
+    refundBackdrop.classList.add('show'); document.body.style.overflow = 'hidden';
+  }
+  function closeRefund() { refundBackdrop.classList.remove('show'); document.body.style.overflow = ''; state.refunding = null; }
+
+  function updateRefundCalc(b) {
+    const original = Number(b.refund_original_amount || b.service_price || 0);
+    const fee = Math.round(original * 0.10 * 100) / 100;
+    const refund = Math.round((original - fee) * 100) / 100;
+    refundCalc.innerHTML = `
+      <div class="refund-row"><span class="label">Original booking amount</span><span class="amt">${fmtMoney(original)}</span></div>
+      <div class="refund-row"><span class="label">Administration fee (10%)</span><span class="amt">− ${fmtMoney(fee)}</span></div>
+      <div class="refund-row total"><span class="label">Refund to client</span><span class="amt">${fmtMoney(refund)}</span></div>`;
+    return { original, fee, refund };
+  }
+
+  $('refund-close').addEventListener('click', closeRefund);
+  $('refund-cancel').addEventListener('click', closeRefund);
+  refundBackdrop.addEventListener('click', (e) => { if (e.target === refundBackdrop) closeRefund(); });
+
+  refundDo.addEventListener('click', async () => {
+    const b = state.refunding; if (!b) return;
+    const nextStatus = refundStatus.value;
+    const { original, fee, refund } = updateRefundCalc(b);
+
+    refundDo.disabled = true; refundSpinner.hidden = false; refundDoLabel.textContent = 'Saving…';
+
+    const payload = {
+      refund_status: nextStatus,
+      refund_original_amount: original,
+      refund_fee: fee,
+      refund_amount: refund,
+      refund_reference: refundReference.value.trim() || null,
+      refund_notes: refundNotes.value.trim() || null,
+    };
+    if (nextStatus === 'requested' && b.refund_status === 'none') {
+      payload.refund_requested_at = new Date().toISOString();
+    }
+
+    const { error } = await supabase.from('bookings').update(payload).eq('id', b.id);
+    refundDo.disabled = false; refundSpinner.hidden = true; refundDoLabel.textContent = 'Save refund';
+
+    if (error) { showAlert(error.message || 'Could not save refund.'); return; }
+    closeRefund(); await loadBookings();
+    showAlert('Refund updated.', 'success'); setTimeout(hideAlert, 2400);
+  });
+
+  /* CONFIRM / DELETE MODAL */
+  const confirmBackdrop = $('confirm-backdrop');
+  const confirmTitle = $('confirm-title'), confirmSub = $('confirm-sub'), confirmMsg = $('confirm-msg'), confirmPreview = $('confirm-preview');
+  const confirmDo = $('confirm-do'), confirmDoLabel = $('confirm-do-label'), confirmSpinner = $('confirm-spinner');
+
+  const ACTION_DEFS = {
+    confirm: { title:'Confirm this booking?', sub:'The client will see it as confirmed.', msg:'This marks the appointment as confirmed.', btnClass:'btn-success', btnLabel:'Confirm booking' },
+    delete:  { title:'Delete permanently?', sub:'This cannot be undone.', msg:'The booking will be removed entirely.', btnClass:'btn-danger', btnLabel:'Delete forever' },
+  };
+
+  function askAction(b, type) {
+    const def = ACTION_DEFS[type]; if (!def) return;
+    if (type === 'delete' && !state.isAdmin) { showAlert('Only admins can delete.'); return; }
+    state.pendingAction = { booking: b, type };
+    confirmTitle.textContent = def.title; confirmSub.textContent = def.sub; confirmMsg.textContent = def.msg;
+    confirmPreview.style.display = 'block';
+    confirmPreview.innerHTML = `<div class="lbl">Booking</div><div class="val"><strong>${esc(b.service_name || 'Treatment')}</strong> · ${esc(fmtDateLong(b.preferred_date))} ${esc(fmtTime12(b.preferred_time))}<br><span style="color:var(--c-ink-muted);font-size:13px">${esc(b.client_name || '—')} · ${esc(b.reference_code || '—')}</span></div>`;
+    confirmDo.className = 'btn ' + (def.btnClass || 'btn-primary');
+    confirmDoLabel.textContent = def.btnLabel;
+    confirmBackdrop.classList.add('show'); document.body.style.overflow = 'hidden';
+  }
+  function closeConfirm() { confirmBackdrop.classList.remove('show'); document.body.style.overflow = ''; state.pendingAction = null; }
+  $('confirm-close').addEventListener('click', closeConfirm);
+  $('confirm-cancel').addEventListener('click', closeConfirm);
+  confirmBackdrop.addEventListener('click', (e) => { if (e.target === confirmBackdrop) closeConfirm(); });
+
+  confirmDo.addEventListener('click', async () => {
+    const a = state.pendingAction; if (!a) return;
+    const { booking: b, type } = a;
+    confirmDo.disabled = true; confirmSpinner.hidden = false;
+    let error = null;
+    if (type === 'confirm') {
+      ({ error } = await supabase.from('bookings').update({ status: 'confirmed' }).eq('id', b.id));
+    } else if (type === 'delete') {
+      ({ error } = await supabase.from('bookings').delete().eq('id', b.id));
+    }
+    confirmDo.disabled = false; confirmSpinner.hidden = true;
+    if (error) { closeConfirm(); showAlert(error.message || 'Action failed.'); return; }
+    closeConfirm(); await loadBookings();
+    showAlert(`Booking ${type === 'confirm' ? 'confirmed' : 'deleted'}.`, 'success'); setTimeout(hideAlert, 2400);
+  });
+
+  /* ROLE NOTICE */
+  function updateRoleNotice() {
+    if (state.role === 'staff') {
+      roleNotice.hidden = false;
+      roleNoticeText.innerHTML = 'You\'re signed in as <strong>staff</strong>. You can confirm, complete and reschedule. Only <strong>admins</strong> and <strong>developers</strong> can cancel, refund or delete.';
+    } else {
+      roleNotice.hidden = false;
+      roleNoticeText.innerHTML = `You\'re signed in as <strong>${state.role}</strong>. Full control including cancellations, refunds and deletions.`;
+    }
+  }
+
+  /* REALTIME */
+  function subscribeRealtime() {
+    supabase.channel('public:bookings')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => loadBookings())
+      .subscribe();
+  }
+
+  /* BOOT */
+  async function boot() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) { location.replace('login.html'); return; }
+    state.user = session.user;
+
+    const { data: profile } = await supabase.from('profiles')
+      .select('full_name, role, avatar_url').eq('id', session.user.id).maybeSingle();
+    state.profile = profile;
+    state.role = (profile?.role || 'staff').toLowerCase();
+    state.isAdmin = state.role === 'admin' || state.role === 'developer';
+
+    if (!['staff','admin','developer'].includes(state.role)) { location.replace('dashboard.html'); return; }
+
+    const displayName = profile?.full_name?.trim() || session.user.email?.split('@')[0] || 'You';
+    userNameEl.textContent = displayName;
+    userRoleEl.textContent = state.role;
+    userAvatarEl.src = profile?.avatar_url || DEFAULT_AVATAR;
+    userAvatarEl.onerror = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+
+    updateRoleNotice();
+    await Promise.all([loadBookings(), loadStaff()]);
+    subscribeRealtime();
+  }
+  supabase.auth.onAuthStateChange((e, s) => LOG.info('AUTH-EVENT', e, '| user:', s?.user?.email ?? 'none'));
+  boot();
+  LOG.info('bookings.html ready.');
+</script>
+</body>
+</html>

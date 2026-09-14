@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lumière Spa · Beauty & Massage</title>
+<meta name="description" content="A boutique beauty and massage spa. Book a session, leave a review, or simply say hello." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ═════════════════════════════════════════════
+     Lumière Spa — index.html (public landing)
+     ═════════════════════════════════════════════ */
+  :root{
+    --c-bg:#faf7f2;--c-bg-alt:#f4ede4;--c-surface:#fff;
+    --c-ink:#2b1d13;--c-ink-soft:#5c4a3a;--c-ink-muted:#8a7a6a;
+    --c-brand:#b9926a;--c-brand-dark:#8f6d4a;--c-brand-soft:#f1e6d8;
+    --c-border:#e8ddce;--c-border-strong:#d9c9b3;
+    --c-error:#c0392b;--c-error-bg:#fdecea;
+    --c-success:#1e7a3c;--c-success-bg:#e8f5ec;
+    --c-warn:#b8860b;--c-warn-bg:#fdf6e3;
+    --c-info:#2a5d95;--c-info-bg:#eef4fb;
+    --c-gold:#d8b48f;
+    --radius-sm:8px;--radius:12px;--radius-lg:20px;--radius-xl:28px;--radius-pill:999px;
+    --shadow-sm:0 2px 6px rgba(43,29,19,.06);
+    --shadow:0 10px 30px rgba(43,29,19,.08);
+    --shadow-lg:0 30px 60px rgba(43,29,19,.18);
+    --font-body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --font-display:'Cormorant Garamond',Georgia,serif;
+    --transition:220ms cubic-bezier(.4,0,.2,1);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font-body);color:var(--c-ink);background:var(--c-bg);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button,input,textarea,select{font-family:inherit}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0 0 .3em;line-height:1.1;letter-spacing:-.015em}
+  h1{font-size:clamp(38px,6vw,68px)}
+  h2{font-size:clamp(30px,4vw,46px)}
+  h3{font-size:22px}
+  p{margin:0 0 1em;color:var(--c-ink-soft)}
+  .container{width:min(1200px,92%);margin:0 auto}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--c-brand);margin-bottom:12px;display:inline-block}
+
+  /* ═══ NAV ═══ */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(250,247,242,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--c-border)}
+  .nav-inner{display:flex;align-items:center;gap:26px;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.02em}
+  .brand-mark{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;font-family:var(--font-display);font-size:20px;font-weight:700}
+  .nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;font-weight:500;color:var(--c-ink-soft);align-items:center}
+  .nav-links a{transition:color var(--transition)}
+  .nav-links a:hover{color:var(--c-brand-dark)}
+  .nav-links .lookup-link{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--c-brand-dark);font-weight:600;background:none;border:0;font-size:14px;padding:0}
+  .nav-links .lookup-link svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-size:14px;font-weight:600;border-radius:var(--radius-pill);cursor:pointer;border:1px solid transparent;transition:transform var(--transition),box-shadow var(--transition),background var(--transition),color var(--transition),border-color var(--transition);white-space:nowrap}
+  .btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .btn-primary{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;box-shadow:0 10px 22px rgba(185,146,106,.32)}
+  .btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 30px rgba(185,146,106,.45)}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--c-ink);border-color:var(--c-border-strong)}
+  .btn-ghost:hover{background:var(--c-brand-soft);border-color:var(--c-brand)}
+  .btn-light{background:#fff;color:var(--c-ink);box-shadow:0 10px 24px rgba(0,0,0,.12)}
+  .btn-light:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.18)}
+  .btn-lg{padding:15px 30px;font-size:15px}
+
+  /* ═══ HERO ═══ */
+  .hero{position:relative;padding:80px 0 90px;overflow:hidden;background:radial-gradient(80% 60% at 100% 0%,rgba(185,146,106,.28),transparent 60%),radial-gradient(60% 80% at 0% 100%,rgba(185,146,106,.18),transparent 55%),linear-gradient(160deg,#2b1d13 0%,#3d2a1c 55%,#4a3423 100%);color:#f8f1e8}
+  .hero::after{content:"";position:absolute;right:-180px;bottom:-220px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(185,146,106,.35),transparent 65%);pointer-events:none}
+  .hero-grid{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center}
+  .hero h1{color:#f8f1e8;margin-bottom:22px}
+  .hero h1 em{font-style:italic;color:var(--c-gold);font-weight:500}
+  .hero-lead{color:rgba(246,237,228,.8);font-size:17px;line-height:1.65;max-width:480px;margin:0 0 30px}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero-visual{position:relative;aspect-ratio:1/1;border-radius:var(--radius-xl);background:radial-gradient(80% 80% at 30% 20%,rgba(216,180,143,.5),transparent 60%),linear-gradient(135deg,#d8b48f 0%,#b9926a 40%,#8f6d4a 100%);box-shadow:0 40px 80px rgba(0,0,0,.35);overflow:hidden}
+  .hero-visual::before{content:"";position:absolute;inset:20px;border-radius:calc(var(--radius-xl) - 12px);border:1px solid rgba(255,255,255,.25)}
+  .hero-visual-inner{position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.15);font-family:var(--font-display);font-size:220px;font-weight:700;line-height:1;user-select:none}
+  .hero-badge{position:absolute;background:rgba(250,247,242,.96);color:var(--c-ink);padding:14px 20px;border-radius:var(--radius-lg);box-shadow:0 20px 40px rgba(0,0,0,.25);display:flex;align-items:center;gap:12px;font-size:13px}
+  .hero-badge strong{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--c-brand-dark);line-height:1}
+  .hero-badge-1{top:30px;left:-30px}
+  .hero-badge-2{bottom:40px;right:-30px}
+  .hero-badge .stars{color:#e8b75f;letter-spacing:2px}
+
+  /* ═══ STRIP ═══ */
+  .strip{background:var(--c-bg-alt);border-bottom:1px solid var(--c-border);padding:26px 0}
+  .strip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;text-align:center}
+  .strip-item strong{display:block;font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--c-brand-dark);line-height:1;margin-bottom:4px}
+  .strip-item span{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c-ink-muted)}
+
+  /* ═══ SECTIONS ═══ */
+  section{padding:88px 0}
+  .section-head{max-width:640px;margin-bottom:48px}
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .section-head p{font-size:16px}
+
+  /* SERVICES */
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+  .service-card{position:relative;display:flex;flex-direction:column;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition)}
+  .service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--c-brand)}
+  .service-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,#efe6d8,#d9c9b3)}
+  .service-media img,.service-media video{width:100%;height:100%;object-fit:cover;transition:transform 600ms cubic-bezier(.2,0,.2,1)}
+  .service-card:hover .service-media img{transform:scale(1.08)}
+  .service-media .placeholder{display:grid;place-items:center;width:100%;height:100%;font-family:var(--font-display);font-size:56px;font-weight:700;color:var(--c-brand-dark);background:radial-gradient(120% 120% at 100% 0%,rgba(185,146,106,.35),transparent 55%),linear-gradient(135deg,#f1e6d8,#d9c9b3)}
+  .service-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,29,19,0) 50%,rgba(43,29,19,.65) 100%);pointer-events:none}
+  .service-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:var(--radius-pill);background:linear-gradient(135deg,#f2d8a8,#d8a86a);color:#2b1d13;z-index:2}
+  .service-head{position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:2;color:#f8f1e8}
+  .service-cat{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,237,228,.75);margin-bottom:4px}
+  .service-name{font-family:var(--font-display);font-size:24px;font-weight:700;color:#fff;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .service-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
+  .service-desc{font-size:13.5px;color:var(--c-ink-soft);line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .service-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px;border-top:1px dashed var(--c-border)}
+  .service-price{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--c-brand-dark);line-height:1}
+  .service-price small{font-family:var(--font-body);font-size:11.5px;font-weight:600;color:var(--c-ink-muted);margin-left:3px}
+  .service-dur{font-size:12.5px;color:var(--c-ink-muted);display:inline-flex;align-items:center;gap:5px}
+  .service-dur svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .service-book{width:100%;padding:11px;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:var(--radius);background:var(--c-brand-soft);color:var(--c-brand-dark);border:0;cursor:pointer;transition:background var(--transition),color var(--transition),transform var(--transition)}
+  .service-book:hover{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;transform:translateY(-1px)}
+  .services-empty{grid-column:1/-1;text-align:center;padding:60px 20px;background:var(--c-surface);border:1px dashed var(--c-border-strong);border-radius:var(--radius-lg);color:var(--c-ink-muted)}
+
+  /* WHY */
+  .why{background:linear-gradient(180deg,var(--c-bg-alt) 0%,var(--c-bg) 100%);border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border)}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px}
+  .why-item .icon-circle{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--c-brand-soft);color:var(--c-brand-dark);margin-bottom:18px}
+  .why-item .icon-circle svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .why-item h3{font-size:20px;margin-bottom:8px}
+  .why-item p{font-size:14px;margin:0}
+
+  /* REVIEWS */
+  .reviews-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:34px}
+  .review{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);padding:26px 24px 22px;box-shadow:var(--shadow-sm);position:relative;transition:transform var(--transition),box-shadow var(--transition)}
+  .review:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .review::before{content:"\201C";position:absolute;top:6px;right:22px;font-family:var(--font-display);font-size:68px;line-height:1;color:var(--c-brand-soft);pointer-events:none}
+  .review-stars{color:#e8b75f;letter-spacing:3px;font-size:15px;margin-bottom:12px}
+  .review-title{font-family:var(--font-display);font-size:20px;font-weight:600;margin:0 0 8px;color:var(--c-ink);line-height:1.2}
+  .review-body{font-size:14.5px;color:var(--c-ink-soft);line-height:1.6;margin:0 0 16px}
+  .review-meta{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px dashed var(--c-border);font-size:13px}
+  .review-avatar{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;font-weight:700;font-family:var(--font-display);font-size:15px;flex:none}
+  .review-meta .who{min-width:0;flex:1}
+  .review-meta strong{display:block;font-size:13.5px;font-weight:600;color:var(--c-ink);line-height:1.2}
+  .review-meta small{font-size:12px;color:var(--c-ink-muted)}
+  .reviews-cta{text-align:center;padding:24px}
+
+  /* CONTACT */
+  .contact{background:radial-gradient(80% 100% at 0% 0%,rgba(185,146,106,.2),transparent 55%),linear-gradient(160deg,#2b1d13 0%,#3d2a1c 60%,#4a3423 100%);color:#f8f1e8;position:relative;overflow:hidden}
+  .contact::after{content:"";position:absolute;left:-180px;bottom:-220px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(185,146,106,.35),transparent 65%);pointer-events:none}
+  .contact h2{color:#f8f1e8}
+  .contact p{color:rgba(246,237,228,.75)}
+  .contact-grid{position:relative;display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:start}
+  .contact-info .eyebrow{color:var(--c-gold)}
+  .contact-info h2{margin-bottom:14px}
+  .contact-list{display:flex;flex-direction:column;gap:18px;margin-top:30px}
+  .contact-item{display:flex;gap:14px;align-items:flex-start}
+  .contact-item .ci{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:rgba(185,146,106,.18);color:var(--c-gold);flex:none}
+  .contact-item .ci svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .contact-item .label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,237,228,.55);margin-bottom:3px}
+  .contact-item .value{font-size:15px;color:#f8f1e8;font-weight:500;word-break:break-word}
+  .contact-form{background:rgba(255,255,255,.04);border:1px solid rgba(246,237,228,.1);border-radius:var(--radius-lg);padding:32px 30px;backdrop-filter:blur(6px)}
+  .contact-form h3{color:#f8f1e8;font-size:24px;margin-bottom:6px}
+  .contact-form .form-lead{color:rgba(246,237,228,.65);font-size:13.5px;margin-bottom:22px}
+  .contact-form .field label{color:rgba(246,237,228,.78)}
+  .contact-form .field input,.contact-form .field textarea{background:rgba(255,255,255,.06);border-color:rgba(246,237,228,.15);color:#f8f1e8}
+  .contact-form .field input::placeholder,.contact-form .field textarea::placeholder{color:rgba(246,237,228,.4)}
+  .contact-form .field input:focus,.contact-form .field textarea:focus{border-color:var(--c-gold);box-shadow:0 0 0 4px rgba(216,180,143,.2);background:rgba(255,255,255,.09)}
+
+  /* FORMS */
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .field label{font-size:12.5px;font-weight:600;color:var(--c-ink-soft);letter-spacing:.02em}
+  .field .req{color:var(--c-error)}
+  .field input,.field textarea,.field select{width:100%;padding:12px 14px;font-size:14.5px;color:var(--c-ink);background:#fff;border:1.5px solid var(--c-border);border-radius:var(--radius);outline:none;transition:border-color var(--transition),box-shadow var(--transition);resize:vertical}
+  .field textarea{min-height:96px;line-height:1.55}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--c-brand);box-shadow:0 0 0 4px rgba(185,146,106,.15)}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  /* FOOTER */
+  footer{padding:40px 0 30px;background:#241811;color:rgba(246,237,228,.6);text-align:center;font-size:13.5px}
+  footer .brand{color:#f8f1e8;justify-content:center;margin-bottom:14px}
+  footer p{color:rgba(246,237,228,.55);margin:0 0 6px}
+  footer a{color:var(--c-gold)}
+  footer a:hover{text-decoration:underline}
+
+  /* ═══ MODAL SHARED ═══ */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(20,13,8,.72);backdrop-filter:blur(6px);z-index:100;display:grid;place-items:center;padding:24px;opacity:0;pointer-events:none;transition:opacity var(--transition)}
+  .modal-backdrop.show{opacity:1;pointer-events:auto}
+  .modal{width:min(560px,100%);max-height:calc(100vh - 48px);background:var(--c-surface);border-radius:var(--radius-lg);box-shadow:0 40px 80px rgba(0,0,0,.45);overflow:hidden;display:flex;flex-direction:column;transform:translateY(16px) scale(.98);transition:transform 260ms cubic-bezier(.4,0,.2,1);position:relative}
+  .modal.modal-wide{width:min(680px,100%)}
+  .modal-backdrop.show .modal{transform:translateY(0) scale(1)}
+  .modal-scroll{overflow-y:auto;flex:1}
+  .modal-close{position:absolute;top:16px;right:16px;z-index:4;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.94);border:0;cursor:pointer;color:var(--c-ink);box-shadow:0 6px 16px rgba(0,0,0,.2);transition:background var(--transition),transform var(--transition)}
+  .modal-close:hover{background:#fff;transform:rotate(90deg)}
+  .modal-close svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .modal-head{padding:28px 30px 16px;background:radial-gradient(120% 100% at 100% 0%,rgba(185,146,106,.28),transparent 55%),linear-gradient(135deg,#f9f2e9 0%,#f4ede4 100%);border-bottom:1px solid var(--c-border)}
+  .modal-head h3{font-size:26px;margin:0 0 4px}
+  .modal-head p{font-size:13.5px;color:var(--c-ink-muted);margin:0}
+  .modal-body{padding:24px 30px 10px}
+  .modal-foot{padding:16px 30px 24px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--c-border);background:var(--c-bg);flex-wrap:wrap}
+  .modal-foot .btn{width:auto}
+  .modal-alert{margin:0 30px 12px;padding:12px 14px;border-radius:var(--radius);font-size:13px;line-height:1.45;background:var(--c-error-bg);color:var(--c-error);border:1px solid #f3c3bd}
+  .modal-alert[hidden]{display:none}
+  .modal-alert[data-type="success"]{background:var(--c-success-bg);color:var(--c-success);border-color:#b7e2c2}
+
+  /* stars */
+  .stars-input{display:flex;gap:4px;align-items:center;font-size:32px;line-height:1;user-select:none}
+  .star-btn{background:none;border:0;padding:0;font-size:32px;line-height:1;color:#e0d4c3;cursor:pointer;transition:color var(--transition),transform var(--transition)}
+  .star-btn:hover{transform:scale(1.15)}
+  .star-btn.on{color:#e8b75f}
+  .rating-hint{font-size:12.5px;color:var(--c-ink-muted);margin-left:10px;font-weight:600}
+
+  /* ═════════════════════════════════════════════
+     CALENDAR
+     ═════════════════════════════════════════════ */
+  .calendar{border:1.5px solid var(--c-border);border-radius:var(--radius);padding:14px;background:#fff;transition:border-color var(--transition)}
+  .calendar:hover{border-color:var(--c-border-strong)}
+  .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .cal-month{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--c-ink);letter-spacing:-.01em}
+  .cal-nav{display:flex;gap:6px}
+  .cal-nav button{width:30px;height:30px;border-radius:8px;border:1px solid var(--c-border);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--c-ink-soft);transition:all 180ms}
+  .cal-nav button:hover:not(:disabled){background:var(--c-brand-soft);color:var(--c-brand-dark);border-color:var(--c-border-strong)}
+  .cal-nav button:disabled{opacity:.35;cursor:not-allowed}
+  .cal-nav svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+  .cal-dow{text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-ink-muted);padding:6px 0;user-select:none}
+  .cal-day{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--c-ink);cursor:pointer;border:1px solid transparent;background:transparent;transition:all 150ms;font-family:inherit;padding:0;position:relative}
+  .cal-day:hover:not(.disabled):not(.selected){background:var(--c-brand-soft);color:var(--c-brand-dark)}
+  .cal-day.empty{visibility:hidden;pointer-events:none}
+  .cal-day.disabled{color:var(--c-ink-muted);opacity:.32;cursor:not-allowed;text-decoration:line-through;text-decoration-color:rgba(192,57,43,.5)}
+  .cal-day.today::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--c-brand)}
+  .cal-day.selected{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;box-shadow:0 4px 12px rgba(185,146,106,.4)}
+  .cal-day.selected::after{background:#fff}
+  .cal-hint{margin:10px 0 0;font-size:11.5px;color:var(--c-ink-muted);text-align:center;letter-spacing:.01em}
+  .cal-hint strong{color:var(--c-brand-dark);font-weight:700}
+
+  /* ═════════════════════════════════════════════
+     TIME SLOTS
+     ═════════════════════════════════════════════ */
+  .time-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px}
+  .time-slot{padding:10px 6px;font-size:12.5px;font-weight:600;border-radius:8px;border:1.5px solid var(--c-border);background:#fff;color:var(--c-ink-soft);cursor:pointer;transition:all 150ms;text-align:center;font-family:inherit;letter-spacing:.02em}
+  .time-slot:hover{border-color:var(--c-brand);background:var(--c-brand-soft);color:var(--c-brand-dark);transform:translateY(-1px)}
+  .time-slot.selected{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(185,146,106,.3)}
+  .time-empty{padding:22px 16px;text-align:center;color:var(--c-ink-muted);font-size:13px;background:var(--c-bg);border:1px dashed var(--c-border-strong);border-radius:8px;line-height:1.5}
+  .time-empty svg{width:22px;height:22px;margin:0 auto 8px;stroke:var(--c-brand);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+  /* ═════════════════════════════════════════════
+     SUCCESS MODAL
+     ═════════════════════════════════════════════ */
+  .success-hero{padding:40px 30px 24px;text-align:center;background:radial-gradient(120% 100% at 50% 0%,rgba(46,160,96,.16),transparent 55%),linear-gradient(180deg,#f6faf7 0%,#ffffff 100%);border-bottom:1px solid var(--c-border)}
+  .success-check{width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,#2fa060,#67c08b);color:#fff;display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 16px 32px rgba(46,160,96,.35);animation:pop 480ms cubic-bezier(.4,1.6,.5,1) 1}
+  .success-check svg{width:38px;height:38px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  @keyframes pop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+  .success-hero h3{font-size:30px;margin:0 0 6px;color:var(--c-ink)}
+  .success-hero p{margin:0;color:var(--c-ink-muted);font-size:14px}
+
+  .ref-block{margin:22px 30px 8px;padding:20px 20px 18px;border-radius:var(--radius-lg);background:linear-gradient(135deg,#2b1d13 0%,#4a3423 100%);color:#f8f1e8;position:relative;overflow:hidden}
+  .ref-block::after{content:"";position:absolute;right:-40px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(185,146,106,.32),transparent 65%);pointer-events:none}
+  .ref-block .label{position:relative;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(216,180,143,.9);margin-bottom:8px}
+  .ref-row{position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ref-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;font-weight:700;letter-spacing:.04em;color:#f8f1e8;background:rgba(255,255,255,.06);border:1px dashed rgba(216,180,143,.4);padding:10px 16px;border-radius:var(--radius);flex:1;min-width:0;word-break:break-all}
+  .copy-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;font-size:13px;font-weight:700;border-radius:var(--radius);background:linear-gradient(135deg,#f2e3cf,#d8b48f);color:#2b1d13;border:0;cursor:pointer;transition:transform var(--transition),box-shadow var(--transition);white-space:nowrap}
+  .copy-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.2)}
+  .copy-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .ref-hint{position:relative;font-size:12.5px;color:rgba(246,237,228,.65);margin-top:10px;line-height:1.5}
+
+  .summary-card{margin:8px 30px 0;padding:18px 20px;border-radius:var(--radius-lg);border:1px solid var(--c-border);background:var(--c-bg)}
+  .summary-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0;font-size:14px}
+  .summary-row:not(:last-child){border-bottom:1px dashed var(--c-border)}
+  .summary-row .ico{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--c-brand-soft);color:var(--c-brand-dark);flex:none}
+  .summary-row .ico svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .summary-row .lbl{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:2px}
+  .summary-row .val{font-size:14px;color:var(--c-ink);font-weight:500;word-break:break-word}
+
+  /* ═════════════════════════════════════════════
+     LOOKUP MODAL
+     ═════════════════════════════════════════════ */
+  .tabs{display:flex;gap:6px;background:var(--c-bg-alt);padding:5px;border-radius:var(--radius);margin-bottom:18px}
+  .tab{flex:1;padding:9px 14px;font-size:13px;font-weight:600;border:0;border-radius:calc(var(--radius) - 3px);background:transparent;color:var(--c-ink-soft);cursor:pointer;transition:background var(--transition),color var(--transition),box-shadow var(--transition);font-family:inherit}
+  .tab.active{background:var(--c-surface);color:var(--c-ink);box-shadow:0 1px 4px rgba(43,29,19,.08)}
+  .tab-panel[hidden]{display:none}
+
+  .lookup-input{display:flex;gap:8px}
+  .lookup-input input{flex:1;min-width:0;padding:12px 14px;font-size:14.5px;border:1.5px solid var(--c-border);border-radius:var(--radius);outline:none;background:#fff;transition:border-color var(--transition),box-shadow var(--transition)}
+  .lookup-input input.ref-upper{text-transform:uppercase;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em}
+  .lookup-input input:focus{border-color:var(--c-brand);box-shadow:0 0 0 4px rgba(185,146,106,.15)}
+  .lookup-input .btn-primary{padding:12px 20px;flex-shrink:0}
+
+  .results{margin-top:22px}
+  .results-title{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:10px}
+
+  .booking-card{display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid var(--c-border);border-radius:var(--radius-lg);background:var(--c-surface);margin-bottom:12px;transition:border-color var(--transition),box-shadow var(--transition)}
+  .booking-card:hover{border-color:var(--c-border-strong);box-shadow:var(--shadow-sm)}
+  .booking-card.is-cancelled{opacity:.7}
+  .booking-card.is-completed{opacity:.85}
+  .booking-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .booking-title{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--c-ink);margin:0;line-height:1.2;word-break:break-word;flex:1;min-width:0}
+  .status-pill{padding:4px 11px;border-radius:var(--radius-pill);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+  .status-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .status-pill.pending{background:var(--c-warn-bg);color:var(--c-warn)}
+  .status-pill.confirmed{background:var(--c-success-bg);color:var(--c-success)}
+  .status-pill.cancelled{background:var(--c-error-bg);color:var(--c-error)}
+  .status-pill.completed{background:var(--c-info-bg);color:var(--c-info)}
+
+  .booking-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--c-ink-soft)}
+  .booking-meta span{display:inline-flex;align-items:center;gap:6px}
+  .booking-meta svg{width:14px;height:14px;stroke:var(--c-brand);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+  .booking-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px dashed var(--c-border)}
+  .booking-ref{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;font-weight:700;color:var(--c-ink-muted);letter-spacing:.02em}
+
+  .btn-request{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;font-size:12.5px;font-weight:700;border-radius:var(--radius-pill);background:linear-gradient(135deg,#fdf6e3,#f9ead0);color:var(--c-warn);border:1px solid #f1dfb5;cursor:pointer;transition:all var(--transition);font-family:inherit;letter-spacing:.02em}
+  .btn-request:hover{background:var(--c-warn);color:#fff;transform:translateY(-1px);box-shadow:0 8px 18px rgba(184,134,11,.3)}
+  .btn-request svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  .results-empty{text-align:center;padding:32px 20px;color:var(--c-ink-muted);font-size:13.5px;background:var(--c-bg);border:1px dashed var(--c-border-strong);border-radius:var(--radius-lg)}
+  .results-empty svg{width:44px;height:44px;margin:0 auto 10px;stroke:var(--c-brand);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ═════════════════════════════════════════════
+     CHANGE REQUEST MODAL
+     ═════════════════════════════════════════════ */
+  .req-hero{padding:34px 30px 22px;text-align:center;background:radial-gradient(120% 100% at 50% 0%,rgba(184,134,11,.14),transparent 55%),linear-gradient(180deg,#fffbf0 0%,#ffffff 100%);border-bottom:1px solid var(--c-border)}
+  .req-hero .req-ico{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#f2d8a8,#d8a86a);color:#7a5a08;display:grid;place-items:center;margin:0 auto 14px;box-shadow:0 14px 28px rgba(184,134,11,.28)}
+  .req-hero .req-ico svg{width:30px;height:30px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .req-hero h3{font-size:26px;margin:0 0 4px;color:var(--c-ink)}
+  .req-hero p{margin:0;color:var(--c-ink-muted);font-size:13.5px;max-width:400px;margin-left:auto;margin-right:auto}
+
+  .req-booking{margin:20px 30px 0;padding:14px 16px;border-radius:var(--radius);background:var(--c-bg);border:1px solid var(--c-border);font-size:13.5px;line-height:1.55}
+  .req-booking .lbl{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:6px}
+  .req-booking .title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--c-ink);margin-bottom:2px}
+  .req-booking .meta{color:var(--c-ink-muted);font-size:12.5px}
+  .req-booking .ref{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:var(--c-ink-soft);font-size:12px;margin-top:4px}
+
+  .req-type{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 30px 0}
+  .req-choice{position:relative;padding:18px 16px;border-radius:var(--radius);border:1.5px solid var(--c-border);background:#fff;cursor:pointer;text-align:center;transition:all var(--transition);font-family:inherit;display:block}
+  .req-choice:hover{border-color:var(--c-brand);background:var(--c-brand-soft)}
+  .req-choice input{position:absolute;opacity:0;pointer-events:none}
+  .req-choice .ci{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--c-bg-alt);color:var(--c-ink-soft);margin:0 auto 8px;transition:all var(--transition)}
+  .req-choice .ci svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .req-choice .t{font-size:13.5px;font-weight:700;color:var(--c-ink);margin-bottom:2px}
+  .req-choice .s{font-size:11.5px;color:var(--c-ink-muted);line-height:1.35}
+  .req-choice.selected{border-color:var(--c-brand);background:var(--c-brand-soft);box-shadow:0 0 0 4px rgba(185,146,106,.15)}
+  .req-choice.selected .ci{background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff}
+
+  .policy-box{margin:18px 30px 0;padding:16px 18px;border-radius:var(--radius);background:linear-gradient(135deg,#fdf6e3,#f9ead0);border:1px solid #f1dfb5;display:flex;gap:12px;align-items:flex-start}
+  .policy-box svg{width:20px;height:20px;flex:none;margin-top:1px;stroke:var(--c-warn);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .policy-box .pt{font-size:13px;line-height:1.55;color:#5c4a10}
+  .policy-box .pt strong{color:#3d3008;font-weight:700}
+  .policy-box .pt .fee{display:inline-block;background:#fff;border-radius:4px;padding:0 5px;font-weight:800;color:var(--c-warn);font-variant-numeric:tabular-nums}
+
+  .req-fields{margin:20px 30px 0}
+  .req-fields .field{margin-bottom:14px}
+  .req-fields .field label{font-size:12px;font-weight:600;color:var(--c-ink-soft)}
+  .req-fields textarea{min-height:80px;font-size:14px}
+
+  .req-email-preview{margin:16px 30px 0;padding:14px 16px;border-radius:var(--radius);background:var(--c-bg);border:1px dashed var(--c-border-strong);font-size:12.5px;line-height:1.55;color:var(--c-ink-soft);font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;max-height:180px;overflow-y:auto}
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width:960px){
+    .nav-links{display:none}
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .hero{padding:60px 0 70px}
+    .hero-visual{max-width:380px;margin:0 auto}
+    .hero-badge-1{left:-10px}
+    .hero-badge-2{right:-10px}
+    .contact-grid{grid-template-columns:1fr;gap:40px}
+    section{padding:60px 0}
+  }
+  @media (max-width:560px){
+    .grid-2{grid-template-columns:1fr}
+    .hero-badge{padding:10px 14px;font-size:12px}
+    .hero-badge strong{font-size:18px}
+    .hero-visual-inner{font-size:140px}
+    .modal-head{padding:22px 22px 14px}
+    .modal-body{padding:20px 22px 8px}
+    .modal-foot{padding:14px 22px 18px}
+    .contact-form{padding:24px 20px}
+    .ref-block,.summary-card{margin-left:18px;margin-right:18px}
+    .modal-alert{margin-left:18px;margin-right:18px}
+    .ref-code{font-size:20px;padding:9px 12px}
+    .req-booking,.req-type,.policy-box,.req-fields,.req-email-preview{margin-left:20px;margin-right:20px}
+    .req-type{grid-template-columns:1fr}
+    .time-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
+    .time-slot{font-size:11.5px;padding:9px 4px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">L</span>
+      <span>Lumière</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#why">Why us</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+      <button type="button" class="lookup-link" id="nav-lookup">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+        My bookings
+      </button>
+    </nav>
+    <button class="btn btn-primary" id="nav-book">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+      Book a session
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--c-gold)">Boutique beauty &amp; massage</span>
+      <h1>Slow down. <em>Breathe deeper.</em> Feel whole again.</h1>
+      <p class="hero-lead">
+        At Lumière, every treatment is hand-blended, unhurried, and yours alone.
+        Step in for an hour — leave with a week of calm.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" id="hero-book">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          Book your session
+        </button>
+        <a class="btn btn-light btn-lg" href="#services">Explore services</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-inner">L</div>
+      <div class="hero-badge hero-badge-1">
+        <strong>4.9</strong>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div style="font-size:12px;color:var(--c-ink-muted)">from happy guests</div>
+        </div>
+      </div>
+      <div class="hero-badge hero-badge-2">
+        <div class="icon-circle" style="display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--c-brand-soft);color:var(--c-brand-dark)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+          </svg>
+        </div>
+        <div>
+          <strong id="hero-service-count">—</strong>
+          <div style="font-size:12px;color:var(--c-ink-muted)">treatments to choose</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="container strip-grid">
+    <div class="strip-item"><strong>7</strong><span>Days a week</span></div>
+    <div class="strip-item"><strong>15+</strong><span>Signature rituals</span></div>
+    <div class="strip-item"><strong>100%</strong><span>Natural oils</span></div>
+    <div class="strip-item"><strong>4.9★</strong><span>Average rating</span></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Our menu</span>
+      <h2>Rituals for every mood</h2>
+      <p>From deep-tissue recovery to luminous facials. Pick what your body is asking for.</p>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Why Lumière</span>
+      <h2>An hour that lasts a week</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-7 11-7 11z"/></svg></div>
+        <h3>Hand-blended oils</h3>
+        <p>No pre-made blends. Your therapist mixes a bespoke oil on the day, based on what your body needs.</p>
+      </div>
+      <div class="why-item">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Never rushed</h3>
+        <p>Every session ends with tea in our relaxation lounge. No one is hurrying you out the door.</p>
+      </div>
+      <div class="why-item">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg></div>
+        <h3>Trusted hands</h3>
+        <p>Our therapists are trained in therapeutic massage and skincare — this isn't a scented candle and a nap.</p>
+      </div>
+      <div class="why-item">
+        <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Easy to reach</h3>
+        <p>Tucked away in Zeerust, with free parking and quiet streets. Come as you are.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Kind words</span>
+      <h2>What our guests say</h2>
+      <p>Real reviews from real sessions. We publish every one we receive.</p>
+    </div>
+    <div class="reviews-wrap" id="reviews-wrap">
+      <div class="services-empty" style="grid-column:1/-1;padding:40px 20px;">Loading reviews…</div>
+    </div>
+    <div class="reviews-cta">
+      <button class="btn btn-ghost btn-lg" id="leave-review">
+        <svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+        Leave a review
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow">Come say hello</span>
+      <h2>Questions? We'd love to hear from you.</h2>
+      <p style="font-size:15.5px;line-height:1.65;max-width:420px;">
+        Whether it's about a treatment, a booking, or a gift voucher — send us a message
+        and we'll reply the same day.
+      </p>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><div class="label">Visit</div><div class="value">12 Rosewood Lane, Zeerust</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="ci"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2z"/></svg></span>
+          <div><div class="label">Call</div><div class="value">+27 82 123 4567</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="ci"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg></span>
+          <div><div class="label">Email</div><div class="value">hello@lumiere.co.za</div></div>
+        </div>
+        <div class="contact-item">
+          <span class="ci"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><div class="label">Hours</div><div class="value">Mon–Fri 8am–5pm · Sat 9am–4pm · Sun closed</div></div>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form" id="contact-form" novalidate>
+      <h3>Send us a message</h3>
+      <p class="form-lead">We reply within a few hours during opening times.</p>
+      <div class="grid-2">
+        <div class="field">
+          <label for="m-name">Your name <span class="req">*</span></label>
+          <input id="m-name" type="text" placeholder="Jane Doe" required />
+        </div>
+        <div class="field">
+          <label for="m-email">Email <span class="req">*</span></label>
+          <input id="m-email" type="email" placeholder="you@example.com" required />
+        </div>
+      </div>
+      <div class="field">
+        <label for="m-phone">Phone <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+        <input id="m-phone" type="tel" placeholder="+27 82 123 4567" />
+      </div>
+      <div class="field">
+        <label for="m-subject">Subject</label>
+        <input id="m-subject" type="text" placeholder="Booking enquiry, gift voucher…" />
+      </div>
+      <div class="field">
+        <label for="m-body">Message <span class="req">*</span></label>
+        <textarea id="m-body" placeholder="How can we help?" required></textarea>
+      </div>
+      <div class="modal-alert" id="contact-alert" hidden style="margin-left:0;margin-right:0"></div>
+      <button class="btn btn-primary btn-lg" type="submit" id="contact-send" style="width:100%;">
+        <span class="btn-label">Send message</span>
+        <span class="spinner" id="contact-spinner" hidden></span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="brand">
+      <span class="brand-mark">L</span>
+      <span>Lumière</span>
+    </div>
+    <p>Beauty &amp; massage, beautifully managed.</p>
+    <p>&copy; <span id="year"></span> Lumière Spa · <a href="login.html">Staff sign in</a></p>
+  </div>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div class="modal-backdrop" id="book-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="book-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3>Book a session</h3>
+        <p>Choose a treatment, a day and a time — we'll confirm shortly.</p>
+      </div>
+      <form id="book-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label for="b-service">Treatment <span class="req">*</span></label>
+            <select id="b-service" required>
+              <option value="">Select a treatment…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Preferred date <span class="req">*</span></label>
+            <div class="calendar">
+              <div class="cal-header">
+                <div class="cal-month" id="cal-month">Month</div>
+                <div class="cal-nav">
+                  <button type="button" id="cal-prev" aria-label="Previous month">
+                    <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+                  </button>
+                  <button type="button" id="cal-next" aria-label="Next month">
+                    <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+              <p class="cal-hint"><strong>Mon–Fri</strong> 8am–5pm · <strong>Sat</strong> 9am–4pm · <strong>Sun</strong> closed</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Preferred time <span class="req">*</span></label>
+            <div class="time-grid" id="time-grid">
+              <div class="time-empty">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                Pick a date first to see available times
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="b-name">Your name <span class="req">*</span></label>
+              <input id="b-name" type="text" placeholder="Jane Doe" required />
+            </div>
+            <div class="field">
+              <label for="b-phone">Phone <span class="req">*</span></label>
+              <input id="b-phone" type="tel" placeholder="+27 82 123 4567" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="b-email">Email <span class="req">*</span></label>
+            <input id="b-email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="field">
+            <label for="b-notes">Anything we should know?</label>
+            <textarea id="b-notes" placeholder="Allergies, pressure preference, occasion…"></textarea>
+          </div>
+        </div>
+        <div class="modal-alert" id="book-alert" hidden></div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" id="book-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="book-send">
+            <span class="btn-label">Request booking</span>
+            <span class="spinner" id="book-spinner" hidden></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-backdrop" id="success-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="success-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="success-hero">
+        <div class="success-check">
+          <svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>
+        </div>
+        <h3>You're booked in!</h3>
+        <p>We'll review your request and get back to you shortly.</p>
+      </div>
+      <div class="ref-block">
+        <div class="label">Your booking reference</div>
+        <div class="ref-row">
+          <span class="ref-code" id="success-ref">LUM-XXXXXX</span>
+          <button class="copy-btn" id="success-copy" type="button">
+            <svg viewBox="0 0 24 24" id="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-text" id="copy-text">Copy</span>
+          </button>
+        </div>
+        <div class="ref-hint">Save this code — you'll need it to check your booking status.</div>
+      </div>
+      <div class="summary-card" id="success-summary"></div>
+      <div class="modal-foot" style="border-top:0;background:transparent;padding-top:22px;">
+        <button type="button" class="btn btn-ghost" id="success-close-btn">Done</button>
+        <button type="button" class="btn btn-primary" id="success-view">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+          View my schedule
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY BOOKINGS MODAL -->
+<div class="modal-backdrop" id="lookup-backdrop">
+  <div class="modal modal-wide">
+    <button class="modal-close" id="lookup-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3>My bookings</h3>
+        <p>Enter your email or a booking reference to see your schedule.</p>
+      </div>
+      <div class="modal-body">
+        <div class="tabs" id="lookup-tabs">
+          <button type="button" class="tab active" data-tab="email">By email</button>
+          <button type="button" class="tab" data-tab="ref">By booking code</button>
+        </div>
+        <div class="tab-panel" data-panel="email">
+          <div class="lookup-input">
+            <input id="lookup-email" type="email" placeholder="you@example.com" autocomplete="email" />
+            <button class="btn btn-primary" id="lookup-email-go" type="button">
+              <span class="btn-label">Find</span>
+              <span class="spinner" id="lookup-email-spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="ref" hidden>
+          <div class="lookup-input">
+            <input id="lookup-ref" type="text" placeholder="LUM-ABC123" class="ref-upper" autocomplete="off" />
+            <button class="btn btn-primary" id="lookup-ref-go" type="button">
+              <span class="btn-label">Find</span>
+              <span class="spinner" id="lookup-ref-spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-alert" id="lookup-alert" hidden style="margin-left:0;margin-right:0;margin-top:14px"></div>
+        <div class="results" id="lookup-results" hidden>
+          <div class="results-title" id="lookup-results-title">Results</div>
+          <div id="lookup-results-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE REQUEST MODAL -->
+<div class="modal-backdrop" id="request-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="request-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="req-hero">
+        <div class="req-ico">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>
+        </div>
+        <h3>Request a change</h3>
+        <p>Send us an email to cancel or reschedule. We'll get back to you to confirm.</p>
+      </div>
+
+      <div class="req-booking" id="req-booking"></div>
+
+      <div class="req-type" id="req-type">
+        <label class="req-choice selected" data-choice="cancel">
+          <input type="radio" name="req-kind" value="cancel" checked />
+          <span class="ci">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>
+          </span>
+          <div class="t">Cancel</div>
+          <div class="s">Cancel this booking.<br>10% fee on any refund.</div>
+        </label>
+        <label class="req-choice" data-choice="reschedule">
+          <input type="radio" name="req-kind" value="reschedule" />
+          <span class="ci">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+          </span>
+          <div class="t">Reschedule</div>
+          <div class="s">Pick a new date &amp; time.<br>No charge for a move.</div>
+        </label>
+      </div>
+
+      <div class="policy-box" id="policy-box">
+        <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div class="pt" id="policy-text"></div>
+      </div>
+
+      <div class="req-fields">
+        <div class="field" id="req-newdate-wrap" hidden>
+          <label for="req-newdate">New preferred date <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <input id="req-newdate" type="text" placeholder="e.g. Saturday 20 Sep, anytime before noon" />
+        </div>
+
+        <div class="field">
+          <label for="req-reason">Reason <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+          <textarea id="req-reason" placeholder="Let us know why, so we can help. (optional)"></textarea>
+        </div>
+      </div>
+
+      <div class="req-email-preview" id="req-email-preview"></div>
+
+      <div class="modal-foot" style="border-top:0;background:transparent;padding-top:16px;">
+        <button type="button" class="btn btn-ghost" id="request-cancel">Not now</button>
+        <a class="btn btn-primary" id="request-send" href="#">
+          <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg>
+          Open email to send
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-backdrop" id="review-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="review-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-scroll">
+      <div class="modal-head">
+        <h3>Share your experience</h3>
+        <p>We publish every review we receive — thank you for taking the time.</p>
+      </div>
+      <form id="review-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label>Your rating <span class="req">*</span></label>
+            <div class="stars-input" id="stars-input" role="radiogroup" aria-label="Star rating">
+              <button type="button" class="star-btn" data-v="1" aria-label="1 star">★</button>
+              <button type="button" class="star-btn" data-v="2" aria-label="2 stars">★</button>
+              <button type="button" class="star-btn" data-v="3" aria-label="3 stars">★</button>
+              <button type="button" class="star-btn" data-v="4" aria-label="4 stars">★</button>
+              <button type="button" class="star-btn" data-v="5" aria-label="5 stars">★</button>
+              <span class="rating-hint" id="rating-hint">Tap to rate</span>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="r-name">Your name <span class="req">*</span></label>
+              <input id="r-name" type="text" placeholder="Jane D." required />
+            </div>
+            <div class="field">
+              <label for="r-email">Email <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+              <input id="r-email" type="email" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-service">Which treatment? <span style="color:var(--c-ink-muted);font-weight:400">(optional)</span></label>
+            <select id="r-service"><option value="">Prefer not to say</option></select>
+          </div>
+          <div class="field">
+            <label for="r-title">Title</label>
+            <input id="r-title" type="text" placeholder="Best massage I've ever had" maxlength="80" />
+          </div>
+          <div class="field">
+            <label for="r-body">Your review <span class="req">*</span></label>
+            <textarea id="r-body" placeholder="Tell us about your visit…" required></textarea>
+          </div>
+        </div>
+        <div class="modal-alert" id="review-alert" hidden></div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" id="review-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="review-send-btn">
+            <span class="btn-label">Submit review</span>
+            <span class="spinner" id="review-spinner" hidden></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+
+  const LOG = {
+    info:(...a)=>console.log('%c[PUBLIC]','color:#2a5d95;font-weight:700',...a),
+    ok  :(...a)=>console.log('%c[PUBLIC ✓]','color:#1e7a3c;font-weight:700',...a),
+    warn:(...a)=>console.warn('%c[PUBLIC !]','color:#b8860b;font-weight:700',...a),
+    err :(...a)=>console.error('%c[PUBLIC ✗]','color:#c0392b;font-weight:700',...a),
+    step:(n,...a)=>console.log(`%c[PUBLIC → ${n}]`,'color:#8f6d4a;font-weight:700',...a),
+  };
+
+  LOG.info('index.html loaded');
+
+  const SPA_EMAIL = 'hello@lumiere.co.za';
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => (s ?? '').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+  const fmtPrice = (n) => {
+    if (n === null || n === undefined || n === '') return '—';
+    const num = Number(n);
+    if (Number.isNaN(num)) return '—';
+    return 'R ' + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  };
+  const fmtDuration = (m) => m ? `${m} min` : '—';
+  const fmtDateLong = (iso) => {
+    if (!iso) return '—';
+    try {
+      return new Date(iso + 'T00:00:00').toLocaleDateString(undefined, {
+        weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+      });
+    } catch { return iso; }
+  };
+  const fmtTime12 = (t) => {
+    if (!t) return '—';
+    try {
+      const [h, m] = t.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+    } catch { return t; }
+  };
+  const detectVideo = (url) => !!url && /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(url);
+
+  function showAlert(el, msg, type = 'error') {
+    el.textContent = msg;
+    el.dataset.type = type;
+    el.hidden = false;
+  }
+  const hideAlert = (el) => { el.hidden = true; };
+  function setLoading(btn, spinner, labelEl, on, label) {
+    btn.disabled = on;
+    if (spinner) spinner.hidden = !on;
+    if (labelEl) labelEl.textContent = on ? 'Please wait…' : label;
+  }
+
+  /* ═════════════ CALENDAR ═════════════ */
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DOW_LETTERS = ['S','M','T','W','T','F','S'];
+
+  const cal = { year: new Date().getFullYear(), month: new Date().getMonth(), selectedDate: null, selectedTime: null };
+
+  function renderCalendar() {
+    const y = cal.year, m = cal.month;
+    const firstDow = new Date(y, m, 1).getDay();
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    $('cal-month').textContent = `${MONTH_NAMES[m]} ${y}`;
+
+    const grid = $('cal-grid');
+    grid.innerHTML = '';
+
+    DOW_LETTERS.forEach(letter => {
+      const h = document.createElement('div');
+      h.className = 'cal-dow';
+      h.textContent = letter;
+      grid.appendChild(h);
+    });
+
+    for (let i = 0; i < firstDow; i++) {
+      const e = document.createElement('div');
+      e.className = 'cal-day empty';
+      grid.appendChild(e);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dt = new Date(y, m, d);
+      const dow = dt.getDay();
+      const iso = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isPast    = dt < today;
+      const isSunday  = dow === 0;
+      const isDisabled = isPast || isSunday;
+      const isToday   = dt.getTime() === today.getTime();
+      const isSelected = iso === cal.selectedDate;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cal-day';
+      if (isDisabled) btn.classList.add('disabled');
+      if (isToday)    btn.classList.add('today');
+      if (isSelected) btn.classList.add('selected');
+      btn.textContent = d;
+
+      if (!isDisabled) {
+        btn.addEventListener('click', () => selectDate(iso, dow));
+      } else {
+        btn.disabled = true;
+      }
+      grid.appendChild(btn);
+    }
+
+    const now = new Date();
+    $('cal-prev').disabled = (y === now.getFullYear() && m === now.getMonth());
+  }
+
+  function selectDate(iso, dow) {
+    cal.selectedDate = iso;
+    cal.selectedTime = null;
+    renderCalendar();
+    renderTimeSlots(dow);
+  }
+
+  function renderTimeSlots(dow) {
+    const grid = $('time-grid');
+    grid.innerHTML = '';
+
+    if (dow == null || dow < 0) {
+      grid.innerHTML = `<div class="time-empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Pick a date first to see available times</div>`;
+      return;
+    }
+    if (dow === 0) {
+      grid.innerHTML = `<div class="time-empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg>We're closed on Sundays. Please pick another day.</div>`;
+      return;
+    }
+
+    const isSat = dow === 6;
+    const startH = isSat ? 9 : 8;
+    const endH   = isSat ? 16 : 17;
+    const slots = [];
+    for (let h = startH; h <= endH; h++) {
+      slots.push(`${String(h).padStart(2,'0')}:00`);
+      if (h < endH) slots.push(`${String(h).padStart(2,'0')}:30`);
+    }
+
+    slots.forEach(slot => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot';
+      if (cal.selectedTime === slot) btn.classList.add('selected');
+      btn.textContent = fmtTime12(slot);
+      btn.addEventListener('click', () => {
+        cal.selectedTime = slot;
+        grid.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  $('cal-prev').addEventListener('click', () => {
+    cal.month--; if (cal.month < 0) { cal.month = 11; cal.year--; }
+    renderCalendar();
+  });
+  $('cal-next').addEventListener('click', () => {
+    cal.month++; if (cal.month > 11) { cal.month = 0; cal.year++; }
+    renderCalendar();
+  });
+
+  /* ═════════════ SERVICES ═════════════ */
+  let SERVICES = [];
+
+  async function loadServices() {
+    const { data, error } = await supabase
+      .from('services')
+      .select('id, name, category, short_desc, long_desc, duration_minutes, price, image_url, video_url, featured, sort_order')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      LOG.err('SERVICES','SELECT failed:', error);
+      $('services-grid').innerHTML = '<div class="services-empty"><p>Could not load services.</p></div>';
+      return;
+    }
+    SERVICES = data || [];
+    $('hero-service-count').textContent = SERVICES.length;
+    renderServices();
+    populateServiceDropdowns();
+  }
+
+  function renderServices() {
+    const grid = $('services-grid');
+    grid.innerHTML = '';
+
+    if (!SERVICES.length) {
+      grid.innerHTML = '<div class="services-empty"><h3>Our menu is being updated</h3><p>Check back soon.</p></div>';
+      return;
+    }
+
+    SERVICES.forEach(s => {
+      const card = document.createElement('article');
+      card.className = 'service-card';
+
+      const media = document.createElement('div');
+      media.className = 'service-media';
+
+      if (detectVideo(s.video_url)) {
+        const v = document.createElement('video');
+        v.src = s.video_url; v.muted = true; v.loop = true; v.playsInline = true;
+        v.preload = 'metadata';
+        if (s.image_url) v.poster = s.image_url;
+        v.addEventListener('mouseenter', () => v.play().catch(()=>{}));
+        v.addEventListener('mouseleave', () => v.pause());
+        media.appendChild(v);
+      } else if (s.image_url) {
+        const img = document.createElement('img');
+        img.src = s.image_url; img.alt = s.name; img.loading = 'lazy';
+        media.appendChild(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'placeholder';
+        ph.textContent = (s.name || '?').charAt(0).toUpperCase();
+        media.appendChild(ph);
+      }
+
+      if (s.featured) {
+        const b = document.createElement('span');
+        b.className = 'service-badge';
+        b.textContent = 'Most loved';
+        media.appendChild(b);
+      }
+
+      const head = document.createElement('div');
+      head.className = 'service-head';
+      head.innerHTML = `
+        <div class="service-cat">${esc(s.category || 'Treatment')}</div>
+        <div class="service-name">${esc(s.name || 'Untitled')}</div>`;
+      media.appendChild(head);
+
+      card.appendChild(media);
+
+      const body = document.createElement('div');
+      body.className = 'service-body';
+      body.innerHTML = `
+        <p class="service-desc">${esc(s.short_desc || s.long_desc || '')}</p>
+        <div class="service-foot">
+          <div class="service-price">${esc(fmtPrice(s.price))}<small>/session</small></div>
+          <div class="service-dur">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            ${esc(fmtDuration(s.duration_minutes))}
+          </div>
+        </div>
+        <button class="service-book" data-id="${esc(s.id)}" data-name="${esc(s.name)}">Book this</button>`;
+      card.appendChild(body);
+
+      grid.appendChild(card);
+    });
+
+    grid.querySelectorAll('.service-book').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openBooking(btn.dataset.id, btn.dataset.name);
+      });
+    });
+  }
+
+  function populateServiceDropdowns() {
+    const bSel = $('b-service'), rSel = $('r-service');
+    bSel.innerHTML = '<option value="">Select a treatment…</option>';
+    rSel.innerHTML = '<option value="">Prefer not to say</option>';
+    SERVICES.forEach(s => {
+      const o1 = document.createElement('option');
+      o1.value = s.id;
+      o1.textContent = `${s.name}${s.duration_minutes ? ' · ' + s.duration_minutes + ' min' : ''}${s.price ? ' · R ' + s.price : ''}`;
+      bSel.appendChild(o1);
+
+      const o2 = document.createElement('option');
+      o2.value = s.id; o2.textContent = s.name;
+      rSel.appendChild(o2);
+    });
+  }
+
+  /* ═════════════ REVIEWS ═════════════ */
+  async function loadReviews() {
+    const wrap = $('reviews-wrap');
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('id, name, rating, title, body, created_at')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false })
+      .limit(9);
+
+    if (error) {
+      LOG.err('REVIEWS','SELECT failed:', error);
+      wrap.innerHTML = '<div class="services-empty" style="grid-column:1/-1;padding:40px 20px;">Reviews are loading slowly.</div>';
+      return;
+    }
+    renderReviews(data || []);
+  }
+
+  function renderReviews(list) {
+    const wrap = $('reviews-wrap');
+    wrap.innerHTML = '';
+
+    if (!list.length) {
+      wrap.innerHTML = `
+        <div class="services-empty" style="grid-column:1/-1;padding:50px 20px;">
+          <h3 style="font-family:var(--font-display);font-size:24px;color:var(--c-ink);margin:0 0 6px;">Be our first review</h3>
+          <p style="margin:0;">We'd love to hear about your visit.</p>
+        </div>`;
+      return;
+    }
+
+    list.forEach(r => {
+      const card = document.createElement('article');
+      card.className = 'review';
+      const stars = '★'.repeat(Math.max(1, Math.min(5, r.rating || 5))) + '☆'.repeat(5 - Math.max(1, Math.min(5, r.rating || 5)));
+      const initials = (r.name || '?').trim().split(/\s+/).slice(0,2).map(w => w.charAt(0).toUpperCase()).join('');
+      const dateStr = (() => { try {
+        return new Date(r.created_at).toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
+      } catch { return ''; }})();
+
+      card.innerHTML = `
+        <div class="review-stars">${stars}</div>
+        ${r.title ? `<h3 class="review-title">${esc(r.title)}</h3>` : ''}
+        <p class="review-body">${esc(r.body)}</p>
+        <div class="review-meta">
+          <div class="review-avatar">${esc(initials)}</div>
+          <div class="who">
+            <strong>${esc(r.name)}</strong>
+            <small>${esc(dateStr)}</small>
+          </div>
+        </div>`;
+      wrap.appendChild(card);
+    });
+  }
+
+  /* ═════════════ BOOKING MODAL ═════════════ */
+  const bookBackdrop = $('book-backdrop');
+  const bookForm     = $('book-form');
+  const bookAlert    = $('book-alert');
+  const bookSend     = $('book-send');
+  const bookSpinner  = $('book-spinner');
+  const bookLabel    = bookSend.querySelector('.btn-label');
+  const bookService  = $('b-service');
+
+  function openBooking(serviceId = '', serviceName = '') {
+    hideAlert(bookAlert);
+    const now = new Date();
+    cal.year = now.getFullYear(); cal.month = now.getMonth();
+    cal.selectedDate = null; cal.selectedTime = null;
+    renderCalendar();
+    renderTimeSlots(null);
+
+    if (serviceId) {
+      const exists = [...bookService.options].some(o => o.value === serviceId);
+      if (exists) bookService.value = serviceId;
+    }
+    bookBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      if (!bookService.value) bookService.focus();
+      else $('b-name').focus();
+    }, 220);
+  }
+  function closeBooking() {
+    bookBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  $('nav-book').addEventListener('click', () => openBooking());
+  $('hero-book').addEventListener('click', () => openBooking());
+  $('book-close').addEventListener('click', closeBooking);
+  $('book-cancel').addEventListener('click', closeBooking);
+  bookBackdrop.addEventListener('click', (e) => { if (e.target === bookBackdrop) closeBooking(); });
+
+  bookForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideAlert(bookAlert);
+
+    const serviceId = bookService.value;
+    const date      = cal.selectedDate;
+    const time      = cal.selectedTime;
+    const name      = $('b-name').value.trim();
+    const phone     = $('b-phone').value.trim();
+    const email     = $('b-email').value.trim();
+    const notes     = $('b-notes').value.trim();
+
+    if (!serviceId) return showAlert(bookAlert, 'Please choose a treatment.');
+    if (!date)      return showAlert(bookAlert, 'Please pick a date.');
+    if (!time)      return showAlert(bookAlert, 'Please pick a time.');
+    const dow = new Date(date + 'T00:00:00').getDay();
+    if (dow === 0) return showAlert(bookAlert, 'We\'re closed on Sundays.');
+    if (!name)      return showAlert(bookAlert, 'Please enter your name.');
+    if (!phone)     return showAlert(bookAlert, 'Please enter your phone number.');
+    if (!email)     return showAlert(bookAlert, 'Please enter your email.');
+
+    const svc = SERVICES.find(s => s.id === serviceId);
+
+    setLoading(bookSend, bookSpinner, bookLabel, true);
+    const { data, error } = await supabase.rpc('create_booking', {
+      p_name:         name,
+      p_email:        email,
+      p_phone:        phone,
+      p_service_id:   serviceId,
+      p_service_name: svc?.name || null,
+      p_date:         date,
+      p_time:         time,
+      p_notes:        notes || null,
+    });
+    setLoading(bookSend, bookSpinner, bookLabel, false, 'Request booking');
+
+    if (error) {
+      showAlert(bookAlert, error.message || 'Could not send your request.');
+      return;
+    }
+    if (!data || data.error) {
+      const map = {
+        invalid_name:  'Please enter your name.',
+        invalid_email: 'Please enter a valid email address.',
+        invalid_date:  'Please pick a valid date.',
+      };
+      showAlert(bookAlert, map[data?.error] || 'Could not send your request.');
+      return;
+    }
+
+    LOG.ok('BOOKING','Submitted. Reference:', data.reference_code);
+    try { localStorage.setItem('lumiere_last_booking', data.reference_code); } catch {}
+
+    closeBooking();
+    bookForm.reset();
+    cal.selectedDate = null; cal.selectedTime = null;
+    openSuccess(data);
+  });
+
+  /* ═════════════ SUCCESS MODAL ═════════════ */
+  const successBackdrop = $('success-backdrop');
+  const successRef      = $('success-ref');
+  const successSummary  = $('success-summary');
+  const successCopy     = $('success-copy');
+  const copyText        = $('copy-text');
+
+  function openSuccess(booking) {
+    successRef.textContent = booking.reference_code || '—';
+    const rows = [
+      { icon: '<path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/>', lbl:'Treatment', val: booking.service_name || '—' },
+      { icon: '<rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/>', lbl:'When', val: `${fmtDateLong(booking.preferred_date)} · ${fmtTime12(booking.preferred_time)}` },
+      { icon: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>', lbl:'Booked for', val: booking.client_name || '—' },
+      { icon: '<path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/>', lbl:'Email', val: booking.client_email || '—' },
+    ];
+    successSummary.innerHTML = rows.map(r => `
+      <div class="summary-row">
+        <span class="ico"><svg viewBox="0 0 24 24">${r.icon}</svg></span>
+        <div>
+          <div class="lbl">${r.lbl}</div>
+          <div class="val">${esc(r.val)}</div>
+        </div>
+      </div>`).join('');
+    successBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSuccess() {
+    successBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  $('success-close').addEventListener('click', closeSuccess);
+  $('success-close-btn').addEventListener('click', closeSuccess);
+  successBackdrop.addEventListener('click', (e) => { if (e.target === successBackdrop) closeSuccess(); });
+
+  successCopy.addEventListener('click', async () => {
+    const code = successRef.textContent;
+    try {
+      await navigator.clipboard.writeText(code);
+      copyText.textContent = 'Copied!';
+      setTimeout(() => { copyText.textContent = 'Copy'; }, 1800);
+    } catch {
+      const r = document.createRange();
+      r.selectNode(successRef);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(r);
+      document.execCommand('copy');
+      copyText.textContent = 'Copied!';
+      setTimeout(() => { copyText.textContent = 'Copy'; }, 1800);
+    }
+  });
+
+  $('success-view').addEventListener('click', () => {
+    const code = successRef.textContent;
+    closeSuccess();
+    openLookup('ref', code);
+  });
+
+  /* ═════════════ LOOKUP ═════════════ */
+  const lookupBackdrop = $('lookup-backdrop');
+  const lookupTabs     = $('lookup-tabs');
+  const lookupEmail    = $('lookup-email');
+  const lookupRef      = $('lookup-ref');
+  const lookupAlert    = $('lookup-alert');
+  const lookupResults  = $('lookup-results');
+  const lookupResultsTitle = $('lookup-results-title');
+  const lookupResultsList  = $('lookup-results-list');
+  const lookupEmailGo  = $('lookup-email-go');
+  const lookupRefGo    = $('lookup-ref-go');
+  const lookupEmailSpinner = $('lookup-email-spinner');
+  const lookupRefSpinner   = $('lookup-ref-spinner');
+
+  let activeTab = 'email';
+
+  function setTab(tab) {
+    activeTab = tab;
+    lookupTabs.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    document.querySelectorAll('.tab-panel').forEach(p => p.hidden = p.dataset.panel !== tab);
+    hideAlert(lookupAlert);
+    setTimeout(() => (tab === 'email' ? lookupEmail : lookupRef).focus(), 100);
+  }
+
+  lookupTabs.addEventListener('click', (e) => {
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    setTab(tab.dataset.tab);
+  });
+
+  function openLookup(prefillTab = 'email', prefillValue = '') {
+    hideAlert(lookupAlert);
+    lookupResults.hidden = true;
+    lookupEmail.value = '';
+    lookupRef.value = '';
+
+    if (prefillTab === 'ref') { setTab('ref'); lookupRef.value = prefillValue || ''; }
+    else { setTab('email'); lookupEmail.value = prefillValue || ''; }
+
+    lookupBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLookup() {
+    lookupBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+    hideAlert(lookupAlert);
+  }
+
+  $('nav-lookup').addEventListener('click', () => {
+    let last = '';
+    try { last = localStorage.getItem('lumiere_last_booking') || ''; } catch {}
+    if (last) openLookup('ref', last);
+    else      openLookup('email', '');
+  });
+  $('lookup-close').addEventListener('click', closeLookup);
+  lookupBackdrop.addEventListener('click', (e) => { if (e.target === lookupBackdrop) closeLookup(); });
+
+  async function doLookup(kind) {
+    hideAlert(lookupAlert);
+    lookupResults.hidden = true;
+
+    let email = null, ref = null;
+    if (kind === 'email') {
+      email = lookupEmail.value.trim();
+      if (!email) { showAlert(lookupAlert, 'Please enter your email.'); return; }
+    } else {
+      ref = lookupRef.value.trim().toUpperCase();
+      if (!ref) { showAlert(lookupAlert, 'Please enter your booking code.'); return; }
+    }
+
+    const btn     = kind === 'email' ? lookupEmailGo : lookupRefGo;
+    const spinner = kind === 'email' ? lookupEmailSpinner : lookupRefSpinner;
+    const label   = btn.querySelector('.btn-label');
+
+    setLoading(btn, spinner, label, true);
+    const { data, error } = await supabase.rpc('lookup_bookings', { p_email: email, p_reference: ref });
+    setLoading(btn, spinner, label, false, 'Find');
+
+    if (error) {
+      showAlert(lookupAlert, error.message || 'Could not look up bookings.');
+      return;
+    }
+
+    const list = Array.isArray(data) ? data : [];
+
+    if (!list.length) {
+      lookupResults.hidden = false;
+      lookupResultsTitle.textContent = 'Results';
+      lookupResultsList.innerHTML = `
+        <div class="results-empty">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          <div style="font-weight:600;color:var(--c-ink-soft);margin-bottom:4px">No bookings found</div>
+          <div>Double-check the ${kind === 'email' ? 'email' : 'reference code'} you entered.</div>
+        </div>`;
+      return;
+    }
+
+    lookupResults.hidden = false;
+    lookupResultsTitle.textContent = `${list.length} booking${list.length === 1 ? '' : 's'} found`;
+
+    lookupResultsList.innerHTML = list.map(b => {
+      const statusLabel = (b.status || 'pending').charAt(0).toUpperCase() + (b.status || 'pending').slice(1);
+      const isCancelled = b.status === 'cancelled';
+      const isCompleted = b.status === 'completed';
+      const canRequest  = b.status === 'pending' || b.status === 'confirmed';
+
+      return `
+        <div class="booking-card${isCancelled ? ' is-cancelled' : ''}${isCompleted ? ' is-completed' : ''}">
+          <div class="booking-top">
+            <h4 class="booking-title">${esc(b.service_name || 'Treatment')}</h4>
+            <span class="status-pill ${esc(b.status || 'pending')}">${esc(statusLabel)}</span>
+          </div>
+          <div class="booking-meta">
+            <span>
+              <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+              ${esc(fmtDateLong(b.preferred_date))}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              ${esc(fmtTime12(b.preferred_time))}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+              ${esc(b.client_name || '—')}
+            </span>
+          </div>
+          <div class="booking-foot">
+            <div class="booking-ref">Ref: ${esc(b.reference_code || '—')}</div>
+            ${canRequest ? `
+              <button class="btn-request" data-ref="${esc(b.reference_code)}">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>
+                Request a change
+              </button>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    lookupResultsList.querySelectorAll('.btn-request').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ref = btn.dataset.ref;
+        const booking = list.find(x => x.reference_code === ref);
+        if (booking) openRequestModal(booking);
+      });
+    });
+  }
+
+  lookupEmailGo.addEventListener('click', () => doLookup('email'));
+  lookupRefGo.addEventListener('click', () => doLookup('ref'));
+  lookupEmail.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doLookup('email'); } });
+  lookupRef.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doLookup('ref'); } });
+
+  /* ═════════════ CHANGE REQUEST MODAL ═════════════ */
+  const requestBackdrop = $('request-backdrop');
+  const requestClose    = $('request-close');
+  const requestCancel   = $('request-cancel');
+  const requestSend     = $('request-send');
+  const reqBooking      = $('req-booking');
+  const reqType         = $('req-type');
+  const reqNewdateWrap  = $('req-newdate-wrap');
+  const reqNewdate      = $('req-newdate');
+  const reqReason       = $('req-reason');
+  const reqEmailPreview = $('req-email-preview');
+  const policyText      = $('policy-text');
+
+  let currentRequestBooking = null;
+  let currentRequestKind = 'cancel';
+
+  const POLICY_TEXT = {
+    cancel: `<strong>Cancellation policy.</strong> If you cancel a paid booking, a <span class="fee">10%</span> administration fee is retained and the remaining <span class="fee">90%</span> is refunded to your original payment method within 5–7 business days.`,
+    reschedule: `<strong>Reschedule policy.</strong> We're happy to move your booking to another date and time at no charge. Please give us as much notice as possible so we can release the slot to other guests.`,
+  };
+
+  function openRequestModal(booking) {
+    LOG.step('REQUEST','Opening for', booking.reference_code);
+    currentRequestBooking = booking;
+
+    reqBooking.innerHTML = `
+      <div class="lbl">Booking</div>
+      <div class="title">${esc(booking.service_name || 'Treatment')}</div>
+      <div class="meta">${esc(fmtDateLong(booking.preferred_date))} · ${esc(fmtTime12(booking.preferred_time))} · ${esc(booking.client_name || '—')}</div>
+      <div class="ref">${esc(booking.reference_code || '—')}</div>`;
+
+    currentRequestKind = 'cancel';
+    reqType.querySelectorAll('.req-choice').forEach(el =>
+      el.classList.toggle('selected', el.dataset.choice === 'cancel')
+    );
+    const cancelInput = reqType.querySelector('input[value="cancel"]');
+    if (cancelInput) cancelInput.checked = true;
+    reqNewdateWrap.hidden = true;
+    reqNewdate.value = '';
+    reqReason.value = '';
+    policyText.innerHTML = POLICY_TEXT.cancel;
+
+    buildRequestPreview();
+    requestBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeRequestModal() {
+    requestBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+    currentRequestBooking = null;
+  }
+
+  reqType.addEventListener('click', (e) => {
+    const choice = e.target.closest('.req-choice');
+    if (!choice) return;
+    currentRequestKind = choice.dataset.choice;
+    reqType.querySelectorAll('.req-choice').forEach(el =>
+      el.classList.toggle('selected', el === choice)
+    );
+    const input = choice.querySelector('input');
+    if (input) input.checked = true;
+
+    reqNewdateWrap.hidden = currentRequestKind !== 'reschedule';
+    policyText.innerHTML = POLICY_TEXT[currentRequestKind];
+    buildRequestPreview();
+
+    if (currentRequestKind === 'reschedule') {
+      setTimeout(() => reqNewdate.focus(), 200);
+    }
+  });
+
+  ['input','change'].forEach(evt => {
+    reqNewdate.addEventListener(evt, buildRequestPreview);
+    reqReason.addEventListener(evt, buildRequestPreview);
+  });
+
+  function buildRequestPreview() {
+    const b = currentRequestBooking;
+    if (!b) return;
+
+    const kind = currentRequestKind;
+    const subject = kind === 'cancel'
+      ? `Cancellation request — ${b.reference_code}`
+      : `Reschedule request — ${b.reference_code}`;
+
+    const lines = [
+      `To: ${SPA_EMAIL}`,
+      `Subject: ${subject}`,
+      '',
+      `Hi Lumière Spa,`,
+      '',
+      `I'd like to request a ${kind === 'cancel' ? 'cancellation' : 'reschedule'} for my booking.`,
+      '',
+      `  Booking reference: ${b.reference_code}`,
+      `  Treatment: ${b.service_name || '—'}`,
+      `  Current date: ${fmtDateLong(b.preferred_date)}`,
+      `  Current time: ${fmtTime12(b.preferred_time)}`,
+      `  Name: ${b.client_name || '—'}`,
+    ];
+
+    if (kind === 'reschedule') {
+      const nd = reqNewdate.value.trim();
+      lines.push('');
+      lines.push(`New preferred date: ${nd || '(please suggest some options)'}`);
+    }
+
+    const r = reqReason.value.trim();
+    if (r) {
+      lines.push('');
+      lines.push(`Reason: ${r}`);
+    }
+
+    if (kind === 'cancel') {
+      lines.push('');
+      lines.push(`I understand the 10% administration fee applies to cancellations.`);
+    }
+
+    lines.push('');
+    lines.push('Thank you,');
+    lines.push(b.client_name || '');
+
+    const body = lines.join('\n');
+    reqEmailPreview.textContent = body;
+
+    const mailto = `mailto:${SPA_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.slice(3).join('\n'))}`;
+    requestSend.href = mailto;
+  }
+
+  requestClose.addEventListener('click', closeRequestModal);
+  requestCancel.addEventListener('click', closeRequestModal);
+  requestBackdrop.addEventListener('click', (e) => { if (e.target === requestBackdrop) closeRequestModal(); });
+
+  requestSend.addEventListener('click', () => {
+    LOG.ok('REQUEST','Opening mail client for', currentRequestBooking?.reference_code);
+    setTimeout(() => {
+      closeRequestModal();
+      closeLookup();
+    }, 400);
+  });
+
+  /* ═════════════ REVIEW MODAL ═════════════ */
+  const reviewBackdrop = $('review-backdrop');
+  const reviewForm     = $('review-form');
+  const reviewAlert    = $('review-alert');
+  const reviewSendBtn  = $('review-send-btn');
+  const reviewSpinner  = $('review-spinner');
+  const reviewLabel    = reviewSendBtn.querySelector('.btn-label');
+  const starsInput     = $('stars-input');
+  const ratingHint     = $('rating-hint');
+
+  let currentRating = 0;
+  const RATING_WORDS = ['', 'Not great', 'Okay', 'Good', 'Loved it', 'Perfect'];
+
+  function setRating(v) {
+    currentRating = Math.max(0, Math.min(5, v));
+    starsInput.querySelectorAll('.star-btn').forEach(b => {
+      b.classList.toggle('on', Number(b.dataset.v) <= currentRating);
+    });
+    ratingHint.textContent = currentRating
+      ? RATING_WORDS[currentRating] + ' · ' + currentRating + '★'
+      : 'Tap to rate';
+  }
+
+  starsInput.addEventListener('click', (e) => {
+    const btn = e.target.closest('.star-btn');
+    if (!btn) return;
+    setRating(Number(btn.dataset.v));
+  });
+  starsInput.addEventListener('mouseover', (e) => {
+    const btn = e.target.closest('.star-btn');
+    if (!btn) return;
+    const v = Number(btn.dataset.v);
+    starsInput.querySelectorAll('.star-btn').forEach(b => b.classList.toggle('on', Number(b.dataset.v) <= v));
+  });
+  starsInput.addEventListener('mouseleave', () => setRating(currentRating));
+
+  function openReview() {
+    hideAlert(reviewAlert);
+    setRating(0);
+    reviewBackdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => $('r-name').focus(), 220);
+  }
+  function closeReview() {
+    reviewBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  $('leave-review').addEventListener('click', openReview);
+  $('review-close').addEventListener('click', closeReview);
+  $('review-cancel').addEventListener('click', closeReview);
+  reviewBackdrop.addEventListener('click', (e) => { if (e.target === reviewBackdrop) closeReview(); });
+
+  reviewForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideAlert(reviewAlert);
+    if (!currentRating) return showAlert(reviewAlert, 'Please pick a star rating.');
+
+    const name  = $('r-name').value.trim();
+    const email = $('r-email').value.trim();
+    const service = $('r-service').value || null;
+    const title = $('r-title').value.trim();
+    const body  = $('r-body').value.trim();
+
+    if (!name) return showAlert(reviewAlert, 'Please enter your name.');
+    if (!body) return showAlert(reviewAlert, 'Please write a short review.');
+
+    setLoading(reviewSendBtn, reviewSpinner, reviewLabel, true);
+    const { error } = await supabase.from('reviews').insert({
+      name, email: email || null, rating: currentRating,
+      title: title || null, body, service_id: service,
+      is_published: false,
+    });
+    setLoading(reviewSendBtn, reviewSpinner, reviewLabel, false, 'Submit review');
+
+    if (error) {
+      showAlert(reviewAlert, error.message || 'Could not submit review.');
+      return;
+    }
+
+    showAlert(reviewAlert, '✓ Thank you! Your review will appear once we\'ve reviewed it.', 'success');
+    setTimeout(() => { closeReview(); reviewForm.reset(); setRating(0); }, 2400);
+  });
+
+  /* ═════════════ CONTACT FORM ═════════════ */
+  const contactForm    = $('contact-form');
+  const contactAlert   = $('contact-alert');
+  const contactSend    = $('contact-send');
+  const contactSpinner = $('contact-spinner');
+  const contactLabel   = contactSend.querySelector('.btn-label');
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideAlert(contactAlert);
+
+    const name    = $('m-name').value.trim();
+    const email   = $('m-email').value.trim();
+    const phone   = $('m-phone').value.trim();
+    const subject = $('m-subject').value.trim();
+    const body    = $('m-body').value.trim();
+
+    if (!name)  return showAlert(contactAlert, 'Please enter your name.');
+    if (!email) return showAlert(contactAlert, 'Please enter your email.');
+    if (!body)  return showAlert(contactAlert, 'Please write a short message.');
+
+    setLoading(contactSend, contactSpinner, contactLabel, true);
+    const { data, error } = await supabase.rpc('create_message', {
+      p_name:    name,
+      p_email:   email,
+      p_phone:   phone || null,
+      p_subject: subject || null,
+      p_body:    body,
+    });
+    setLoading(contactSend, contactSpinner, contactLabel, false, 'Send message');
+
+    if (error) {
+      showAlert(contactAlert, error.message || 'Could not send your message.');
+      return;
+    }
+    if (!data || data.error) {
+      showAlert(contactAlert, 'Please check your details and try again.');
+      return;
+    }
+
+    showAlert(contactAlert, '✓ Message sent! We\'ll be in touch soon.', 'success');
+    contactForm.reset();
+    setTimeout(() => hideAlert(contactAlert), 5000);
+  });
+
+  /* ═════════════ BOOT ═════════════ */
+  $('year').textContent = new Date().getFullYear();
+
+  (async () => {
+    await Promise.all([loadServices(), loadReviews()]);
+    LOG.info('index.html ready.');
+  })();
+</script>
+</body>
+</html>

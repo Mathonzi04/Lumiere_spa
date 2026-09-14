@@ -8,978 +8,1146 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  /* =========================================================
-     Lumière Spa — dashboard.html (self-contained)
-     ========================================================= */
+  :root{
+    --c-bg:#faf7f2;--c-bg-alt:#f4ede4;--c-surface:#fff;
+    --c-ink:#2b1d13;--c-ink-soft:#5c4a3a;--c-ink-muted:#8a7a6a;
+    --c-brand:#b9926a;--c-brand-dark:#8f6d4a;--c-brand-soft:#f1e6d8;
+    --c-border:#e8ddce;--c-border-strong:#d9c9b3;
+    --c-error:#c0392b;--c-error-bg:#fdecea;
+    --c-success:#1e7a3c;--c-success-bg:#e8f5ec;
+    --c-warn:#b8860b;--c-warn-bg:#fdf6e3;
+    --c-info:#2a5d95;--c-info-bg:#eef4fb;
+    --c-star:#e8b75f;
+    --radius-sm:8px;--radius:12px;--radius-lg:20px;--radius-pill:999px;
+    --shadow-sm:0 2px 6px rgba(43,29,19,.06);
+    --shadow:0 10px 30px rgba(43,29,19,.08);
+    --font-body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --font-display:'Cormorant Garamond',Georgia,serif;
+    --transition:200ms cubic-bezier(.4,0,.2,1);
+    --sidebar-w:260px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-body);color:var(--c-ink);background:var(--c-bg);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+  img{display:block;max-width:100%}a{color:inherit;text-decoration:none}button{font-family:inherit}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0 0 .3em;line-height:1.15;letter-spacing:-.01em}
 
-  :root {
-    --c-bg:            #faf7f2;
-    --c-bg-alt:        #f4ede4;
-    --c-surface:       #ffffff;
+  .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 
-    --c-ink:           #2b1d13;
-    --c-ink-soft:      #5c4a3a;
-    --c-ink-muted:     #8a7a6a;
+  /* ═══ SIDEBAR ═══ */
+  .sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:26px 18px 18px;background:radial-gradient(90% 40% at 0% 100%,rgba(185,146,106,.22),transparent 60%),linear-gradient(165deg,#2b1d13 0%,#3a281b 60%,#4a3423 100%);color:#f6ede4;overflow-y:auto;z-index:20}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 8px 22px;font-family:var(--font-display);font-size:21px;font-weight:700;letter-spacing:.02em;border-bottom:1px solid rgba(246,237,228,.1);margin-bottom:18px}
+  .brand-mark{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#d8b48f,#b9926a);color:#2b1d13;font-family:var(--font-display);font-size:18px;font-weight:700;flex:none}
+  .brand-name{color:#f6ede4}
+  .nav{display:flex;flex-direction:column;gap:2px;flex:1}
+  .nav-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,237,228,.4);padding:16px 12px 8px}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius);font-size:14px;font-weight:500;color:rgba(246,237,228,.75);cursor:pointer;position:relative;transition:background var(--transition),color var(--transition)}
+  .nav-item:hover{background:rgba(246,237,228,.07);color:#f8f1e8}
+  .nav-item.active{background:linear-gradient(135deg,rgba(185,146,106,.28),rgba(185,146,106,.14));color:#fff;box-shadow:inset 0 0 0 1px rgba(185,146,106,.35)}
+  .nav-item.active::before{content:"";position:absolute;left:-18px;top:50%;transform:translateY(-50%);width:3px;height:22px;border-radius:0 3px 3px 0;background:var(--c-brand)}
+  .nav-item .ico{width:20px;height:20px;flex:none;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .nav-item .badge{margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);background:rgba(185,146,106,.35);color:#f8f1e8}
+  .nav-item .badge[hidden]{display:none}
+  .user-card{display:flex;align-items:center;gap:12px;padding:12px;margin-top:14px;border-radius:var(--radius);background:rgba(246,237,228,.06);border:1px solid rgba(246,237,228,.08);cursor:pointer;transition:background var(--transition)}
+  .user-card:hover{background:rgba(246,237,228,.11)}
+  .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#4a3423;border:2px solid rgba(246,237,228,.15);flex:none}
+  .user-meta{min-width:0;flex:1}
+  .user-name{font-size:13.5px;font-weight:600;color:#f8f1e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-role{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-brand)}
+  .user-signout{background:transparent;border:0;color:rgba(246,237,228,.5);cursor:pointer;padding:4px;border-radius:6px;display:grid;place-items:center;transition:background var(--transition),color var(--transition)}
+  .user-signout:hover{background:rgba(192,57,43,.25);color:#ffd9d4}
 
-    --c-brand:         #b9926a;
-    --c-brand-dark:    #8f6d4a;
-    --c-brand-soft:    #f1e6d8;
+  /* ═══ MAIN ═══ */
+  .main{min-width:0;display:flex;flex-direction:column}
+  .topbar{display:flex;align-items:center;gap:16px;padding:18px 34px;background:var(--c-bg);border-bottom:1px solid var(--c-border);position:sticky;top:0;z-index:10}
+  .menu-toggle{display:none;background:transparent;border:1px solid var(--c-border);border-radius:var(--radius-sm);padding:8px;cursor:pointer;color:var(--c-ink)}
+  .page-title{font-family:var(--font-display);font-size:24px;font-weight:600;margin:0}
+  .page-sub{font-size:12.5px;color:var(--c-ink-muted);margin:0}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .icon-btn{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:var(--radius);background:var(--c-surface);border:1px solid var(--c-border);color:var(--c-ink-soft);cursor:pointer;transition:background var(--transition),border-color var(--transition),color var(--transition)}
+  .icon-btn:hover{background:var(--c-brand-soft);border-color:var(--c-border-strong);color:var(--c-brand-dark)}
+  .icon-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .icon-btn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--c-error);box-shadow:0 0 0 2px var(--c-bg)}
+  .icon-btn .dot[hidden]{display:none}
 
-    --c-border:        #e8ddce;
-    --c-border-strong: #d9c9b3;
+  .content{padding:30px 34px 60px;flex:1}
 
-    --c-error:         #c0392b;
-    --c-success:       #1e7a3c;
+  /* welcome */
+  .welcome{position:relative;overflow:hidden;padding:30px 32px;border-radius:var(--radius-lg);background:radial-gradient(120% 120% at 100% 0%,rgba(185,146,106,.28),transparent 55%),linear-gradient(135deg,#2b1d13 0%,#4a3423 100%);color:#f8f1e8;margin-bottom:26px}
+  .welcome::after{content:"";position:absolute;right:-60px;bottom:-80px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(185,146,106,.35),transparent 65%)}
+  .welcome h1{color:#f8f1e8;margin-bottom:6px;position:relative;font-size:32px}
+  .welcome p{color:rgba(246,237,228,.78);margin:0;position:relative;max-width:520px}
 
-    --radius-sm: 8px;
-    --radius:    12px;
-    --radius-lg: 20px;
-    --radius-pill: 999px;
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:30px}
+  .stat{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);padding:20px 22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:6px;transition:transform var(--transition),box-shadow var(--transition);position:relative;overflow:hidden}
+  .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .stat::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+  .stat[data-accent="brand"]::before{background:linear-gradient(90deg,var(--c-brand),var(--c-brand-dark))}
+  .stat[data-accent="pending"]::before{background:linear-gradient(90deg,#e8b75f,#f4cd88)}
+  .stat[data-accent="success"]::before{background:linear-gradient(90deg,#2fa060,#67c08b)}
+  .stat[data-accent="info"]::before{background:linear-gradient(90deg,#2a5d95,#6b9bd1)}
+  .stat[data-accent="error"]::before{background:linear-gradient(90deg,#c0392b,#e07a6e)}
 
-    --shadow-sm: 0 2px 6px rgba(43,29,19,.06);
-    --shadow:    0 10px 30px rgba(43,29,19,.08);
+  .stat-top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .stat-ico{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--c-brand-soft);color:var(--c-brand-dark);flex:none}
+  .stat-ico svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .stat[data-accent="pending"] .stat-ico{background:var(--c-warn-bg);color:var(--c-warn)}
+  .stat[data-accent="success"] .stat-ico{background:var(--c-success-bg);color:var(--c-success)}
+  .stat[data-accent="info"] .stat-ico{background:var(--c-info-bg);color:var(--c-info)}
+  .stat[data-accent="error"] .stat-ico{background:var(--c-error-bg);color:var(--c-error)}
 
-    --font-body:    'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    --font-display: 'Cormorant Garamond', Georgia, serif;
+  .stat-label{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted)}
+  .stat-value{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--c-ink);line-height:1;margin-top:4px;letter-spacing:-.01em}
+  .stat-value.loading{color:var(--c-ink-muted);font-size:20px;font-weight:400}
+  .stat-delta{font-size:12.5px;font-weight:600;color:var(--c-ink-muted)}
+  .stat-delta.good{color:var(--c-success)}
+  .stat-delta.warn{color:var(--c-warn)}
+  .stat-delta.bad{color:var(--c-error)}
 
-    --transition: 180ms ease;
-    --sidebar-w: 260px;
-  }
+  /* section head */
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 14px}
+  .section-head h2{margin:0;font-size:20px}
+  .section-head a{font-size:13px;font-weight:600;color:var(--c-brand-dark)}
+  .section-head a:hover{text-decoration:underline}
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  /* cards */
+  .card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px 14px;border-bottom:1px solid var(--c-border)}
+  .card-head h2{margin:0;font-size:18px}
+  .card-head a{font-size:12.5px;font-weight:600;color:var(--c-brand-dark)}
+  .card-head a:hover{text-decoration:underline}
+  .card-head .pill-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--c-success);letter-spacing:.06em;text-transform:uppercase}
+  .card-head .pill-live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-success);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-  body {
-    font-family: var(--font-body);
-    color: var(--c-ink);
-    background: var(--c-bg);
-    font-size: 15px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
+  .list-body{padding:6px 0}
 
-  img { display: block; max-width: 100%; }
-  a { color: inherit; text-decoration: none; }
-  button { font-family: inherit; }
+  /* rows */
+  .row{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--c-border);cursor:pointer;transition:background var(--transition)}
+  .row:last-child{border-bottom:0}
+  .row:hover{background:var(--c-bg)}
+  .row .avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--c-brand),var(--c-brand-dark));color:#fff;font-family:var(--font-display);font-weight:700;font-size:15px;flex:none}
+  .row .avatar.info{background:linear-gradient(135deg,#2a5d95,#6b9bd1)}
+  .row .avatar.warn{background:linear-gradient(135deg,#e8b75f,#b8860b)}
+  .row .avatar.error{background:linear-gradient(135deg,#c0392b,#e07a6e)}
+  .row .avatar.success{background:linear-gradient(135deg,#2fa060,#67c08b)}
+  .row .avatar.muted{background:var(--c-bg-alt);color:var(--c-ink-muted)}
 
-  h1, h2, h3 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    margin: 0 0 .3em;
-    line-height: 1.15;
-    letter-spacing: -.01em;
-  }
-  h1 { font-size: 34px; }
-  h2 { font-size: 22px; }
-  p  { margin: 0 0 1em; color: var(--c-ink-soft); }
+  .row-main{flex:1;min-width:0}
+  .row-line1{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--c-ink);min-width:0}
+  .row-line1 strong{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row-line1 .muted{color:var(--c-ink-muted);font-size:12.5px;white-space:nowrap}
+  .row-line2{font-size:12.5px;color:var(--c-ink-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row-line2 .by{color:var(--c-info);font-weight:600}
+  .row-line2 .cancel{color:var(--c-error);font-weight:600}
 
-  /* =========================================================
-     LAYOUT
-     ========================================================= */
-  .app {
-    display: grid;
-    grid-template-columns: var(--sidebar-w) 1fr;
-    min-height: 100vh;
-  }
+  .row-side{flex-shrink:0;display:flex;align-items:center;gap:8px}
 
-  /* =========================================================
-     SIDEBAR
-     ========================================================= */
-  .sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 26px 18px 18px;
-    background:
-      radial-gradient(90% 40% at 0% 100%, rgba(185,146,106,.22), transparent 60%),
-      linear-gradient(165deg, #2b1d13 0%, #3a281b 60%, #4a3423 100%);
-    color: #f6ede4;
-    overflow-y: auto;
-    z-index: 20;
-  }
+  .status-pill{padding:3px 10px;border-radius:var(--radius-pill);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px}
+  .status-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+  .status-pill.pending{background:var(--c-warn-bg);color:var(--c-warn)}
+  .status-pill.confirmed{background:var(--c-success-bg);color:var(--c-success)}
+  .status-pill.completed{background:var(--c-info-bg);color:var(--c-info)}
+  .status-pill.cancelled{background:var(--c-error-bg);color:var(--c-error)}
+  .status-pill.dev{background:#2b1d13;color:#f2d8a8}
+  .status-pill.admin{background:var(--c-brand-soft);color:var(--c-brand-dark)}
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 8px 22px;
-    font-family: var(--font-display);
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: .02em;
-    border-bottom: 1px solid rgba(246,237,228,.1);
-    margin-bottom: 18px;
-  }
-  .brand-mark {
-    display: inline-grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #d8b48f, #b9926a);
-    color: #2b1d13;
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 700;
-    flex: none;
-  }
-  .brand-name { color: #f6ede4; }
+  .stars-mini{color:var(--c-star);letter-spacing:2px;font-size:12px}
 
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-  }
-  .nav-label {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: rgba(246,237,228,.4);
-    padding: 16px 12px 8px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-weight: 500;
-    color: rgba(246,237,228,.75);
-    cursor: pointer;
-    transition: background var(--transition), color var(--transition), transform var(--transition);
-    position: relative;
-  }
-  .nav-item:hover {
-    background: rgba(246,237,228,.07);
-    color: #f8f1e8;
-  }
-  .nav-item.active {
-    background: linear-gradient(135deg, rgba(185,146,106,.28), rgba(185,146,106,.14));
-    color: #fff;
-    box-shadow: inset 0 0 0 1px rgba(185,146,106,.35);
-  }
-  .nav-item.active::before {
-    content: "";
-    position: absolute;
-    left: -18px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 22px;
-    border-radius: 0 3px 3px 0;
-    background: var(--c-brand);
-  }
-  .nav-item .ico {
-    width: 20px;
-    height: 20px;
-    flex: none;
-    stroke: currentColor;
-    stroke-width: 1.75;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .nav-item .badge {
-    margin-left: auto;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: var(--radius-pill);
-    background: rgba(185,146,106,.35);
-    color: #f8f1e8;
-  }
+  .empty-row{padding:36px 22px;text-align:center;color:var(--c-ink-muted);font-size:13.5px}
+  .empty-row svg{width:36px;height:36px;margin:0 auto 10px;stroke:var(--c-brand);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block}
 
-  .user-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    margin-top: 14px;
-    border-radius: var(--radius);
-    background: rgba(246,237,228,.06);
-    border: 1px solid rgba(246,237,228,.08);
-    cursor: pointer;
-    transition: background var(--transition);
-  }
-  .user-card:hover { background: rgba(246,237,228,.11); }
+  /* tiles */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:30px}
+  .tile{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);cursor:pointer;transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition)}
+  .tile:hover{transform:translateY(-2px);border-color:var(--c-brand);box-shadow:var(--shadow)}
+  .tile-ico{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius);background:var(--c-brand-soft);color:var(--c-brand-dark);flex:none}
+  .tile-ico svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .tile-body{min-width:0}
+  .tile-title{font-size:14.5px;font-weight:600;color:var(--c-ink)}
+  .tile-desc{font-size:12.5px;color:var(--c-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #4a3423;
-    border: 2px solid rgba(246,237,228,.15);
-    flex: none;
-  }
-  .user-meta { min-width: 0; flex: 1; }
-  .user-name {
-    font-size: 13.5px;
-    font-weight: 600;
-    color: #f8f1e8;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .user-role {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--c-brand);
-  }
-  .user-signout {
-    background: transparent;
-    border: 0;
-    color: rgba(246,237,228,.5);
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: background var(--transition), color var(--transition);
-    display: grid;
-    place-items: center;
-  }
-  .user-signout:hover {
-    background: rgba(192,57,43,.25);
-    color: #ffd9d4;
-  }
+  /* grids */
+  .grid-2col{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;margin-bottom:30px}
+  @media (max-width:1100px){.grid-2col{grid-template-columns:1fr}}
 
-  /* =========================================================
-     MAIN AREA
-     ========================================================= */
-  .main {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
+  /* skeleton */
+  .skel{display:inline-block;background:linear-gradient(90deg,#efe6d8 0%,#f6ede0 50%,#efe6d8 100%);background-size:200% 100%;animation:sk 1.3s linear infinite;border-radius:6px;color:transparent;min-width:60px}
+  @keyframes sk{to{background-position:-200% 0}}
 
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 34px;
-    background: var(--c-bg);
-    border-bottom: 1px solid var(--c-border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .menu-toggle {
-    display: none;
-    background: transparent;
-    border: 1px solid var(--c-border);
-    border-radius: var(--radius-sm);
-    padding: 8px;
-    cursor: pointer;
-    color: var(--c-ink);
-  }
-  .page-title {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0;
-  }
-  .page-sub {
-    font-size: 12.5px;
-    color: var(--c-ink-muted);
-    margin: 0;
-  }
-  .topbar-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .icon-btn {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: var(--radius);
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    color: var(--c-ink-soft);
-    cursor: pointer;
-    transition: background var(--transition), border-color var(--transition), color var(--transition);
-  }
-  .icon-btn:hover {
-    background: var(--c-brand-soft);
-    border-color: var(--c-border-strong);
-    color: var(--c-brand-dark);
-  }
-  .icon-btn svg {
-    width: 18px; height: 18px;
-    stroke: currentColor; stroke-width: 1.75; fill: none;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .icon-btn .dot {
-    position: absolute;
-    top: 8px; right: 9px;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--c-error);
-    box-shadow: 0 0 0 2px var(--c-bg);
-  }
+  /* mini stat strip inside cards */
+  .mini-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c-border);border-radius:var(--radius);overflow:hidden;margin:0 22px 16px}
+  .mini-strip > div{background:var(--c-surface);padding:12px 14px;text-align:center}
+  .mini-strip .lbl{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-muted);margin-bottom:4px}
+  .mini-strip .val{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--c-ink)}
+  .mini-strip .val.warn{color:var(--c-warn)}
+  .mini-strip .val.success{color:var(--c-success)}
+  .mini-strip .val.info{color:var(--c-info)}
 
-  .content {
-    padding: 30px 34px 60px;
-    flex: 1;
-  }
+  /* mobile */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(43,29,19,.5);z-index:15;opacity:0;transition:opacity var(--transition)}
 
-  .welcome {
-    position: relative;
-    overflow: hidden;
-    padding: 30px 32px;
-    border-radius: var(--radius-lg);
-    background:
-      radial-gradient(120% 120% at 100% 0%, rgba(185,146,106,.28), transparent 55%),
-      linear-gradient(135deg, #2b1d13 0%, #4a3423 100%);
-    color: #f8f1e8;
-    margin-bottom: 26px;
-  }
-  .welcome::after {
-    content: "";
-    position: absolute;
-    right: -60px; bottom: -80px;
-    width: 240px; height: 240px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(185,146,106,.35), transparent 65%);
-  }
-  .welcome h1 { color: #f8f1e8; margin-bottom: 6px; position: relative; }
-  .welcome p  { color: rgba(246,237,228,.78); margin: 0; position: relative; max-width: 520px; }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 30px;
-  }
-  .stat {
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--radius-lg);
-    padding: 20px 22px;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    transition: transform var(--transition), box-shadow var(--transition);
-  }
-  .stat:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-  }
-  .stat-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--c-ink-muted);
-  }
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--c-ink);
-    line-height: 1.1;
-  }
-  .stat-delta {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--c-success);
-  }
-  .stat-delta.down { color: var(--c-error); }
-
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin: 0 0 14px;
-  }
-  .section-head h2 { margin: 0; font-size: 20px; }
-  .section-head a {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--c-brand-dark);
-  }
-  .section-head a:hover { text-decoration: underline; }
-
-  .tiles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
-    margin-bottom: 30px;
-  }
-  .tile {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 20px;
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    cursor: pointer;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-  }
-  .tile:hover {
-    transform: translateY(-2px);
-    border-color: var(--c-brand);
-    box-shadow: var(--shadow);
-  }
-  .tile-ico {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius);
-    background: var(--c-brand-soft);
-    color: var(--c-brand-dark);
-    flex: none;
-  }
-  .tile-ico svg {
-    width: 22px; height: 22px;
-    stroke: currentColor; stroke-width: 1.75; fill: none;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .tile-body { min-width: 0; }
-  .tile-title {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--c-ink);
-  }
-  .tile-desc {
-    font-size: 12.5px;
-    color: var(--c-ink-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .activity {
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-  }
-  .activity-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--c-border);
-    font-size: 14px;
-  }
-  .activity-row:last-child { border-bottom: 0; }
-  .activity-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--c-brand);
-    flex: none;
-    box-shadow: 0 0 0 4px rgba(185,146,106,.15);
-  }
-  .activity-text { flex: 1; min-width: 0; }
-  .activity-text strong { color: var(--c-ink); font-weight: 600; }
-  .activity-time {
-    font-size: 12px;
-    color: var(--c-ink-muted);
-    white-space: nowrap;
-  }
-  .empty {
-    padding: 34px 20px;
-    text-align: center;
-    color: var(--c-ink-muted);
-    font-size: 13.5px;
-  }
-
-  /* =========================================================
-     MOBILE
-     ========================================================= */
-  .overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(43,29,19,.5);
-    z-index: 15;
-    opacity: 0;
-    transition: opacity var(--transition);
-  }
-
-  @media (max-width: 900px) {
-    .app { grid-template-columns: 1fr; }
-
-    .sidebar {
-      position: fixed;
-      left: 0; top: 0;
-      width: var(--sidebar-w);
-      transform: translateX(-100%);
-      transition: transform 240ms cubic-bezier(.4,0,.2,1);
-    }
-    .sidebar.open { transform: translateX(0); }
-
-    .overlay.show {
-      display: block;
-      opacity: 1;
-    }
-
-    .menu-toggle { display: grid; place-items: center; }
-    .topbar { padding: 14px 18px; }
-    .content { padding: 22px 18px 50px; }
-    .welcome { padding: 24px 22px; }
-    .welcome h1 { font-size: 26px; }
-    .stat-value { font-size: 26px; }
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;transform:translateX(-100%);transition:transform 240ms cubic-bezier(.4,0,.2,1)}
+    .sidebar.open{transform:translateX(0)}
+    .overlay.show{display:block;opacity:1}
+    .menu-toggle{display:grid;place-items:center}
+    .topbar{padding:14px 18px}
+    .content{padding:22px 18px 50px}
+    .welcome{padding:24px 22px}
+    .welcome h1{font-size:26px}
+    .stat-value{font-size:26px}
+    .row{padding:12px 16px}
+    .card-head{padding:14px 18px 12px}
   }
 </style>
 </head>
 <body>
 
-  <div class="overlay" id="overlay"></div>
+<div class="overlay" id="overlay"></div>
 
-  <div class="app">
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark">L</span><span class="brand-name">Lumière</span></div>
 
-    <!-- ══════════════ SIDEBAR ══════════════ -->
-    <aside class="sidebar" id="sidebar">
+    <nav class="nav">
+      <div class="nav-label">Workspace</div>
+      <a class="nav-item" href="bookings.html">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+        <span>Bookings</span>
+        <span class="badge" id="nav-bookings" hidden>0</span>
+      </a>
+      <a class="nav-item" href="messages.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+        <span>Messages</span>
+        <span class="badge" id="nav-messages" hidden>0</span>
+      </a>
+      <a class="nav-item" href="reviews.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+        <span>Reviews</span>
+        <span class="badge" id="nav-reviews" hidden>0</span>
+      </a>
 
-      <div class="brand">
-        <span class="brand-mark">L</span>
-        <span class="brand-name">Lumière</span>
+      <div class="nav-label">Manage</div>
+      <a class="nav-item" href="services.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/></svg>
+        <span>Services</span>
+      </a>
+      <a class="nav-item" href="team.html">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
+        <span>Team</span>
+      </a>
+      <a class="nav-item" href="finances.html" id="nav-finances">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
+        <span>Finances</span>
+      </a>
+
+      <div class="nav-label">Account</div>
+      <a class="nav-item" href="my_profile.html">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>My profile</span>
+      </a>
+      <a class="nav-item" href="about_us.html">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span>About us</span>
+      </a>
+    </nav>
+
+    <div class="user-card" id="user-card" title="My profile">
+      <img class="user-avatar" id="user-avatar" alt="Your avatar" />
+      <div class="user-meta">
+        <div class="user-name" id="user-name">Loading…</div>
+        <div class="user-role" id="user-role">—</div>
       </div>
+      <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <path d="M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+      </button>
+    </div>
+  </aside>
 
-      <nav class="nav" id="nav">
-        <div class="nav-label">Workspace</div>
-
-        <a class="nav-item" href="bookings.html" data-page="bookings">
-          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
-          <span>Bookings</span>
-        </a>
-
-        <a class="nav-item" href="messages.html" data-page="messages">
-          <svg class="ico" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
-          <span>Messages</span>
-          <span class="badge">3</span>
-        </a>
-
-        <a class="nav-item" href="reviews.html" data-page="reviews">
-          <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
-          <span>Reviews</span>
-        </a>
-
-        <div class="nav-label">Manage</div>
-
-        <a class="nav-item" href="team.html" data-page="team">
-          <svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
-          <span>Team</span>
-        </a>
-
-        <a class="nav-item" href="finances.html" data-page="finances">
-          <svg class="ico" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
-          <span>Finances</span>
-        </a>
-
-        <div class="nav-label">Account</div>
-
-        <a class="nav-item" href="my_profile.html" data-page="my-profile">
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-          <span>My profile</span>
-        </a>
-
-        <a class="nav-item" href="about.html" data-page="about">
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
-          <span>About us</span>
-        </a>
-      </nav>
-
-      <!-- user card → my_profile.html -->
-      <div class="user-card" id="user-card" title="View my profile">
-        <img class="user-avatar" id="user-avatar" alt="Your avatar" />
-        <div class="user-meta">
-          <div class="user-name" id="user-name">Loading…</div>
-          <div class="user-role" id="user-role">—</div>
-        </div>
-        <button class="user-signout" id="signout-btn" title="Sign out" aria-label="Sign out">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <path d="M16 17l5-5-5-5M21 12H9"/>
-          </svg>
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-sub" id="today"></p>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="refresh-btn" title="Refresh data">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+        </button>
+        <button class="icon-btn" id="bell-btn" title="Messages">
+          <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+          <span class="dot" id="bell-dot" hidden></span>
+        </button>
+        <button class="icon-btn" id="profile-btn" title="My profile">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
         </button>
       </div>
+    </header>
 
-    </aside>
+    <section class="content">
 
-    <!-- ══════════════ MAIN ══════════════ -->
-    <main class="main">
+      <!-- WELCOME -->
+      <div class="welcome">
+        <h1 id="welcome-heading">Welcome back</h1>
+        <p id="welcome-sub">Here's what's happening at the spa today.</p>
+      </div>
 
-      <!-- topbar -->
-      <header class="topbar">
-        <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-               stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6h18M3 12h18M3 18h18"/>
-          </svg>
-        </button>
+      <!-- STATS — adapts to role -->
+      <div class="stats" id="stats-row">
 
-        <div>
-          <h1 class="page-title">Dashboard</h1>
-          <p class="page-sub" id="today"></p>
-        </div>
-
-        <div class="topbar-right">
-          <button class="icon-btn" id="bell-btn" title="Notifications" aria-label="Notifications">
-            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
-            <span class="dot"></span>
-          </button>
-          <button class="icon-btn" id="profile-btn" title="My profile" aria-label="My profile">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-          </button>
-        </div>
-      </header>
-
-      <!-- content -->
-      <section class="content">
-
-        <div class="welcome">
-          <h1 id="welcome-heading">Welcome back</h1>
-          <p id="welcome-sub">Here's what's happening at the spa today.</p>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-label">Today's bookings</div>
-            <div class="stat-value">12</div>
-            <div class="stat-delta">+3 vs yesterday</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Pending messages</div>
-            <div class="stat-value">3</div>
-            <div class="stat-delta down">Needs reply</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">This week's revenue</div>
-            <div class="stat-value">R 8,450</div>
-            <div class="stat-delta">+12.4%</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Avg. rating</div>
-            <div class="stat-value">4.8</div>
-            <div class="stat-delta">124 reviews</div>
-          </div>
-        </div>
-
-        <div class="section-head">
-          <h2>Jump to</h2>
-        </div>
-
-        <div class="tiles">
-          <a class="tile" href="team.html">
-            <div class="tile-ico">
-              <svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">Team</div>
-              <div class="tile-desc">Manage therapists &amp; staff</div>
-            </div>
-          </a>
-
-          <a class="tile" href="reviews.html">
-            <div class="tile-ico">
-              <svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">Reviews</div>
-              <div class="tile-desc">See what clients are saying</div>
-            </div>
-          </a>
-
-          <a class="tile" href="about.html">
-            <div class="tile-ico">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">About us</div>
-              <div class="tile-desc">Spa info &amp; opening hours</div>
-            </div>
-          </a>
-
-          <a class="tile" href="messages.html">
-            <div class="tile-ico">
-              <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">Messages</div>
-              <div class="tile-desc">3 unread conversations</div>
-            </div>
-          </a>
-
-          <a class="tile" href="bookings.html">
-            <div class="tile-ico">
+        <div class="stat" data-accent="pending">
+          <div class="stat-top">
+            <span class="stat-ico">
               <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">Bookings</div>
-              <div class="tile-desc">Today &amp; upcoming appointments</div>
-            </div>
-          </a>
+            </span>
+            <span class="stat-label">Today's bookings</span>
+          </div>
+          <div class="stat-value loading" id="s-today">—</div>
+          <div class="stat-delta" id="s-today-sub">Loading…</div>
+        </div>
 
-          <a class="tile" href="finances.html">
-            <div class="tile-ico">
+        <div class="stat" data-accent="warn">
+          <div class="stat-top">
+            <span class="stat-ico">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <span class="stat-label">Pending bookings</span>
+          </div>
+          <div class="stat-value loading" id="s-pending">—</div>
+          <div class="stat-delta warn" id="s-pending-sub">Loading…</div>
+        </div>
+
+        <div class="stat" data-accent="success" id="stat-revenue">
+          <div class="stat-top">
+            <span class="stat-ico">
               <svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg>
-            </div>
-            <div class="tile-body">
-              <div class="tile-title">Finances</div>
-              <div class="tile-desc">Revenue &amp; expenses</div>
-            </div>
-          </a>
+            </span>
+            <span class="stat-label">Revenue (30 days)</span>
+          </div>
+          <div class="stat-value loading" id="s-revenue">—</div>
+          <div class="stat-delta good" id="s-revenue-sub">Loading…</div>
         </div>
 
-        <div class="section-head">
-          <h2>Recent activity</h2>
-          <a href="bookings.html">View all</a>
+        <div class="stat" data-accent="info">
+          <div class="stat-top">
+            <span class="stat-ico">
+              <svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg>
+            </span>
+            <span class="stat-label">Avg. rating</span>
+          </div>
+          <div class="stat-value loading" id="s-rating">—</div>
+          <div class="stat-delta" id="s-rating-sub">Loading…</div>
         </div>
 
-        <div class="activity">
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <span class="activity-text"><strong>Thandi M.</strong> booked a 90-min deep tissue massage</span>
-            <span class="activity-time">5 min ago</span>
+      </div>
+
+      <!-- QUICK TILES -->
+      <div class="section-head">
+        <h2>Jump to</h2>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="bookings.html">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Bookings</div>
+            <div class="tile-desc" id="tile-bookings-desc">Loading…</div>
           </div>
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <span class="activity-text">New 5★ review from <strong>Lerato K.</strong></span>
-            <span class="activity-time">22 min ago</span>
+        </a>
+        <a class="tile" href="messages.html">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Messages</div>
+            <div class="tile-desc" id="tile-messages-desc">Loading…</div>
           </div>
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <span class="activity-text"><strong>Sipho</strong> replied to a client message</span>
-            <span class="activity-time">1 hr ago</span>
+        </a>
+        <a class="tile" href="reviews.html">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.14 1 5.86L12 16.9l-5.25 2.75 1-5.86L3.5 9.65l5.9-.85L12 3.5z"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Reviews</div>
+            <div class="tile-desc" id="tile-reviews-desc">Loading…</div>
           </div>
-          <div class="activity-row">
-            <span class="activity-dot"></span>
-            <span class="activity-text">Payment of <strong>R 850</strong> received</span>
-            <span class="activity-time">3 hrs ago</span>
+        </a>
+        <a class="tile" href="services.html">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M20.6 8.6a2 2 0 0 0-1.4-.6H4.8a2 2 0 0 0-1.4.6l-1.4 1.4a2 2 0 0 0 0 2.8l7 7a2 2 0 0 0 2.8 0l7-7a2 2 0 0 0 0-2.8z"/><path d="M12 3v9"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Services</div>
+            <div class="tile-desc" id="tile-services-desc">Loading…</div>
+          </div>
+        </a>
+        <a class="tile" href="team.html">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.13a4 4 0 0 1 0 6.74"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Team</div>
+            <div class="tile-desc" id="tile-team-desc">Loading…</div>
+          </div>
+        </a>
+        <a class="tile" href="finances.html" id="tile-finances">
+          <div class="tile-ico"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V10M11 20V4M16 20v-7M21 20v-11"/></svg></div>
+          <div class="tile-body">
+            <div class="tile-title">Finances</div>
+            <div class="tile-desc" id="tile-finances-desc">Loading…</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- BOOKINGS + ACTIVITY -->
+      <div class="grid-2col">
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Upcoming bookings</h2>
+            <a href="bookings.html">View all</a>
+          </div>
+          <div class="list-body" id="list-bookings">
+            <div class="empty-row"><span class="skel" style="width:180px;height:14px">&nbsp;</span></div>
           </div>
         </div>
 
-      </section>
-    </main>
-  </div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Recent activity</h2>
+            <span class="pill-live">Live</span>
+          </div>
+          <div class="list-body" id="list-activity">
+            <div class="empty-row"><span class="skel" style="width:180px;height:14px">&nbsp;</span></div>
+          </div>
+        </div>
 
-  <script type="module">
-    /* ─────────────────────────────────────────────
-       Supabase — inline
-       ───────────────────────────────────────────── */
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+      </div>
 
-    const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+      <!-- REVIEWS + MESSAGES -->
+      <div class="grid-2col">
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+        <div class="card">
+          <div class="card-head">
+            <h2>Reviews to moderate</h2>
+            <a href="reviews.html">Review</a>
+          </div>
+          <div class="list-body" id="list-reviews">
+            <div class="empty-row"><span class="skel" style="width:180px;height:14px">&nbsp;</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Recent messages</h2>
+            <a href="messages.html">Inbox</a>
+          </div>
+          <div class="list-body" id="list-messages">
+            <div class="empty-row"><span class="skel" style="width:180px;height:14px">&nbsp;</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TEAM -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Team</h2>
+          <a href="team.html">Manage</a>
+        </div>
+        <div class="list-body" id="list-team">
+          <div class="empty-row"><span class="skel" style="width:180px;height:14px">&nbsp;</span></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL      = 'https://ykkvxstsufkkkhaqgdwo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlra3Z4c3RzdWZra2toYXFnZHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNTIyMTUsImV4cCI6MjEwNDYyODIxNX0.CNgbBO4Gcp119rSzZ1jzkudiVMEVaz_xKJdiYYDKyH4';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  const LOG = {
+    info:(...a)=>console.log('%c[DASH]','color:#2a5d95;font-weight:700',...a),
+    ok  :(...a)=>console.log('%c[DASH ✓]','color:#1e7a3c;font-weight:700',...a),
+    warn:(...a)=>console.warn('%c[DASH !]','color:#b8860b;font-weight:700',...a),
+    err :(...a)=>console.error('%c[DASH ✗]','color:#c0392b;font-weight:700',...a),
+    step:(n,...a)=>console.log(`%c[DASH → ${n}]`,'color:#8f6d4a;font-weight:700',...a),
+  };
+  LOG.info('dashboard.html loaded');
+
+  const DEFAULT_AVATAR =
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
+    "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+    "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
+    "</linearGradient></defs>" +
+    "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
+    "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
+    "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+
+  const state = {
+    user: null,
+    profile: null,
+    role: 'staff',
+    isAdmin: false,
+    servicesByName: {},
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  const todayEl       = $('today');
+  const refreshBtn    = $('refresh-btn');
+  const bellBtn       = $('bell-btn');
+  const bellDot       = $('bell-dot');
+  const profileBtn    = $('profile-btn');
+  const menuToggle    = $('menu-toggle');
+  const sidebar       = $('sidebar');
+  const overlay       = $('overlay');
+  const userCard      = $('user-card');
+  const userNameEl    = $('user-name');
+  const userRoleEl    = $('user-role');
+  const userAvatarEl  = $('user-avatar');
+  const signoutBtn    = $('signout-btn');
+  const welcomeHeading= $('welcome-heading');
+  const welcomeSub    = $('welcome-sub');
+
+  const navBookings = $('nav-bookings');
+  const navMessages = $('nav-messages');
+  const navReviews  = $('nav-reviews');
+
+  const statRevenue = $('stat-revenue');
+  const tileFinances = $('tile-finances');
+  const navFinances  = $('nav-finances');
+
+  /* ─── helpers ─── */
+  const esc = (s) => (s ?? '').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+  const fmtMoney = (n) => {
+    const num = Number(n) || 0;
+    return 'R ' + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  };
+  const fmtTime12 = (t) => {
+    if (!t) return '—';
+    try {
+      const [h, m] = t.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+    } catch { return t; }
+  };
+  const fmtDateShort = (s) => {
+    if (!s) return '—';
+    try {
+      return new Date(s + 'T00:00:00').toLocaleDateString(undefined, {
+        weekday: 'short', day: 'numeric', month: 'short'
+      });
+    } catch { return s; }
+  };
+  const relTime = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso), now = new Date();
+    const s = Math.floor((now - d) / 1000);
+    if (s < 60)      return 'just now';
+    if (s < 3600)    return Math.floor(s/60) + 'm ago';
+    if (s < 86400)   return Math.floor(s/3600) + 'h ago';
+    if (s < 86400*7) return Math.floor(s/86400) + 'd ago';
+    return d.toLocaleDateString(undefined, { day:'numeric', month:'short' });
+  };
+  const initials = (n) => (n||'?').trim().split(/\s+/).slice(0,2)
+    .map(w => w.charAt(0).toUpperCase()).join('');
+
+  const todayISO = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const daysAgoISO = (n) => {
+    const d = new Date(); d.setDate(d.getDate() - n);
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+
+  /* ─── topbar + sidebar ─── */
+  todayEl.textContent = new Date().toLocaleDateString(undefined, {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.add('open'); overlay.classList.add('show');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open'); overlay.classList.remove('show');
+  });
+  async function doSignout() {
+    await supabase.auth.signOut();
+    location.replace('login.html');
+  }
+  signoutBtn.addEventListener('click', (e) => { e.stopPropagation(); doSignout(); });
+  userCard.addEventListener('click', (e) => {
+    if (e.target.closest('#signout-btn')) return;
+    location.href = 'my_profile.html';
+  });
+  profileBtn.addEventListener('click', () => location.href = 'my_profile.html');
+  bellBtn.addEventListener('click',    () => location.href = 'messages.html');
+
+  /* ═════════════════════════════════════════════
+     STATS
+     ═════════════════════════════════════════════ */
+  async function loadStats() {
+    LOG.step('STATS','Fetching…');
+    const today = todayISO();
+    const from30 = daysAgoISO(29);
+
+    const [
+      todayRes,
+      pendingRes,
+      publishedRes,
+      unreadRes,
+      pendingRevRes,
+      recentCompletedRes,
+      expenses30Res,
+    ] = await Promise.all([
+      supabase.from('bookings').select('*', { count: 'exact', head: true })
+        .eq('preferred_date', today).neq('status', 'cancelled'),
+      supabase.from('bookings').select('*', { count: 'exact', head: true })
+        .eq('status', 'pending'),
+      supabase.from('reviews').select('rating').eq('is_published', true),
+      supabase.from('messages').select('*', { count: 'exact', head: true })
+        .eq('is_read', false),
+      supabase.from('reviews').select('*', { count: 'exact', head: true })
+        .eq('is_published', false).is('removed_at', null),
+      state.isAdmin
+        ? supabase.from('bookings')
+            .select('service_name, service_price, preferred_date')
+            .eq('status', 'completed')
+            .gte('preferred_date', from30)
+        : Promise.resolve({ data: [] }),
+      state.isAdmin
+        ? supabase.from('expenses')
+            .select('amount')
+            .gte('expense_date', from30)
+        : Promise.resolve({ data: [] }),
+    ]);
+
+    const todayCount   = todayRes.count ?? 0;
+    const pendingCount = pendingRes.count ?? 0;
+    const unread       = unreadRes.count ?? 0;
+    const pendingRev   = pendingRevRes.count ?? 0;
+
+    const ratings = (publishedRes.data || []).map(r => Number(r.rating)).filter(n => n > 0);
+    const avgRating = ratings.length
+      ? (ratings.reduce((a,b) => a+b, 0) / ratings.length).toFixed(1)
+      : null;
+
+    // update stat 1
+    $('s-today').textContent = todayCount;
+    $('s-today').classList.remove('loading');
+    $('s-today-sub').textContent = todayCount
+      ? `${todayCount} appointment${todayCount === 1 ? '' : 's'} scheduled today`
+      : 'Nothing scheduled today';
+
+    // update stat 2
+    $('s-pending').textContent = pendingCount;
+    $('s-pending').classList.remove('loading');
+    $('s-pending-sub').textContent = pendingCount ? 'Needs review' : 'All caught up';
+
+    // update stat 4
+    $('s-rating').textContent = avgRating ?? '—';
+    $('s-rating').classList.remove('loading');
+    $('s-rating-sub').textContent = ratings.length
+      ? `${ratings.length} published review${ratings.length === 1 ? '' : 's'}`
+      : 'No reviews yet';
+
+    // stat 3 (revenue) — admin only
+    if (state.isAdmin) {
+      const completed = recentCompletedRes.data || [];
+      const expenses  = expenses30Res.data || [];
+
+      const priceByName = {};
+      // We fetch service prices separately in loadServicesAndTeam (state.servicesByName)
+      const revenue = completed.reduce((sum, b) => {
+        const snapshot = b.service_price != null ? Number(b.service_price) : null;
+        if (snapshot != null) return sum + snapshot;
+        return sum + (state.servicesByName[b.service_name] || 0);
+      }, 0);
+      const totalExpenses = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+      const profit = revenue - totalExpenses;
+
+      $('s-revenue').textContent = (profit < 0 ? '−' : '') + fmtMoney(Math.abs(profit));
+      $('s-revenue').classList.remove('loading');
+      $('s-revenue-sub').innerHTML = profit >= 0
+        ? `${fmtMoney(revenue)} in · ${fmtMoney(totalExpenses)} out`
+        : `<span style="color:var(--c-error)">In the red</span> · ${fmtMoney(revenue)} in, ${fmtMoney(totalExpenses)} out`;
+    } else {
+      // staff — swap to "confirmed today"
+      statRevenue.hidden = false;
+      statRevenue.dataset.accent = 'success';
+      statRevenue.querySelector('.stat-label').textContent = 'Confirmed today';
+      statRevenue.querySelector('.stat-ico').innerHTML = `
+        <svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>`;
+      const { count: confirmedToday } = await supabase
+        .from('bookings').select('*', { count: 'exact', head: true })
+        .eq('preferred_date', today).eq('status', 'confirmed');
+      $('s-revenue').textContent = confirmedToday ?? 0;
+      $('s-revenue').classList.remove('loading');
+      $('s-revenue-sub').textContent = 'Ready to serve today';
+    }
+
+    // Badges
+    if (pendingCount) { navBookings.hidden = false; navBookings.textContent = pendingCount; }
+    else navBookings.hidden = true;
+
+    if (unread) { navMessages.hidden = false; navMessages.textContent = unread; bellDot.hidden = false; }
+    else        { navMessages.hidden = true; bellDot.hidden = true; }
+
+    if (pendingRev) { navReviews.hidden = false; navReviews.textContent = pendingRev; }
+    else navReviews.hidden = true;
+
+    // tile descriptions
+    $('tile-bookings-desc').textContent = pendingCount ? `${pendingCount} pending` : `${todayCount} today`;
+    $('tile-messages-desc').textContent = unread ? `${unread} unread` : 'Inbox up to date';
+    $('tile-reviews-desc').textContent  = pendingRev ? `${pendingRev} to moderate` : 'Nothing to moderate';
+
+    LOG.ok('STATS','Done', { todayCount, pendingCount, unread, pendingRev, avgRating });
+  }
+
+  async function loadServicesAndTeam() {
+    const [svcRes, teamRes] = await Promise.all([
+      supabase.from('services').select('name, price').eq('is_active', true),
+      supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    ]);
+
+    (svcRes.data || []).forEach(s => {
+      if (s.name) state.servicesByName[s.name] = Number(s.price) || 0;
     });
 
-    /* ─────────────────────────────────────────────
-       Logging
-       ───────────────────────────────────────────── */
-    const LOG = {
-      info : (...a) => console.log  ('%c[DASH]',     'color:#2a5d95;font-weight:700', ...a),
-      ok   : (...a) => console.log  ('%c[DASH ✓]',   'color:#1e7a3c;font-weight:700', ...a),
-      warn : (...a) => console.warn ('%c[DASH !]',   'color:#b8860b;font-weight:700', ...a),
-      err  : (...a) => console.error('%c[DASH ✗]',   'color:#c0392b;font-weight:700', ...a),
-      step : (n, ...a) => console.log(`%c[DASH → ${n}]`, 'color:#8f6d4a;font-weight:700', ...a),
-    };
+    const svcCount  = (svcRes.data || []).length;
+    const teamCount = teamRes.count ?? 0;
 
-    LOG.info('dashboard.html loaded');
-    LOG.info('Supabase URL :', SUPABASE_URL);
+    $('tile-services-desc').textContent = svcCount
+      ? `${svcCount} active service${svcCount === 1 ? '' : 's'}`
+      : 'No services yet';
+    $('tile-team-desc').textContent = teamCount
+      ? `${teamCount} team member${teamCount === 1 ? '' : 's'}`
+      : 'No team yet';
+  }
 
-    /* ─────────────────────────────────────────────
-       Default avatar
-       ───────────────────────────────────────────── */
-    const DEFAULT_AVATAR =
-      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>" +
-      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
-      "<stop offset='0' stop-color='%23f6ede4'/><stop offset='1' stop-color='%23e6d4c2'/>" +
-      "</linearGradient></defs>" +
-      "<rect width='200' height='200' rx='100' fill='url(%23g)'/>" +
-      "<circle cx='100' cy='80' r='34' fill='%23b9926a'/>" +
-      "<path d='M40 175c8-38 40-58 60-58s52 20 60 58' fill='%23b9926a'/></svg>";
+  /* ═════════════════════════════════════════════
+     UPCOMING BOOKINGS
+     ═════════════════════════════════════════════ */
+  async function loadUpcomingBookings() {
+    const el = $('list-bookings');
+    const today = todayISO();
 
-    /* ─────────────────────────────────────────────
-       DOM refs
-       ───────────────────────────────────────────── */
-    const userNameEl      = document.getElementById('user-name');
-    const userRoleEl      = document.getElementById('user-role');
-    const userAvatarEl    = document.getElementById('user-avatar');
-    const userCard        = document.getElementById('user-card');
-    const signoutBtn      = document.getElementById('signout-btn');
-    const welcomeHeading  = document.getElementById('welcome-heading');
-    const welcomeSub      = document.getElementById('welcome-sub');
-    const todayEl         = document.getElementById('today');
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('id, service_name, client_name, preferred_date, preferred_time, status, reference_code')
+      .gte('preferred_date', today)
+      .in('status', ['pending', 'confirmed'])
+      .order('preferred_date', { ascending: true })
+      .order('preferred_time', { ascending: true })
+      .limit(6);
 
-    const sidebar         = document.getElementById('sidebar');
-    const overlay         = document.getElementById('overlay');
-    const menuToggle      = document.getElementById('menu-toggle');
+    if (error) {
+      LOG.err('UPCOMING','Failed:', error);
+      el.innerHTML = '<div class="empty-row">Could not load.</div>';
+      return;
+    }
 
-    const profileBtn      = document.getElementById('profile-btn');
-    const bellBtn         = document.getElementById('bell-btn');
+    if (!data?.length) {
+      el.innerHTML = `
+        <div class="empty-row">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg>
+          No upcoming bookings.
+        </div>`;
+      return;
+    }
 
-    /* ─────────────────────────────────────────────
-       Topbar date
-       ───────────────────────────────────────────── */
-    todayEl.textContent = new Date().toLocaleDateString(undefined, {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    el.innerHTML = data.map(b => {
+      const accent = b.status === 'pending' ? 'warn'
+                  : b.status === 'confirmed' ? 'success' : 'info';
+      return `
+        <div class="row">
+          <div class="avatar ${accent}">${esc(initials(b.client_name))}</div>
+          <div class="row-main">
+            <div class="row-line1">
+              <strong>${esc(b.service_name || 'Treatment')}</strong>
+              <span class="muted">· ${esc(b.client_name || 'Guest')}</span>
+            </div>
+            <div class="row-line2">${esc(fmtDateShort(b.preferred_date))} · ${esc(fmtTime12(b.preferred_time))} · ${esc(b.reference_code || '')}</div>
+          </div>
+          <div class="row-side">
+            <span class="status-pill ${esc(b.status)}">${esc(b.status)}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.row').forEach(r => {
+      r.addEventListener('click', () => location.href = 'bookings.html');
+    });
+  }
+
+  /* ═════════════════════════════════════════════
+     RECENT ACTIVITY — combines bookings + expenses + reviews
+     ═════════════════════════════════════════════ */
+  async function loadRecentActivity() {
+    const el = $('list-activity');
+
+    const promises = [
+      supabase.from('bookings')
+        .select('id, service_name, client_name, status, attended_by_name, cancelled_by_name, preferred_date, updated_at, created_at')
+        .order('updated_at', { ascending: false })
+        .limit(6),
+    ];
+    if (state.isAdmin) {
+      promises.push(
+        supabase.from('expenses')
+          .select('id, description, amount, category, created_by_name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(4)
+      );
+    }
+
+    const [bookingsRes, expensesRes] = await Promise.all(promises);
+
+    if (bookingsRes.error) {
+      LOG.err('ACTIVITY','Failed:', bookingsRes.error);
+      el.innerHTML = '<div class="empty-row">Could not load.</div>';
+      return;
+    }
+
+    const events = [];
+
+    (bookingsRes.data || []).forEach(b => {
+      let text = '';
+      let accent = 'info';
+      let time  = b.updated_at || b.created_at;
+
+      if (b.status === 'cancelled' && b.cancelled_by_name) {
+        text = `<strong>${esc(b.service_name || 'Booking')}</strong> cancelled by <span class="cancel">${esc(b.cancelled_by_name)}</span>`;
+        accent = 'error';
+      } else if (b.status === 'completed' && b.attended_by_name) {
+        text = `<strong>${esc(b.service_name || 'Booking')}</strong> completed — <span class="by">${esc(b.attended_by_name)}</span> attended`;
+        accent = 'success';
+      } else if (b.status === 'confirmed') {
+        text = `<strong>${esc(b.service_name || 'Booking')}</strong> confirmed for ${esc(b.client_name || 'Guest')}`;
+        accent = 'success';
+      } else if (b.status === 'pending') {
+        text = `New request: <strong>${esc(b.service_name || 'Treatment')}</strong> from ${esc(b.client_name || 'Guest')}`;
+        accent = 'warn';
+      }
+
+      if (text) events.push({ text, accent, time, kind: 'booking' });
     });
 
-    /* ─────────────────────────────────────────────
-       Nav — logging
-       ───────────────────────────────────────────── */
-    const navItems = document.querySelectorAll('.nav-item');
-    LOG.step('NAV', 'Wired', navItems.length, 'nav links.');
-
-    navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const page = item.dataset.page || 'unknown';
-        LOG.info('NAV', 'Navigating →', page, '(' + item.getAttribute('href') + ')');
+    (expensesRes?.data || []).forEach(e => {
+      events.push({
+        text: `<strong>${esc(e.description)}</strong> — ${esc(fmtMoney(e.amount))} logged by <span class="by">${esc(e.created_by_name || 'Staff')}</span>`,
+        accent: 'error',
+        time: e.created_at,
+        kind: 'expense',
       });
     });
 
-    /* ─────────────────────────────────────────────
-       Mobile sidebar
-       ───────────────────────────────────────────── */
-    function openSidebar() {
-      sidebar.classList.add('open');
-      overlay.classList.add('show');
-      LOG.step('UI', 'Sidebar opened (mobile).');
+    // Sort by time desc
+    events.sort((a, b) => new Date(b.time) - new Date(a.time));
+    const top = events.slice(0, 8);
+
+    if (!top.length) {
+      el.innerHTML = `
+        <div class="empty-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          No recent activity.
+        </div>`;
+      return;
     }
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('show');
-      LOG.step('UI', 'Sidebar closed (mobile).');
+
+    el.innerHTML = top.map(e => `
+      <div class="row">
+        <div class="avatar ${e.accent}">${e.kind === 'expense' ? '−' : '·'}</div>
+        <div class="row-main">
+          <div class="row-line1">${e.text}</div>
+          <div class="row-line2">${esc(relTime(e.time))}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  /* ═════════════════════════════════════════════
+     PENDING REVIEWS
+     ═════════════════════════════════════════════ */
+  async function loadPendingReviews() {
+    const el = $('list-reviews');
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('id, name, rating, title, body, created_at')
+      .eq('is_published', false)
+      .is('removed_at', null)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (error) {
+      LOG.err('REVIEWS','Failed:', error);
+      el.innerHTML = '<div class="empty-row">Could not load.</div>';
+      return;
     }
-    menuToggle.addEventListener('click', openSidebar);
-    overlay.addEventListener('click', closeSidebar);
 
-    /* ─────────────────────────────────────────────
-       Topbar buttons
-       ───────────────────────────────────────────── */
-    profileBtn.addEventListener('click', () => {
-      LOG.info('UI', 'Topbar profile button → my_profile.html');
-      location.href = 'my_profile.html';
-    });
-    bellBtn.addEventListener('click', () => {
-      LOG.info('UI', 'Bell clicked → messages.html');
-      location.href = 'messages.html';
-    });
+    if (!data?.length) {
+      el.innerHTML = `
+        <div class="empty-row">
+          <svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>
+          All reviews moderated.
+        </div>`;
+      return;
+    }
 
-    /* ─────────────────────────────────────────────
-       User card → my_profile.html
-       ───────────────────────────────────────────── */
-    userCard.addEventListener('click', (e) => {
-      if (e.target.closest('#signout-btn')) return;
-      LOG.info('UI', 'User card → my_profile.html');
-      location.href = 'my_profile.html';
-    });
+    el.innerHTML = data.map(r => {
+      const stars = '★'.repeat(Math.max(1, Math.min(5, r.rating || 5)));
+      const snippet = (r.body || '').replace(/\s+/g, ' ').slice(0, 50);
+      return `
+        <div class="row">
+          <div class="avatar warn">${esc(initials(r.name))}</div>
+          <div class="row-main">
+            <div class="row-line1">
+              <strong>${esc(r.name)}</strong>
+              <span class="muted">· ${esc(relTime(r.created_at))}</span>
+            </div>
+            <div class="row-line2">
+              <span class="stars-mini">${stars}</span>
+              ${snippet ? '· ' + esc(snippet) + (r.body.length > 50 ? '…' : '') : ''}
+            </div>
+          </div>
+          <div class="row-side">
+            <span class="status-pill pending">New</span>
+          </div>
+        </div>`;
+    }).join('');
 
-    signoutBtn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      LOG.step('SIGNOUT', 'Signing out…');
-      const { error } = await supabase.auth.signOut();
-      if (error) LOG.err('SIGNOUT', 'signOut FAILED:', error);
-      else       LOG.ok('SIGNOUT', 'Signed out.');
+    el.querySelectorAll('.row').forEach(r => r.addEventListener('click', () => location.href = 'reviews.html'));
+  }
+
+  /* ═════════════════════════════════════════════
+     RECENT MESSAGES
+     ═════════════════════════════════════════════ */
+  async function loadRecentMessages() {
+    const el = $('list-messages');
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select('id, name, subject, body, is_read, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (error) {
+      LOG.err('MESSAGES','Failed:', error);
+      el.innerHTML = '<div class="empty-row">Could not load.</div>';
+      return;
+    }
+
+    if (!data?.length) {
+      el.innerHTML = `
+        <div class="empty-row">
+          <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-5.4A8 8 0 1 1 21 12z"/></svg>
+          No messages yet.
+        </div>`;
+      return;
+    }
+
+    el.innerHTML = data.map(m => {
+      const accent = m.is_read ? 'muted' : 'info';
+      const snippet = (m.subject || m.body || '').replace(/\s+/g, ' ').slice(0, 60);
+      return `
+        <div class="row">
+          <div class="avatar ${accent}">${esc(initials(m.name))}</div>
+          <div class="row-main">
+            <div class="row-line1">
+              <strong>${esc(m.name || 'Guest')}</strong>
+              <span class="muted">· ${esc(relTime(m.created_at))}</span>
+            </div>
+            <div class="row-line2">${esc(snippet)}${snippet.length >= 60 ? '…' : ''}</div>
+          </div>
+          <div class="row-side">
+            ${!m.is_read ? '<span class="status-pill pending">New</span>' : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.row').forEach(r => r.addEventListener('click', () => location.href = 'messages.html'));
+  }
+
+  /* ═════════════════════════════════════════════
+     TEAM
+     ═════════════════════════════════════════════ */
+  async function loadTeamSnapshot() {
+    const el = $('list-team');
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, full_name, role, position, is_active')
+      .eq('is_active', true)
+      .order('role', { ascending: true })
+      .limit(5);
+
+    if (error) {
+      LOG.err('TEAM','Failed:', error);
+      el.innerHTML = '<div class="empty-row">Could not load.</div>';
+      return;
+    }
+
+    if (!data?.length) {
+      el.innerHTML = `
+        <div class="empty-row">
+          <svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7.5" r="3.5"/></svg>
+          No team members yet.
+        </div>`;
+      return;
+    }
+
+    el.innerHTML = data.map(p => {
+      const roleClass = p.role === 'developer' ? 'dev' : p.role === 'admin' ? 'admin' : 'completed';
+      const accent    = p.role === 'developer' ? 'error' : p.role === 'admin' ? 'warn' : 'info';
+      return `
+        <div class="row">
+          <div class="avatar ${accent}">${esc(initials(p.full_name))}</div>
+          <div class="row-main">
+            <div class="row-line1"><strong>${esc(p.full_name || 'Unnamed')}</strong></div>
+            <div class="row-line2">${esc(p.position || (p.role ? p.role.charAt(0).toUpperCase() + p.role.slice(1) : 'Staff'))}</div>
+          </div>
+          <div class="row-side">
+            <span class="status-pill ${roleClass}">${esc(p.role || 'staff')}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.row').forEach(r => r.addEventListener('click', () => location.href = 'team.html'));
+  }
+
+  /* ═════════════════════════════════════════════
+     REFRESH
+     ═════════════════════════════════════════════ */
+  async function loadAll() {
+    await loadServicesAndTeam();   // populate state.servicesByName first
+    await Promise.all([
+      loadStats(),
+      loadUpcomingBookings(),
+      loadRecentActivity(),
+      loadPendingReviews(),
+      loadRecentMessages(),
+      loadTeamSnapshot(),
+    ]);
+    LOG.ok('BOOT','All panels loaded.');
+  }
+
+  refreshBtn.addEventListener('click', async () => {
+    refreshBtn.disabled = true;
+    await loadAll();
+    refreshBtn.disabled = false;
+  });
+
+  /* ═════════════════════════════════════════════
+     REALTIME
+     ═════════════════════════════════════════════ */
+  function subscribeRealtime() {
+    supabase.channel('dash:bookings')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' },
+        () => Promise.all([loadUpcomingBookings(), loadRecentActivity(), loadStats()]))
+      .subscribe();
+
+    supabase.channel('dash:reviews')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' },
+        () => Promise.all([loadPendingReviews(), loadStats()]))
+      .subscribe();
+
+    supabase.channel('dash:messages')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' },
+        () => Promise.all([loadRecentMessages(), loadStats()]))
+      .subscribe();
+
+    if (state.isAdmin) {
+      supabase.channel('dash:expenses')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'expenses' },
+          () => Promise.all([loadStats(), loadRecentActivity()]))
+        .subscribe();
+    }
+
+    LOG.step('RT','Realtime channels subscribed.');
+  }
+
+  /* ═════════════════════════════════════════════
+     BOOT
+     ═════════════════════════════════════════════ */
+  async function boot() {
+    LOG.step('BOOT','getSession()…');
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) { location.replace('login.html'); return; }
+
+    state.user = session.user;
+    LOG.ok('BOOT','Signed in as:', session.user.email);
+
+    const { data: profile, error: pErr } = await supabase
+      .from('profiles')
+      .select('full_name, role, avatar_url, onboarded, is_active')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (pErr) LOG.err('BOOT','Profile lookup FAILED:', pErr);
+    else     LOG.ok('BOOT','Profile:', profile);
+
+    if (profile?.is_active === false) {
+      await supabase.auth.signOut();
       location.replace('login.html');
-    });
-
-    /* ─────────────────────────────────────────────
-       Load session + profile
-       ───────────────────────────────────────────── */
-    async function load() {
-      LOG.step('BOOT', 'getSession()…');
-      const { data: { session }, error: sessErr } = await supabase.auth.getSession();
-
-      if (sessErr) {
-        LOG.err('BOOT', 'getSession failed:', sessErr);
-        return;
-      }
-      if (!session) {
-        LOG.warn('BOOT', 'No session → login.html');
-        location.replace('login.html');
-        return;
-      }
-
-      const user = session.user;
-      LOG.ok('BOOT', 'Signed in as:', user.email, '/ id:', user.id);
-
-      LOG.step('BOOT', 'Fetching profile row…');
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('full_name, role, avatar_url, onboarded, is_active')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (error) {
-        LOG.err('BOOT', 'profiles SELECT FAILED');
-        LOG.err('BOOT', '  code   :', error.code);
-        LOG.err('BOOT', '  message:', error.message);
-        LOG.err('BOOT', '  details:', error.details);
-        LOG.err('BOOT', '  hint   :', error.hint);
-        LOG.err('BOOT', '  full   :', error);
-      } else {
-        LOG.ok('BOOT', 'Profile row:', profile);
-      }
-
-      // Deactivated?
-      if (profile && profile.is_active === false) {
-        LOG.warn('BOOT', 'Account deactivated → sign out.');
-        await supabase.auth.signOut();
-        location.replace('login.html');
-        return;
-      }
-
-      // Not onboarded yet → go finish the form
-      // (profiles.html = the FORM, my_profile.html = the VIEW)
-      if (profile && profile.onboarded === false) {
-        LOG.warn('BOOT', 'Not onboarded yet → profiles.html (form)');
-        location.replace('profiles.html');
-        return;
-      }
-
-      // ---------- fill UI ----------
-      const displayName =
-        profile?.full_name?.trim() ||
-        user.email?.split('@')[0] ||
-        'there';
-      const displayRole = (profile?.role || 'admin').toLowerCase();
-
-      userNameEl.textContent = displayName;
-      userRoleEl.textContent = displayRole;
-      userAvatarEl.src       = profile?.avatar_url || DEFAULT_AVATAR;
-      userAvatarEl.onerror   = () => { userAvatarEl.src = DEFAULT_AVATAR; };
-
-      welcomeHeading.textContent = `Welcome back, ${displayName.split(' ')[0]}`;
-      welcomeSub.textContent =
-        displayRole === 'developer' || displayRole === 'admin'
-          ? "You're signed in as an administrator — manage the spa below."
-          : "Here's what's happening at the spa today.";
-
-      LOG.ok('BOOT', 'UI populated. Name:', displayName, '| role:', displayRole);
+      return;
+    }
+    if (profile?.onboarded === false) {
+      location.replace('profiles.html');
+      return;
     }
 
-    /* ─────────────────────────────────────────────
-       Auth state listener
-       ───────────────────────────────────────────── */
-    supabase.auth.onAuthStateChange((event, session) => {
-      LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
-    });
+    state.profile = profile;
+    state.role    = (profile?.role || 'staff').toLowerCase();
+    state.isAdmin = state.role === 'admin' || state.role === 'developer';
 
-    load();
-    LOG.info('dashboard.html ready.');
-  </script>
+    const displayName = profile?.full_name?.trim() || session.user.email?.split('@')[0] || 'there';
+    const firstName   = displayName.split(' ')[0];
+
+    userNameEl.textContent = displayName;
+    userRoleEl.textContent = state.role;
+    userAvatarEl.src = profile?.avatar_url || DEFAULT_AVATAR;
+    userAvatarEl.onerror = () => { userAvatarEl.src = DEFAULT_AVATAR; };
+
+    welcomeHeading.textContent = `Welcome back, ${firstName}`;
+    welcomeSub.textContent = state.isAdmin
+      ? "You're signed in as an administrator — here's the spa at a glance."
+      : "Here's what's happening at the spa today.";
+
+    // Hide finance tile for staff
+    if (!state.isAdmin) {
+      tileFinances.hidden = true;
+      navFinances.hidden = true;
+    }
+
+    await loadAll();
+    subscribeRealtime();
+  }
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    LOG.info('AUTH-EVENT', event, '| user:', session?.user?.email ?? 'none');
+  });
+
+  boot();
+  LOG.info('dashboard.html ready.');
+</script>
 </body>
 </html>
